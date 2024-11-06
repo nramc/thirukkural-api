@@ -17,9 +17,18 @@ class KuralService {
         return kuralsDB.kurals;
     }
 
-    // Search function to find Kurals based on a search term
+    // Search function to find Kurals based on ID
     public search(id: number): Kural | undefined {
         return this.kurals.find(kural => kural.number === id);
+    }
+
+    public random(): Kural {
+        const randomIndex = this.getRandomKuralNumber();
+        return this.kurals[randomIndex];
+    }
+
+    private getRandomKuralNumber(): number {
+        return Math.floor(Math.random() * 1330) + 1;
     }
 }
 
