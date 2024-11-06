@@ -118,13 +118,16 @@ export default function Home() {
                     {kural?.kural[1]}<br/>
                 </p>
                 <p style={{
-                    fontSize: 'small',
+                    fontSize: '0.75rem',
+                    color: `${primaryColor}`,
                     fontWeight: 'bold',
-                    alignItems: 'end',
                     display: 'flex',
                     flexDirection: 'row',
-                    gap: '1rem',
-                    justifyContent: 'center'
+                    flexBasis: 'content',
+                    gap: '0.5rem',
+                    justifyContent: 'center',
+                    alignContent: 'center',
+                    alignItems: 'center',
                 }}>
                     <span>குறள்/Couplet: {kural?.number}</span>
                     <span>பால்/Section: {kural?.section}</span>
@@ -154,6 +157,60 @@ export default function Home() {
                     {kural?.meaning['en']}
                 </p>
             </div>
+
+            <hr/>
+
+            <section style={{
+                padding: '2rem',
+                marginTop: '1rem',
+                marginBottom: '2rem',
+                maxWidth: '50%',
+                overflowX: 'auto',
+                backgroundColor: 'white',
+                borderRadius: '15px',
+                boxShadow: `0 6px 12px ${primaryLight}`,
+                width: '100%',
+                border: `2px solid ${primaryColor}`
+            }}>
+                <h2 style={{
+                    fontSize: '1.5em',
+                    color: `${primaryColor}`,
+                    marginBottom: '10px',
+                    borderBottom: `2px solid ${primaryColor}`,
+                    paddingBottom: '5px',
+                }}>API Information</h2>
+                <p style={{
+                    color: `${primaryColor}`,
+                    marginTop: '15px',
+                    lineHeight: '2rem'
+                }}>Use the following API URL to get kural of the day:</p>
+                <code style={{
+                    display: 'block',
+                    padding: '1rem',
+                    backgroundColor: `${backgroundColor}`,
+                    borderRadius: '5px',
+                    fontSize: '0.9em',
+                    color: '#555',
+                    margin: '10px 0',
+                    wordBreak: 'break-all',
+                }}>{`https://tamil-kural-api.vercel.app/api/daily`}</code>
+
+                <h3 style={{
+                    fontSize: '0.9em',
+                    color: `${primaryColor}`,
+                    marginBottom: '10px',
+                }}>Response</h3>
+                <pre style={{
+                    backgroundColor: `${backgroundColor}`,
+                    padding: '1rem',
+                    borderRadius: '5px',
+                    fontSize: '0.9em',
+                    overflowX: 'auto',
+                    color: '#333',
+                }}>
+                    {JSON.stringify(kural, null, 2)}
+                </pre>
+            </section>
         </div>
     )
 }
