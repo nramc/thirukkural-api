@@ -16,8 +16,6 @@ the API.
 - **REST API**: A simple serverless API that returns requested Kural in JSON format.
 - **Modern Web Technology**: Built using TypeScript, React, and Vercel's serverless architecture.
 
----
-
 ## Getting Started
 
 ### Prerequisites
@@ -53,8 +51,6 @@ Make sure you have the following installed on your local machine:
 
 4. Your application will be available at [http://localhost:3000](http://localhost:3000)
 
----
-
 ## Project Structure
 
 - **/public/data/kurals.json**: Contains the full list of Thirukkural verses in JSON format.
@@ -63,8 +59,6 @@ Make sure you have the following installed on your local machine:
 - **/api/daily/**: A serverless function that returns a Kural of the day as JSON.
 - **/api/random/**: A serverless function that returns a random Kural as JSON.
 - **/pages/index.tsx**: The main React component for the homepage.
-
----
 
 ## Usage
 
@@ -171,8 +165,6 @@ You can deploy this project on Vercel with the following steps:
 
 3. Follow the prompts to complete the deployment.
 
----
-
 ## Technologies Used
 
 - [React](https://react.dev/): For the frontend
@@ -180,8 +172,6 @@ You can deploy this project on Vercel with the following steps:
 - [Vercel](https://vercel.com/): For serverless deployment
 - [Node.js](https://nodejs.org/): Backend runtime for the serverless function
 - [Renovate](https://docs.renovatebot.com/): Automated dependency updates
-
----
 
 ## Contribution
 
@@ -197,20 +187,14 @@ You can also simply open an issue with the tag "enhancement".
 4. Push to the Branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
----
-
 ## License
 
 This project is open-source and available under the MIT License.
-
----
 
 ## Contact
 
 Ramachandran
 Nellaiyappan [Website](https://github.com/nramc) | [Twitter](https://twitter.com/ram_n_74) | [E-Mail](mailto:ramachandrannellai@gmail.com)
-
----
 
 ## Credits
 
@@ -218,8 +202,6 @@ Sincere Thanks to following open source community for their wonderful efforts to
 
 - [Vercel](https://vercel.com/)
 - [Next.js](https://nextjs.org/)
-
----
 
 ## Show your support
 
