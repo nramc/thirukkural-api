@@ -40,3 +40,18 @@ a {
     color-scheme: dark;
   }
 }
+
+div.api-spec p {
+  margin-top: 1rem;
+  line-height: 2rem;
+}
+
+div.api-spec code {
+  display: block;
+  padding: 1rem;
+  border-radius: 5px;
+  font-size: 0.9em;
+  color: #555;
+  margin-bottom: 10px;
+  word-break: break-all;
+}

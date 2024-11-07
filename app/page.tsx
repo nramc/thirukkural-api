@@ -179,21 +179,24 @@ export default function Home() {
                     borderBottom: `2px solid ${primaryColor}`,
                     paddingBottom: '5px',
                 }}>API Information</h2>
-                <p style={{
-                    color: `${primaryColor}`,
-                    marginTop: '15px',
-                    lineHeight: '2rem'
-                }}>Use the following API URL to get kural of the day:</p>
-                <code style={{
-                    display: 'block',
-                    padding: '1rem',
-                    backgroundColor: `${backgroundColor}`,
-                    borderRadius: '5px',
-                    fontSize: '0.9em',
-                    color: '#555',
-                    margin: '10px 0',
-                    wordBreak: 'break-all',
-                }}>{`https://tamil-kural-api.vercel.app/api/daily`}</code>
+
+                <div className={'api-spec'}>
+                    <p style={{color: `${primaryColor}`}}>Use the following API to get kural of the day:</p>
+                    <code
+                        style={{backgroundColor: `${backgroundColor}`,}}>https://tamil-kural-api.vercel.app/api/daily</code>
+                </div>
+
+                <div className={'api-spec'}>
+                    <p style={{color: `${primaryColor}`}}>Use the following API to get specific kural by id:</p>
+                    <code
+                        style={{backgroundColor: `${backgroundColor}`,}}>https://tamil-kural-api.vercel.app/api/kural/:id</code>
+                </div>
+
+                <div className={'api-spec'}>
+                    <p style={{color: `${primaryColor}`}}>Use the following API to get random kural:</p>
+                    <code
+                        style={{backgroundColor: `${backgroundColor}`,}}>https://tamil-kural-api.vercel.app/api/random</code>
+                </div>
 
                 <h3 style={{
                     fontSize: '0.9em',
