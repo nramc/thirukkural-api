@@ -60,7 +60,7 @@ export default function Home() {
                 opacity: mounted ? 1 : 0,
                 transition: 'opacity 0.5s ease-in',
             }}>
-                Welcome to Tamil Thirukkural App
+                Thirukkural API
             </h1>
             <style jsx>{`
                 @keyframes gradientShift {
@@ -72,11 +72,10 @@ export default function Home() {
                     }
                 }
             `}</style>
-            <p style={{
+            <p className={'content-wrapper'} style={{
                 fontSize: '0.9rem',
                 color: `${primaryColor}`,
                 fontWeight: 'bold',
-                maxWidth: '600px',
                 textAlign: 'center',
                 lineHeight: '1.6',
                 marginBottom: '30px',
@@ -88,12 +87,11 @@ export default function Home() {
                 Explore the ancient wisdom of Thirukkural, a classic Tamil text consisting of 1,330 couplets or Kurals,
                 dealing with various aspects of life and morality.
             </p>
-            <div style={{
+            <div className={'content-wrapper'} style={{
                 backgroundColor: 'white',
                 padding: '20px',
                 borderRadius: '15px',
                 boxShadow: `0 6px 12px ${primaryLight}`,
-                maxWidth: '50%',
                 width: '100%',
                 border: `2px solid ${primaryColor}`,
             }}>
@@ -160,11 +158,10 @@ export default function Home() {
 
             <hr/>
 
-            <section style={{
+            <section className={'content-wrapper'} style={{
                 padding: '2rem',
                 marginTop: '1rem',
                 marginBottom: '2rem',
-                maxWidth: '50%',
                 overflowX: 'auto',
                 backgroundColor: 'white',
                 borderRadius: '15px',
