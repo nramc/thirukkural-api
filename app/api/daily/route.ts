@@ -1,5 +1,14 @@
 import kuralService from "@/app/service/KuralService";
 
 export async function GET() {
-    return Response.json(kuralService.kuralOfTheDay());
+    // Add CORS headers
+    const headers = {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET, OPTIONS',
+    };
+
+    return Response.json(kuralService.kuralOfTheDay(), {
+        headers: headers
+    });
 }
