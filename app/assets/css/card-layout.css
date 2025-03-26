@@ -1,0 +1,73 @@
+/* styles.css */
+
+/* Card container */
+.card-container {
+    width: 100%; /* equivalent to max-w-xl */
+    margin: 0.25rem;
+    background-color: #ffffff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 1rem; /* rounded-2xl */
+    overflow: hidden;
+    border: 1px solid #2563eb; /* border-gray-200 */
+}
+
+/* Card header */
+.card-header {
+    background-color: #2563eb; /* bg-blue-600 */
+    color: whitesmoke;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    border-top-left-radius: 1rem; /* rounded-t-2xl */
+    border-top-right-radius: 1rem; /* rounded-t-2xl */
+}
+
+/* Avatar inside the card */
+.card-avatar {
+    width: 2.5rem; /* w-10 */
+    height: 2.5rem; /* h-10 */
+    background-size: cover;
+    background-position: center;
+    border-radius: 50%; /* rounded-full */
+}
+
+/* Card content section */
+.card-content {
+    padding: 1.5rem; /* p-6 */
+}
+
+/* Title section */
+.card-title {
+    font-weight: bold;
+    color: #4b5563; /* text-gray-700 */
+    font-size: 1.125rem; /* text-lg */
+}
+
+/* Blockquote section */
+.card-quote {
+    font-style: italic;
+    color: #2563eb; /* text-blue-600 */
+    font-weight: bold;
+    display: flex;
+    flex-direction: column;
+    margin-top: 0.5rem; /* mt-2 */
+    padding-left: 1rem; /* ps-3 */
+    border-left: 4px solid #3b82f6; /* border-l-4, border-blue-500 */
+}
+
+/* Meaning section */
+.card-meaning {
+    margin-top: 1rem; /* mt-4 */
+}
+
+.card-meaning-title {
+    font-weight: bold;
+    color: #4b5563; /* text-gray-700 */
+}
+
+.card-meaning-item {
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+    font-size: 0.875rem; /* text-sm */
+    color: #4b5563; /* text-gray-600 */
+}

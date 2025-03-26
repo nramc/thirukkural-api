@@ -25,26 +25,26 @@ async function getKural(kuralNumber = "random") {
 
 
      return (
-         <div className="max-w-xl mx-auto bg-white shadow-lg rounded-2xl overflow-hidden border border-gray-200">
-             <div className="bg-blue-600 p-4 flex items-center rounded-t-2xl">
-                 <div className="w-10 h-10 bg-cover bg-center rounded-full" style={{ backgroundImage: "url('/assets/logo/tamil/img.png')" }}></div>
+         <div className="card-container">
+             <div className="card-header">
+                 <div className="card-avatar"></div>
                  <div className="ml-4 text-white">
                      <h2 className="text-xl font-bold">Thirukkural</h2>
                      <p className="text-sm">Words of Wisdom</p>
                  </div>
              </div>
 
-             <div className="p-6">
-                 <p className="font-bold text-gray-700 text-lg">Kural of the Day: {currentKural.number}</p>
-                 <blockquote className="italic text-blue-600 font-semibold flex flex-col mt-2 ps-3 border-l-4 border-blue-500">
+             <div className="card-content">
+                 <p className="card-title">Kural of the Day: {currentKural.number}</p>
+                 <blockquote className="card-quote">
                      <span>{currentKural.kural[0]}</span>
                      <span>{currentKural.kural[1]}</span>
                  </blockquote>
-                 <div className="mt-4">
-                     <p className="font-bold text-gray-700">Meaning:</p>
-                     <div className="ps-3 text-gray-600">
+                 <div className="card-meaning">
+                     <p className="card-meaning-title">Meaning:</p>
+                     <div className="ps-3">
                          {Object.entries(currentKural.meaning).map(([key, value]) => (
-                             <p key={key} className="py-1 text-sm">{value}</p>
+                             <p key={key} className="card-meaning-item">{value}</p>
                          ))}
                      </div>
                  </div>
