@@ -21,7 +21,7 @@
     "@vercel/node": "5.1.14",
     "eslint": "9.22.0",
     "eslint-config-next": "15.2.4",
-    "typescript": "5.8.2"
+    "typescript": "5.8.3"
   },
   "engines": {
     "node": "22.14.0"
