@@ -37,15 +37,21 @@ class KuralService {
     }
 
     private getKuralNumberOfTheDay() {
-        // Step 1: Get the current date
-        const today = new Date();
-        const day = today.getDate();
-        const month = today.getMonth() + 1; // Months are zero-based
-        const year = today.getFullYear();
+        // This function generates a consistent Kural number based on the current date.
 
-        // Step 2: Generate a consistent index using the date
-        // Example: Use a simple formula to generate an index from 1 to 1330
-        return ((day + month + year) % 1330) + 1;
+        // Step 1: Set offset date to 1st Jan 2023
+        const offsetDate = new Date('2025-05-23');
+
+        // Step 2: Get the current date
+        const today = new Date();
+
+        // Step 3: Calculate the difference in days
+        const timeDiff = today.getTime() - offsetDate.getTime();
+        const dayDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
+
+        // Step 4: Calculate the Kural number
+        // Use a simple formula to generate an index from 1 to 1330
+        return ((dayDiff % 1330) + 1);
     }
 }
 
