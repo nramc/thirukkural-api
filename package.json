@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@vercel/functions": "2.1.0",
-    "next": "15.3.2",
+    "next": "15.3.3",
     "react": "19.1.0",
     "react-dom": "19.1.0"
   },
@@ -20,7 +20,7 @@
     "@types/react-dom": "19.1.5",
     "@vercel/node": "5.1.16",
     "eslint": "9.28.0",
-    "eslint-config-next": "15.3.2",
+    "eslint-config-next": "15.3.3",
     "typescript": "5.8.3"
   },
   "engines": {
