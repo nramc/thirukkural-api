@@ -18,7 +18,7 @@
     "@types/node": "22.15.29",
     "@types/react": "19.1.6",
     "@types/react-dom": "19.1.5",
-    "@vercel/node": "5.2.1",
+    "@vercel/node": "5.3.6",
     "eslint": "9.29.0",
     "eslint-config-next": "15.3.3",
     "typescript": "5.8.3"
