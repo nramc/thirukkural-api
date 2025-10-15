@@ -22,9 +22,9 @@ class KuralService {
         return this.kurals.find(kural => kural.number === id);
     }
 
-    public random(): Kural {
-        const id = this.getRandomKuralNumber();
-        return this.kurals.find(kural => kural.number === id)!;
+    public random(sectionId?: number): Kural | undefined {
+        const id = this.getRandomKuralNumber(sectionId);
+        return this.kurals.find(kural => kural.number === id);
     }
 
     public kuralOfTheDay(): Kural {
@@ -32,8 +32,34 @@ class KuralService {
         return this.kurals.find(kural => kural.number === id)!;
     }
 
-    private getRandomKuralNumber(): number {
-        return Math.floor(Math.random() * 1330) + 1;
+    private getRandomKuralNumber(sectionId?: number): number {
+        // If no section specified, return random from all kurals
+        if (!sectionId) {
+            return Math.floor(Math.random() * 1330) + 1;
+        }
+
+        // Define kural number ranges for each section
+        let minNumber: number, maxNumber: number;
+        
+        switch (sectionId) {
+            case 1: // அறத்துப்பால் (Virtue)
+                minNumber = 1;
+                maxNumber = 380;
+                break;
+            case 2: // பொருட்பால் (Wealth)
+                minNumber = 381;
+                maxNumber = 1080;
+                break;
+            case 3: // காமத்துப்பால் (Love)
+                minNumber = 1081;
+                maxNumber = 1330;
+                break;
+            default:
+                return Math.floor(Math.random() * 1330) + 1;
+        }
+
+        // Generate random kural number within the section range
+        return Math.floor(Math.random() * (maxNumber - minNumber + 1)) + minNumber;
     }
 
     private getKuralNumberOfTheDay() {
