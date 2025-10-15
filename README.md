@@ -1,3 +1,8 @@
+<div style="text-align: center;">
+
+![Thirukkural API](/public/images/thirukural-api-logo.png)
+</div>
+
 # Thirukkural API
 
 > Connecting ancient Tamil philosophy with today’s digital landscape.
