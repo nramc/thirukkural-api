@@ -1,6 +1,7 @@
-<div style="text-align: center;">
+<div style="text-align: center;background: #ffffff">
 
-![Thirukkural API](/public/images/thirukural-api-logo.png)
+<img src="/public/images/thirukural-api-logo.png" alt="drawing" width="200" height="200"/>
+
 </div>
 
 # Thirukkural API
