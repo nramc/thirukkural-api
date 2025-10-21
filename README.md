@@ -60,11 +60,11 @@ Make sure you have the following installed on your local machine:
 ## Project Structure
 
 - **/public/data/kurals.json**: Contains the full list of Thirukkural verses in JSON format.
-- **/services/KuralService.ts**: A service file that loads and retrieves Kurals.
-- **/api/kural/**: A serverless function that returns a requested Kural as JSON.
-- **/api/daily/**: A serverless function that returns a Kural of the day as JSON.
-- **/api/random/**: A serverless function that returns a random Kural as JSON.
-- **/pages/index.tsx**: The main React component for the homepage.
+- **/app/service/KuralService.ts**: A service file that loads and retrieves Kurals.
+- **/app/api/kural/[id]/**: A serverless function that returns a requested Kural as JSON.
+- **/app/api/daily/**: A serverless function that returns a Kural of the day as JSON.
+- **/app/api/random/**: A serverless function that returns a random Kural as JSON, with optional section filtering.
+- **/app/page.tsx**: The main React component for the homepage.
 
 ## Usage
 
@@ -134,6 +134,31 @@ You can use the following endpoint to get random Thirukkural:
 GET https://tamil-kural-api.vercel.app/api/random
 ```
 
+**Optional Query Parameter:**
+
+You can filter random kurals by section using the `section` query parameter:
+
+```http request
+GET https://tamil-kural-api.vercel.app/api/random?section={id}
+```
+
+**Section IDs:**
+- `1` - அறத்துப்பால் (Arathu Paal - Virtue) - Kurals 1-380
+- `2` - பொருட்பால் (Porutpaal - Wealth) - Kurals 381-1080  
+- `3` - காமத்துப்பால் (Inbathubaal - Love) - Kurals 1081-1330
+
+**Examples:**
+
+Get random kural from all kurals:
+```http request
+GET https://tamil-kural-api.vercel.app/api/random
+```
+
+Get random kural from a specific section (e.g., Virtue section):
+```http request
+GET https://tamil-kural-api.vercel.app/api/random?section=1
+```
+
 Example Response
 
 ```json
@@ -146,7 +171,7 @@ Example Response
   "number": 1,
   "section": "அறத்துப்பால்",
   "meaning": {
-    "ta_mu_va": "மு.வ : எழுத்துக்கள் எல்லாம் அகரத்தை அடிப்படையாக கொண்டிருக்கின்றன. அதுபோல உலகம் கடவுளை அடிப்படையாக கொண்டிருக்கிறது.",
+    "ta_mu_va": "மு.வ : எழுத்துக்கள் எல்லாம் அகரத்தை அடிப்படையாக கொண்டிருக்கின்றன. அதுபோல உலகம் கடவுளை அடிப்படையாக கொண்டிருக்கிறது.",
     "ta_salamon": "சாலமன் பாப்பையா : எழுத்துக்கள் எல்லாம் அகரத்தில் தொடங்குகின்றன; (அது போல) உலகம் கடவுளில் தொடங்குகிறது.",
     "en": "As the letter A is the first of all letters, so the eternal God is first in the world."
   }
