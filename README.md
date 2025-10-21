@@ -154,19 +154,9 @@ Get random kural from all kurals:
 GET https://tamil-kural-api.vercel.app/api/random
 ```
 
-Get random kural from Virtue section:
+Get random kural from a specific section (e.g., Virtue section):
 ```http request
 GET https://tamil-kural-api.vercel.app/api/random?section=1
-```
-
-Get random kural from Wealth section:
-```http request
-GET https://tamil-kural-api.vercel.app/api/random?section=2
-```
-
-Get random kural from Love section:
-```http request
-GET https://tamil-kural-api.vercel.app/api/random?section=3
 ```
 
 Example Response
