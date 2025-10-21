@@ -1,3 +1,9 @@
+<p align="center">
+
+<img src="/public/images/thirukural-api-logo.png" alt="Thirukural API"/>
+
+</p>
+
 # Thirukkural API
 
 > Connecting ancient Tamil philosophy with today’s digital landscape.
