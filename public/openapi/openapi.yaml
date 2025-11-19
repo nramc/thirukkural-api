@@ -41,6 +41,8 @@ paths:
     get:
       tags:
         - Kural
+        - Daily
+        - Today
       summary: Get today's kural
       description: Returns the Thirukkural couplet of the day based on the current date.
       responses:
@@ -54,6 +56,7 @@ paths:
     get:
       tags:
         - Kural
+        - Random
       summary: Get a random kural
       description: |
         Returns a random Thirukkural.  
