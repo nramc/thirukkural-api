@@ -10,8 +10,8 @@
 
 [![Website](https://img.shields.io/badge/website-online-brightgreen.svg)](https://tamil-kural-api.vercel.app/)
 [![Documentation](https://img.shields.io/badge/Swagger-85EA2D?style=for-the-badge&logo=Swagger&logoColor=black&style=for-the-badge)](https://tamil-kural-api.vercel.app/openapi/swagger-ui.html#Kural)
+[![Thirukkural API](https://img.shields.io/badge/Thirukkural-OpenAPI-green?logo=swagger&logoColor=white)](https://tamil-kural-api.vercel.app/openapi/openapi.yaml)
 [![Badge](https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=159&style=flat)](https://www.linkedin.com/in/ramachandran-nellaiyappan/)
-
 
 Welcome to the Thirukkural API project!
 
