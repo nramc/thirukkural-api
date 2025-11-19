@@ -60,7 +60,10 @@ Make sure you have the following installed on your local machine:
 ## Project Structure
 
 - **/public/data/kurals.json**: Contains the full list of Thirukkural verses in JSON format.
-- **/app/service/KuralService.ts**: A service file that loads and retrieves Kurals.
+- **/app/service/
+  - kural-service.ts**: A service file that loads and retrieves Kurals.
+  - daily-kural-service.ts**: A service file that provides the Kural of the day.
+  - random-kural-service.ts**: A service file that provides random Kurals with optional section filtering.
 - **/app/api/kural/[id]/**: A serverless function that returns a requested Kural as JSON.
 - **/app/api/daily/**: A serverless function that returns a Kural of the day as JSON.
 - **/app/api/random/**: A serverless function that returns a random Kural as JSON, with optional section filtering.
