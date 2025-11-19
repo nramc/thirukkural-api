@@ -1,4 +1,4 @@
-import kuralService from "@/app/service/KuralService";
+import kuralService from "@/app/service/kural-service";
 
 export async function GET(
     request: Request,
@@ -12,7 +12,7 @@ export async function GET(
         });
     }
 
-    const requestedKural = kuralService.search(parseInt(id));
+    const requestedKural = kuralService.search(Number.parseInt(id));
 
     if (requestedKural) {
         return Response.json(requestedKural);

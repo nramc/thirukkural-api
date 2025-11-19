@@ -1,7 +1,7 @@
 import {Kural} from "@/app/domain/kurals-db";
-import kuralService from "@/app/service/KuralService";
+import kuralService from "@/app/service/kural-service";
 
-class KuralOfTheDayService {
+class DailyKuralService {
 
     public kuralOfTheDay(): Kural {
         const id = this.getKuralNumberOfTheDay();
@@ -28,5 +28,5 @@ class KuralOfTheDayService {
 
 }
 
-const kuralOfTheDayService = new KuralOfTheDayService();
-export default kuralOfTheDayService;
+const dailyKuralService = new DailyKuralService();
+export default dailyKuralService;

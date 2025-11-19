@@ -1,4 +1,4 @@
-import kuralService from "@/app/service/KuralService";
+import kuralService from "@/app/service/kural-service";
 import {Kural} from "@/app/domain/kurals-db";
 import {RandomKuralUtils} from "@/app/service/random-kural-utils";
 

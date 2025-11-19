@@ -1,11 +1,11 @@
-import kuralOfTheDayService from "@/app/service/kural-of-the-day-service";
+import dailyKuralService from "@/app/service/daily-kural-service";
 
 export async function GET() {
     const headers = {
         'Content-Type': 'application/json',
     };
 
-    return Response.json(kuralOfTheDayService.kuralOfTheDay(), {
+    return Response.json(dailyKuralService.kuralOfTheDay(), {
         headers: headers
     });
 }
