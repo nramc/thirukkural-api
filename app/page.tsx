@@ -176,6 +176,11 @@ export default function Home() {
                     borderBottom: `2px solid ${primaryColor}`,
                     paddingBottom: '5px',
                 }}>API Information</h2>
+                <div>
+                    <p>Please refer <a style={{color: `${primaryColor}`}}
+                        href={'./openapi/swagger-ui.html#Kural'} target={'_blank'}>OpenAPI
+                        Specification with Swagger UI</a> for detailed information. </p>
+                </div>
 
                 <div className={'api-spec'}>
                     <p style={{color: `${primaryColor}`}}>Use the following API to get kural of the day:</p>
