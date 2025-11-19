@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
   title: "Thirukkural REST API"
-  description: "Explore the ancient wisdom of Thirukkural, a classic Tamil text consisting of 1,330 couplets or Kurals, dealing with various aspects of life and morality."
+  description: "Connecting ancient Tamil philosophy with today’s digital landscape. Explore the ancient wisdom of Thirukkural, a classic Tamil text consisting of 1,330 couplets or Kurals, dealing with various aspects of life and morality."
   version: 1.0.0
 servers:
   - url: 'https://tamil-kural-api.vercel.app/api'
@@ -41,8 +41,6 @@ paths:
     get:
       tags:
         - Kural
-        - Daily
-        - Today
       summary: Get today's kural
       description: Returns the Thirukkural couplet of the day based on the current date.
       responses:
@@ -56,7 +54,6 @@ paths:
     get:
       tags:
         - Kural
-        - Random
       summary: Get a random kural
       description: |
         Returns a random Thirukkural.  
