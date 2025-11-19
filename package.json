@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@vercel/functions": "3.3.2",
+    "@vercel/functions": "3.3.3",
     "next": "16.0.3",
     "react": "19.2.0",
     "react-dom": "19.2.0"
