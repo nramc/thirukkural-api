@@ -2,6 +2,7 @@
 
 import {useEffect, useState} from 'react'
 import {Kural} from "@/app/domain/kurals-db";
+import Image from "next/image";
 
 export default function Home() {
     const [mounted] = useState(true)
@@ -52,9 +53,8 @@ export default function Home() {
                 backgroundClip: 'text',
                 WebkitBackgroundClip: 'text',
                 color: 'transparent',
-                marginBottom: '20px',
                 textAlign: 'center',
-                padding: '20px',
+                padding: '5px 20px',
                 borderRadius: '15px',
                 animation: mounted ? 'gradientShift 8s ease infinite' : 'none',
                 opacity: mounted ? 1 : 0,
@@ -62,6 +62,19 @@ export default function Home() {
             }}>
                 Thirukkural API
             </h1>
+            <a href={'/openapi/swagger-ui.html#Kural'} target={"_blank"} style={{
+                color: `${primaryColor}`,
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "10px",
+                marginBottom: "20px",
+                textDecoration: "none",
+                fontWeight: "bold"
+            }}>
+                <Image src={'/images/api/swagger-logo.png'} alt={'Swagger UI OpenAPI Doc'} width={'50'}
+                       height={'50'}/>
+                Swagger UI OpenAPI REST Documentation
+            </a>
             <style jsx>{`
                 @keyframes gradientShift {
                     0%, 100% {
@@ -178,7 +191,7 @@ export default function Home() {
                 }}>API Information</h2>
                 <div>
                     <p>Please refer <a style={{color: `${primaryColor}`}}
-                        href={'./openapi/swagger-ui.html#Kural'} target={'_blank'}>OpenAPI
+                                       href={'./openapi/swagger-ui.html#Kural'} target={'_blank'}>OpenAPI
                         Specification with Swagger UI</a> for detailed information. </p>
                 </div>
 
