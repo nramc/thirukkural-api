@@ -73,7 +73,7 @@ export default function Home() {
             }}>
                 <Image src={'/images/api/swagger-logo.png'} alt={'Swagger UI OpenAPI Doc'} width={'50'}
                        height={'50'}/>
-                Swagger UI OpenAPI REST Documentation
+                View API Documentation (Swagger UI)
             </a>
             <style jsx>{`
                 @keyframes gradientShift {
