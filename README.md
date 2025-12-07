@@ -23,6 +23,7 @@ the API.
 
 - **Kural of the Day**: Displays a random Thirukkural verse with its meaning in multiple languages.
 - **REST API**: A simple serverless API that returns requested Kural in JSON format.
+- **Multiple Meanings**: Includes meanings by Mu. Varadarajan, Solomon Pappaiah, Kalaignar Karunanidhi, and English translation.
 - **Modern Web Technology**: Built using TypeScript, React, and Vercel's serverless architecture.
 
 ## Getting Started
@@ -96,6 +97,7 @@ Example Response
   "meaning": {
     "ta_mu_va": "மு.வ : எழுத்துக்கள் எல்லாம் அகரத்தை அடிப்படையாக கொண்டிருக்கின்றன. அதுபோல உலகம் கடவுளை அடிப்படையாக கொண்டிருக்கிறது.",
     "ta_salamon": "சாலமன் பாப்பையா : எழுத்துக்கள் எல்லாம் அகரத்தில் தொடங்குகின்றன; (அது போல) உலகம் கடவுளில் தொடங்குகிறது.",
+    "ta_kalaignar": "கலைஞர் : அகரம் எழுத்துக்களுக்கு முதன்மை; ஆதிபகவன், உலகில் வாழும் உயிர்களுக்கு முதன்மை",
     "en": "As the letter A is the first of all letters, so the eternal God is first in the world."
   }
 }
@@ -127,6 +129,7 @@ GET https://tamil-kural-api.vercel.app/api/kural/1
   "meaning": {
     "ta_mu_va": "மு.வ : எழுத்துக்கள் எல்லாம் அகரத்தை அடிப்படையாக கொண்டிருக்கின்றன. அதுபோல உலகம் கடவுளை அடிப்படையாக கொண்டிருக்கிறது.",
     "ta_salamon": "சாலமன் பாப்பையா : எழுத்துக்கள் எல்லாம் அகரத்தில் தொடங்குகின்றன; (அது போல) உலகம் கடவுளில் தொடங்குகிறது.",
+    "ta_kalaignar": "கலைஞர் : அகரம் எழுத்துக்களுக்கு முதன்மை; ஆதிபகவன், உலகில் வாழும் உயிர்களுக்கு முதன்மை",
     "en": "As the letter A is the first of all letters, so the eternal God is first in the world."
   }
 }
@@ -179,6 +182,7 @@ Example Response
   "meaning": {
     "ta_mu_va": "மு.வ : எழுத்துக்கள் எல்லாம் அகரத்தை அடிப்படையாக கொண்டிருக்கின்றன. அதுபோல உலகம் கடவுளை அடிப்படையாக கொண்டிருக்கிறது.",
     "ta_salamon": "சாலமன் பாப்பையா : எழுத்துக்கள் எல்லாம் அகரத்தில் தொடங்குகின்றன; (அது போல) உலகம் கடவுளில் தொடங்குகிறது.",
+    "ta_kalaignar": "கலைஞர் : அகரம் எழுத்துக்களுக்கு முதன்மை; ஆதிபகவன், உலகில் வாழும் உயிர்களுக்கு முதன்மை",
     "en": "As the letter A is the first of all letters, so the eternal God is first in the world."
   }
 }

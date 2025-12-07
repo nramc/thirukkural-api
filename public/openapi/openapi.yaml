@@ -116,6 +116,7 @@ components:
         - ta_mu_va
         - ta_salamon
         - en
+        - ta_kalaignar
       properties:
         ta_mu_va:
           type: string
@@ -123,6 +124,9 @@ components:
         ta_salamon:
           type: string
           description: Tamil meaning by Solomon Pappayya.
+        ta_kalaignar:
+          type: string
+          description: Tamil meaning by Kalaignar.
       en:
         type: string
         description: English meaning.
