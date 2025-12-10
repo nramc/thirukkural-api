@@ -1,6 +1,6 @@
 <p align="center">
 
-<img src="/public/images/thirukural-api-logo.png" alt="Thirukkural API"/>
+<img src="/public/images/thirukkural-api-banner.png" alt="Thirukkural API"/>
 
 </p>
 
