@@ -15,7 +15,7 @@
     "react-dom": "19.2.6"
   },
   "devDependencies": {
-    "@types/node": "24.12.2",
+    "@types/node": "24.13.2",
     "@types/react": "19.2.15",
     "@types/react-dom": "19.2.3",
     "@vercel/node": "5.8.1",
@@ -24,6 +24,6 @@
     "typescript": "5.9.3"
   },
   "engines": {
-    "node": "24.15.0"
+    "node": "24.16.0"
   }
 }
