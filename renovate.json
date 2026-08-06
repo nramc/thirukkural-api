@@ -3,5 +3,17 @@
   "extends": [
     "config:recommended"
   ],
-  "rangeStrategy": "pin"
+  "rangeStrategy": "pin",
+  "minimumReleaseAge": "3 days",
+  "automerge": false,
+  "automergeStrategy": "fast-forward",
+  "automergeType": "pr",
+  "platformAutomerge": true,
+  "packageRules": [
+    {
+      "matchUpdateTypes": ["patch", "minor"],
+      "automerge": true,
+      "automergeType": "pr"
+    }
+  ]
 }
