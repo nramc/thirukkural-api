@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { Kural } from '@/app/domain/kurals-db';
 import Image from 'next/image';
-import Link from "next/link";
+import Link from 'next/link';
 
 export default function Home() {
     console.log('[page.tsx][Home] Am I on the server or client?');
@@ -71,7 +71,11 @@ export default function Home() {
                 <Image src={'/images/api/swagger-logo.png'} alt={'Swagger UI OpenAPI Doc'} width={'50'} height={'50'} />
                 View API Documentation (Swagger UI)
             </a>
-            <Link href="/chat" className="rounded-full px-5! py-2.5! text-sm font-bold text-white! shadow-md transition cursor-pointer" style={{ backgroundColor: primaryColor, marginBottom: '20px' }}>
+            <Link
+                href="/chat"
+                className="rounded-full px-5! py-2.5! text-sm font-bold text-white! shadow-md transition cursor-pointer"
+                style={{ backgroundColor: primaryColor, marginBottom: '20px' }}
+            >
                 Chat with Kural AI
             </Link>
             <style jsx>{`
