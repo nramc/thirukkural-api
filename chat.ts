@@ -1,7 +1,5 @@
 import readline from 'node:readline';
 
-const MODEL = 'inclusionai/ling-3.0-flash-fin:free';
-// Other verified examples: 'openai/gpt-chat-latest', 'anthropic/claude-sonnet-latest', 'baidu/cobuddy:free'.
 const CHAT_URL = process.env.CHAT_URL ?? 'http://localhost:3000/api/chat';
 
 type Message = {
@@ -22,7 +20,7 @@ async function postChat(messages: Message[], stream: boolean): Promise<Response>
     return fetch(CHAT_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ model: MODEL, messages, stream }),
+        body: JSON.stringify({ messages, stream }),
     });
 }
 

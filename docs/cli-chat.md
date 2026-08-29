@@ -1,27 +1,50 @@
 # OpenRouter TypeScript CLI chat
 
 This repository includes a small command-line chat tutorial built with Node.js,
-TypeScript, Next.js, and `@openrouter/sdk`.
+TypeScript, Next.js, and `@openrouter/sdk`. The route supports Ollama for local
+development and OpenRouter for deployment.
 
 ## Architecture
 
 ```text
-chat.ts -> POST /api/chat -> app/api/chat/route.ts -> OpenRouter
+chat.ts -> POST /api/chat -> app/api/chat/route.ts -> configured LLM provider
 ```
 
 The CLI acts like a frontend: it sends messages to the Next.js route handler.
-The route handler owns the OpenRouter client and API key. The key is never sent
-to the CLI or browser.
+The route handler owns provider access and the API key. The key is never sent to
+the CLI or browser.
 
 ## Setup
 
-Create an OpenRouter key at
-[OpenRouter settings](https://openrouter.ai/settings/keys).
+The route uses three shared environment variables:
 
-Start Next.js with the key in the environment:
+| Variable       | Local Ollama                               | Vercel/OpenRouter   |
+| -------------- | ------------------------------------------ | ------------------- |
+| `LLM_PROVIDER` | `ollama`                                   | `openrouter`        |
+| `LLM_MODEL`    | Installed Ollama model, such as `llama3.2` | OpenRouter model ID |
+| `LLM_API_KEY`  | Not required                               | OpenRouter key      |
+
+The built-in defaults are `LLM_PROVIDER=ollama`, `LLM_MODEL=llama3.2`, and an
+empty `LLM_API_KEY`. You can run local development without creating an
+environment file. To make the values explicit, copy the safe template:
 
 ```bash
-OPENROUTER_API_KEY=sk-or-v1-... npm run dev
+cp .env.example .env.local
+```
+
+### Local development with Ollama
+
+Install Ollama, start it, and download a model:
+
+```bash
+ollama serve
+ollama pull llama3.2
+```
+
+Start Next.js with the local defaults:
+
+```bash
+npm run dev
 ```
 
 In another terminal, start the CLI:
@@ -30,19 +53,31 @@ In another terminal, start the CLI:
 npx tsx chat.ts
 ```
 
-If `OPENROUTER_API_KEY` is missing, create one at
-<https://openrouter.ai/settings/keys> and restart `npm run dev` with the
-variable set.
+Ollama defaults to `http://localhost:11434`. For a non-default Ollama host,
+also set `OLLAMA_BASE_URL` in the Next.js process.
+
+### Vercel with OpenRouter
+
+Add these server-side environment variables in Vercel. Create the key at
+[OpenRouter settings](https://openrouter.ai/settings/keys).
+
+```text
+LLM_PROVIDER=openrouter
+LLM_MODEL=google/gemini-3.1-flash-lite
+LLM_API_KEY=sk-or-v1-...
+```
+
+Do not use `NEXT_PUBLIC_` for `LLM_API_KEY`, commit a key, or place it in
+`chat.ts`. Redeploy after changing Vercel environment variables.
 
 ### Troubleshooting request failures
 
-The API key must be available to the **Next.js** process because
-`app/api/chat/route.ts` makes the OpenRouter request. Setting the key only when
-starting `chat.ts` is not enough. Stop the development server and start it
-again with the key:
+The provider variables must be available to the **Next.js** process because
+`app/api/chat/route.ts` makes the LLM request. Stop the development server and
+start it again with the desired configuration:
 
 ```bash
-OPENROUTER_API_KEY=sk-or-v1-... npm run dev
+LLM_PROVIDER=ollama LLM_MODEL=llama3.2 npm run dev
 ```
 
 Then run the CLI from a second terminal:
@@ -51,10 +86,10 @@ Then run the CLI from a second terminal:
 npx tsx chat.ts
 ```
 
-The route now includes the provider's safe error detail in its response. Check
-the Next.js terminal as well; it logs the same detail without printing the API
-key. Confirm the model identifier is valid for your OpenRouter account if the
-error mentions the model or provider.
+The route includes safe provider error detail in its response and logs the same
+detail in the Next.js terminal without printing the API key. Confirm Ollama is
+running and the model is installed locally, or confirm the OpenRouter model ID,
+credits, and key permissions.
 
 ## Multi-turn chat
 
@@ -63,14 +98,8 @@ The CLI keeps an in-memory `messages` array and sends the complete array with
 every request, so follow-up questions can refer to earlier answers. Type `exit`
 to close the readline interface cleanly.
 
-The selected model is the single `MODEL` constant near the top of `chat.ts`:
-
-```ts
-const MODEL = 'google/gemini-3.1-flash-lite';
-```
-
-Change only that string to switch providers. Example model strings are included
-in comments beside it:
+Set `LLM_MODEL` to switch models without changing application code. Example
+OpenRouter model strings include:
 
 - `openai/gpt-chat-latest`
 - `anthropic/claude-sonnet-latest`
@@ -96,13 +125,13 @@ The CLI prints `completion.choices[0]?.message.content`, prints
 
 ## How the route works
 
-`app/api/chat/route.ts` uses the named SDK import and creates the client on the
-server:
+For OpenRouter, `app/api/chat/route.ts` uses the named SDK import and creates the
+client on the server:
 
 ```ts
 import { OpenRouter } from '@openrouter/sdk';
 
-const client = new OpenRouter({ apiKey: process.env.OPENROUTER_API_KEY });
+const client = new OpenRouter({ apiKey: process.env.LLM_API_KEY });
 ```
 
 The request parameters are passed inside the `chatRequest` wrapper:
@@ -118,9 +147,9 @@ const completion = await client.chat.send({
 ```
 
 When streaming is enabled, OpenRouter returns an async iterable of chunks. The
-route reads each chunk's `chunk.choices[0]?.delta?.content` and forwards each
-non-empty piece as an SSE event. The CLI reads those events and writes each
-piece to `process.stdout` immediately.
+route reads each chunk's `chunk.choices[0]?.delta?.content`. Ollama provides
+newline-delimited JSON chunks. The route normalizes both formats into the same
+SSE events, and the CLI writes each piece to `process.stdout` immediately.
 
 The smoke test uses `stream: false`, allowing the complete completion to be
 returned as JSON. Its usage object uses the SDK's camelCase fields

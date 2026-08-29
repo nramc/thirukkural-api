@@ -61,6 +61,13 @@ Make sure you have the following installed on your local machine:
 
 4. Your application will be available at [http://localhost:3000](http://localhost:3000)
 
+### Local LLM development
+
+The chat route supports local Ollama development and OpenRouter deployment.
+Configure the server with `LLM_PROVIDER`, `LLM_MODEL`, and, for OpenRouter,
+server-only `LLM_API_KEY`. Local defaults are Ollama with the `llama3.2` model;
+see [`docs/cli-chat.md`](docs/cli-chat.md) for setup and CLI instructions.
+
 ## Project Structure
 
 - **/public/data/kurals.json**: Contains the full list of Thirukkural verses in JSON format.
