@@ -25,7 +25,6 @@ export default function RootLayout({
 }: Readonly<{
     children: React.ReactNode;
 }>) {
-    console.log('[layout.tsx][RootLayout] Am I on the server or client?');
     return (
         <html lang="en">
             <body className={`${geistSans.variable} ${geistMono.variable}`}>{children}</body>

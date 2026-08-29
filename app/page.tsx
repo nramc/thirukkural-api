@@ -34,19 +34,7 @@ export default function Home() {
     }, []);
 
     return (
-        <div
-            style={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                minHeight: '100vh',
-                fontFamily: 'Arial, sans-serif',
-                backgroundColor: backgroundColor,
-                color: textColor,
-                padding: '20px',
-            }}
-        >
+        <div className={'flex flex-col items-center justify-center min-h-screen font-sans p-4'}>
             <h1
                 style={{
                     fontSize: '2.5rem',
