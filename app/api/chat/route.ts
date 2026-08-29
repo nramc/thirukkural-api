@@ -2,9 +2,6 @@ import { OpenRouter } from '@openrouter/sdk';
 
 export const runtime = 'nodejs';
 
-const DEFAULT_OLLAMA_URL = 'http://localhost:11434';
-const DEFAULT_PROVIDER = 'ollama';
-const DEFAULT_MODEL = 'mistral';
 const MAX_MESSAGES = 100;
 const MAX_MESSAGE_LENGTH = 12_000;
 const client = new OpenRouter({ apiKey: process.env.LLM_API_KEY });
@@ -26,7 +23,10 @@ type NormalizedCompletion = {
 };
 
 function getProvider() {
-    const provider = process.env.LLM_PROVIDER?.trim().toLowerCase() || DEFAULT_PROVIDER;
+    const provider = process.env.LLM_PROVIDER?.trim().toLowerCase();
+    if (!provider) {
+        throw new Error('LLM_PROVIDER is missing. Set it to "ollama" or "openrouter".');
+    }
     if (provider !== 'ollama' && provider !== 'openrouter') {
         throw new Error(`Unsupported LLM_PROVIDER "${provider}". Use "ollama" or "openrouter".`);
     }
@@ -34,7 +34,11 @@ function getProvider() {
 }
 
 function getModel() {
-    return process.env.LLM_MODEL?.trim() || DEFAULT_MODEL;
+    const model = process.env.LLM_MODEL?.trim();
+    if (!model) {
+        throw new Error('LLM_MODEL is missing. Set it to a model installed in Ollama or available in OpenRouter.');
+    }
+    return model;
 }
 
 function isChatMessage(value: unknown): value is ChatMessage {
@@ -70,7 +74,10 @@ function sse(content: unknown) {
 }
 
 async function callOllama(messages: ChatMessage[], model: string, stream: boolean) {
-    const baseUrl = process.env.OLLAMA_BASE_URL?.replace(/\/$/, '') || DEFAULT_OLLAMA_URL;
+    const baseUrl = process.env.OLLAMA_BASE_URL?.trim().replace(/\/$/, '');
+    if (!baseUrl) {
+        throw new Error('OLLAMA_BASE_URL is missing for the ollama provider.');
+    }
     const response = await fetch(`${baseUrl}/api/chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

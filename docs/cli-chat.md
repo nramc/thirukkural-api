@@ -18,15 +18,16 @@ the CLI or browser.
 
 The route uses three shared environment variables:
 
-| Variable       | Local Ollama                               | Vercel/OpenRouter   |
-| -------------- | ------------------------------------------ | ------------------- |
-| `LLM_PROVIDER` | `ollama`                                   | `openrouter`        |
-| `LLM_MODEL`    | Installed Ollama model, such as `llama3.2` | OpenRouter model ID |
-| `LLM_API_KEY`  | Not required                               | OpenRouter key      |
+| Variable       | Local Ollama                              | Vercel/OpenRouter   |
+| -------------- | ----------------------------------------- | ------------------- |
+| `LLM_PROVIDER` | `ollama`                                  | `openrouter`        |
+| `LLM_MODEL`    | Installed Ollama model, such as `mistral` | OpenRouter model ID |
+| `LLM_API_KEY`  | Not required                              | OpenRouter key      |
+| `CHAT_URL`     | `http://localhost:3000/api/chat`          | CLI target URL      |
 
-The built-in defaults are `LLM_PROVIDER=ollama`, `LLM_MODEL=llama3.2`, and an
-empty `LLM_API_KEY`. You can run local development without creating an
-environment file. To make the values explicit, copy the safe template:
+The local configuration is provided by `.env.local` with
+`LLM_PROVIDER=ollama`, `LLM_MODEL=mistral`, and an empty `LLM_API_KEY`. This file
+is ignored by Git. To create it from the safe template:
 
 ```bash
 cp .env.example .env.local
@@ -38,10 +39,10 @@ Install Ollama, start it, and download a model:
 
 ```bash
 ollama serve
-ollama pull llama3.2
+ollama pull mistral
 ```
 
-Start Next.js with the local defaults:
+Start Next.js with the local configuration:
 
 ```bash
 npm run dev
@@ -77,7 +78,7 @@ The provider variables must be available to the **Next.js** process because
 start it again with the desired configuration:
 
 ```bash
-LLM_PROVIDER=ollama LLM_MODEL=llama3.2 npm run dev
+LLM_PROVIDER=ollama LLM_MODEL=mistral npm run dev
 ```
 
 Then run the CLI from a second terminal:
