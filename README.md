@@ -78,6 +78,8 @@ see [`docs/cli-chat.md`](docs/cli-chat.md) for setup and CLI instructions.
 - **/app/api/kural/[id]/**: A serverless function that returns a requested Kural as JSON.
 - **/app/api/daily/**: A serverless function that returns a Kural of the day as JSON.
 - **/app/api/random/**: A serverless function that returns a random Kural as JSON, with optional section filtering.
+- **/app/api/chat/**: The secure chat route used by the browser and CLI.
+- **/app/chat/page.tsx**: The dedicated browser chat experience, available at `/chat`.
 - **/app/page.tsx**: The main React component for the homepage.
 
 ## Usage
