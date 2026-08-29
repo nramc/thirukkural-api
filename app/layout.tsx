@@ -1,35 +1,34 @@
-import type { Metadata } from "next";
-import localFont from "next/font/local";
-import "./globals.css";
-import "./assets/css/card-layout.css"
-import React from "react";
+import type { Metadata } from 'next';
+import localFont from 'next/font/local';
+import './globals.css';
+import './assets/css/card-layout.css';
+import React from 'react';
 
 const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
+    src: './fonts/GeistVF.woff',
+    variable: '--font-geist-sans',
+    weight: '100 900',
 });
 const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
+    src: './fonts/GeistMonoVF.woff',
+    variable: '--font-geist-mono',
+    weight: '100 900',
 });
 
 export const metadata: Metadata = {
-  title: "Thirukkural API",
-  description: "Connecting ancient Tamil philosophy with today’s digital landscape.",
+    title: 'Thirukkural API',
+    description: 'Connecting ancient Tamil philosophy with today’s digital landscape.',
 };
 
 export default function RootLayout({
-  children,
+    children,
 }: Readonly<{
-  children: React.ReactNode;
+    children: React.ReactNode;
 }>) {
-  return (
-    <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        {children}
-      </body>
-    </html>
-  );
+    console.log('[layout.tsx][RootLayout] Am I on the server or client?');
+    return (
+        <html lang="en">
+            <body className={`${geistSans.variable} ${geistMono.variable}`}>{children}</body>
+        </html>
+    );
 }

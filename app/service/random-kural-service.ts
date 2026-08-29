@@ -1,9 +1,8 @@
-import kuralService from "@/app/service/kural-service";
-import {Kural} from "@/app/domain/kurals-db";
-import {RandomKuralUtils} from "@/app/service/random-kural-utils";
+import kuralService from '@/app/service/kural-service';
+import { Kural } from '@/app/domain/kurals-db';
+import { RandomKuralUtils } from '@/app/service/random-kural-utils';
 
 class RandomKuralService {
-
     public getRandomKural(): Kural {
         const id = RandomKuralUtils.random();
         return kuralService.search(id)!;
@@ -18,7 +17,6 @@ class RandomKuralService {
         const id = RandomKuralUtils.randomFromChapter(chapterId);
         return kuralService.search(id)!;
     }
-
 }
 
 const randomKuralService = new RandomKuralService();

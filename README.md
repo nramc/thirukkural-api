@@ -40,24 +40,24 @@ Make sure you have the following installed on your local machine:
 
 1. **Clone the Repository**
 
-   ```bash
-   git clone https://github.com/nramc/thirukkural-api.git
-   cd thirukkural-api
+    ```bash
+    git clone https://github.com/nramc/thirukkural-api.git
+    cd thirukkural-api
     ```
 
 2. **Install Dependencies**
 
-   ```bash
-   npm install
-   or
-   yarn install
-   ```
+    ```bash
+    npm install
+    or
+    yarn install
+    ```
 
 3. **Run the Project Locally**
 
-   ```bash
-   npm run dev
-   ```
+    ```bash
+    npm run dev
+    ```
 
 4. Your application will be available at [http://localhost:3000](http://localhost:3000)
 
@@ -65,9 +65,9 @@ Make sure you have the following installed on your local machine:
 
 - **/public/data/kurals.json**: Contains the full list of Thirukkural verses in JSON format.
 - **/app/service/
-  - kural-service.ts**: A service file that loads and retrieves Kurals.
-  - daily-kural-service.ts**: A service file that provides the Kural of the day.
-  - random-kural-service.ts**: A service file that provides random Kurals with optional section filtering.
+    - kural-service.ts**: A service file that loads and retrieves Kurals.
+    - daily-kural-service.ts**: A service file that provides the Kural of the day.
+    - random-kural-service.ts**: A service file that provides random Kurals with optional section filtering.
 - **/app/api/kural/[id]/**: A serverless function that returns a requested Kural as JSON.
 - **/app/api/daily/**: A serverless function that returns a Kural of the day as JSON.
 - **/app/api/random/**: A serverless function that returns a random Kural as JSON, with optional section filtering.
@@ -87,19 +87,16 @@ Example Response
 
 ```json
 {
-  "chapter": "கடவுள் வாழ்த்து",
-  "kural": [
-    "அகர முதல எழுத்தெல்லாம் ஆதி",
-    "பகவன் முதற்றே உலகு."
-  ],
-  "number": 1,
-  "section": "அறத்துப்பால்",
-  "meaning": {
-    "ta_mu_va": "மு.வ : எழுத்துக்கள் எல்லாம் அகரத்தை அடிப்படையாக கொண்டிருக்கின்றன. அதுபோல உலகம் கடவுளை அடிப்படையாக கொண்டிருக்கிறது.",
-    "ta_salamon": "சாலமன் பாப்பையா : எழுத்துக்கள் எல்லாம் அகரத்தில் தொடங்குகின்றன; (அது போல) உலகம் கடவுளில் தொடங்குகிறது.",
-    "ta_kalaignar": "கலைஞர் : அகரம் எழுத்துக்களுக்கு முதன்மை; ஆதிபகவன், உலகில் வாழும் உயிர்களுக்கு முதன்மை",
-    "en": "As the letter A is the first of all letters, so the eternal God is first in the world."
-  }
+    "chapter": "கடவுள் வாழ்த்து",
+    "kural": ["அகர முதல எழுத்தெல்லாம் ஆதி", "பகவன் முதற்றே உலகு."],
+    "number": 1,
+    "section": "அறத்துப்பால்",
+    "meaning": {
+        "ta_mu_va": "மு.வ : எழுத்துக்கள் எல்லாம் அகரத்தை அடிப்படையாக கொண்டிருக்கின்றன. அதுபோல உலகம் கடவுளை அடிப்படையாக கொண்டிருக்கிறது.",
+        "ta_salamon": "சாலமன் பாப்பையா : எழுத்துக்கள் எல்லாம் அகரத்தில் தொடங்குகின்றன; (அது போல) உலகம் கடவுளில் தொடங்குகிறது.",
+        "ta_kalaignar": "கலைஞர் : அகரம் எழுத்துக்களுக்கு முதன்மை; ஆதிபகவன், உலகில் வாழும் உயிர்களுக்கு முதன்மை",
+        "en": "As the letter A is the first of all letters, so the eternal God is first in the world."
+    }
 }
 ```
 
@@ -119,19 +116,16 @@ GET https://tamil-kural-api.vercel.app/api/kural/1
 
 ```json
 {
-  "chapter": "கடவுள் வாழ்த்து",
-  "kural": [
-    "அகர முதல எழுத்தெல்லாம் ஆதி",
-    "பகவன் முதற்றே உலகு."
-  ],
-  "number": 1,
-  "section": "அறத்துப்பால்",
-  "meaning": {
-    "ta_mu_va": "மு.வ : எழுத்துக்கள் எல்லாம் அகரத்தை அடிப்படையாக கொண்டிருக்கின்றன. அதுபோல உலகம் கடவுளை அடிப்படையாக கொண்டிருக்கிறது.",
-    "ta_salamon": "சாலமன் பாப்பையா : எழுத்துக்கள் எல்லாம் அகரத்தில் தொடங்குகின்றன; (அது போல) உலகம் கடவுளில் தொடங்குகிறது.",
-    "ta_kalaignar": "கலைஞர் : அகரம் எழுத்துக்களுக்கு முதன்மை; ஆதிபகவன், உலகில் வாழும் உயிர்களுக்கு முதன்மை",
-    "en": "As the letter A is the first of all letters, so the eternal God is first in the world."
-  }
+    "chapter": "கடவுள் வாழ்த்து",
+    "kural": ["அகர முதல எழுத்தெல்லாம் ஆதி", "பகவன் முதற்றே உலகு."],
+    "number": 1,
+    "section": "அறத்துப்பால்",
+    "meaning": {
+        "ta_mu_va": "மு.வ : எழுத்துக்கள் எல்லாம் அகரத்தை அடிப்படையாக கொண்டிருக்கின்றன. அதுபோல உலகம் கடவுளை அடிப்படையாக கொண்டிருக்கிறது.",
+        "ta_salamon": "சாலமன் பாப்பையா : எழுத்துக்கள் எல்லாம் அகரத்தில் தொடங்குகின்றன; (அது போல) உலகம் கடவுளில் தொடங்குகிறது.",
+        "ta_kalaignar": "கலைஞர் : அகரம் எழுத்துக்களுக்கு முதன்மை; ஆதிபகவன், உலகில் வாழும் உயிர்களுக்கு முதன்மை",
+        "en": "As the letter A is the first of all letters, so the eternal God is first in the world."
+    }
 }
 ```
 
@@ -152,18 +146,21 @@ GET https://tamil-kural-api.vercel.app/api/random?section={id}
 ```
 
 **Section IDs:**
+
 - `1` - அறத்துப்பால் (Arathu Paal - Virtue) - Kurals 1-380
-- `2` - பொருட்பால் (Porutpaal - Wealth) - Kurals 381-1080  
+- `2` - பொருட்பால் (Porutpaal - Wealth) - Kurals 381-1080
 - `3` - காமத்துப்பால் (Inbathubaal - Love) - Kurals 1081-1330
 
 **Examples:**
 
 Get random kural from all kurals:
+
 ```http request
 GET https://tamil-kural-api.vercel.app/api/random
 ```
 
 Get random kural from a specific section (e.g., Virtue section):
+
 ```http request
 GET https://tamil-kural-api.vercel.app/api/random?section=1
 ```
@@ -172,19 +169,16 @@ Example Response
 
 ```json
 {
-  "chapter": "கடவுள் வாழ்த்து",
-  "kural": [
-    "அகர முதல எழுத்தெல்லாம் ஆதி",
-    "பகவன் முதற்றே உலகு."
-  ],
-  "number": 1,
-  "section": "அறத்துப்பால்",
-  "meaning": {
-    "ta_mu_va": "மு.வ : எழுத்துக்கள் எல்லாம் அகரத்தை அடிப்படையாக கொண்டிருக்கின்றன. அதுபோல உலகம் கடவுளை அடிப்படையாக கொண்டிருக்கிறது.",
-    "ta_salamon": "சாலமன் பாப்பையா : எழுத்துக்கள் எல்லாம் அகரத்தில் தொடங்குகின்றன; (அது போல) உலகம் கடவுளில் தொடங்குகிறது.",
-    "ta_kalaignar": "கலைஞர் : அகரம் எழுத்துக்களுக்கு முதன்மை; ஆதிபகவன், உலகில் வாழும் உயிர்களுக்கு முதன்மை",
-    "en": "As the letter A is the first of all letters, so the eternal God is first in the world."
-  }
+    "chapter": "கடவுள் வாழ்த்து",
+    "kural": ["அகர முதல எழுத்தெல்லாம் ஆதி", "பகவன் முதற்றே உலகு."],
+    "number": 1,
+    "section": "அறத்துப்பால்",
+    "meaning": {
+        "ta_mu_va": "மு.வ : எழுத்துக்கள் எல்லாம் அகரத்தை அடிப்படையாக கொண்டிருக்கின்றன. அதுபோல உலகம் கடவுளை அடிப்படையாக கொண்டிருக்கிறது.",
+        "ta_salamon": "சாலமன் பாப்பையா : எழுத்துக்கள் எல்லாம் அகரத்தில் தொடங்குகின்றன; (அது போல) உலகம் கடவுளில் தொடங்குகிறது.",
+        "ta_kalaignar": "கலைஞர் : அகரம் எழுத்துக்களுக்கு முதன்மை; ஆதிபகவன், உலகில் வாழும் உயிர்களுக்கு முதன்மை",
+        "en": "As the letter A is the first of all letters, so the eternal God is first in the world."
+    }
 }
 ```
 
@@ -194,15 +188,15 @@ You can deploy this project on Vercel with the following steps:
 
 1. **Login to Vercel**
 
-   ```bash
-   vercel login
-   ```
+    ```bash
+    vercel login
+    ```
 
 2. **Deploy the Project**
 
-   ```bash
-      vercel 
-   ```
+    ```bash
+       vercel
+    ```
 
 3. Follow the prompts to complete the deployment.
 
@@ -251,4 +245,3 @@ Give a ⭐️ if you like this project!
 **Enjoy using the Thirukkural API and spreading the wisdom of Thirukkural!**
 
 ---
-

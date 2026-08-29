@@ -1,4 +1,4 @@
-import dailyKuralService from "@/app/service/daily-kural-service";
+import dailyKuralService from '@/app/service/daily-kural-service';
 
 export async function GET() {
     const headers = {
@@ -6,6 +6,6 @@ export async function GET() {
     };
 
     return Response.json(dailyKuralService.kuralOfTheDay(), {
-        headers: headers
+        headers: headers,
     });
 }
