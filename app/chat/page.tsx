@@ -45,12 +45,21 @@ function getMessageText(message: UIMessage) {
         .join('');
 }
 
-function hasToolPart(message: UIMessage) {
-    return message.parts.some((part) => part.type.startsWith('tool-'));
+function hasActiveToolPart(message: UIMessage) {
+    return message.parts.some((part) => {
+        if (typeof part !== 'object' || part === null) return false;
+
+        const candidate = part as { type?: unknown; state?: unknown };
+        return (
+            typeof candidate.type === 'string' &&
+            candidate.type.startsWith('tool-') &&
+            (candidate.state === 'input-streaming' || candidate.state === 'input-available')
+        );
+    });
 }
 
-function PendingMessageContent({ isUsingTool }: Readonly<{ isUsingTool: boolean }>) {
-    if (isUsingTool) {
+function PendingMessageContent({ activity }: Readonly<{ activity: 'thinking' | 'tool' }>) {
+    if (activity === 'tool') {
         return (
             <span className="text-sm text-slate-500" role="status" aria-live="polite">
                 Checking the Kural library…
@@ -59,7 +68,8 @@ function PendingMessageContent({ isUsingTool }: Readonly<{ isUsingTool: boolean 
     }
 
     return (
-        <span className="inline-flex gap-1.5 py-2" role="status" aria-label="Assistant is typing" aria-live="polite">
+        <span className="inline-flex items-center gap-2 py-2 text-sm text-slate-500" role="status" aria-live="polite">
+            <span>Thinking</span>
             <i className="size-1.5 animate-pulse rounded-full bg-slate-400" aria-hidden="true" />
             <i className="size-1.5 animate-pulse rounded-full bg-slate-400 [animation-delay:150ms]" aria-hidden="true" />
             <i className="size-1.5 animate-pulse rounded-full bg-slate-400 [animation-delay:300ms]" aria-hidden="true" />
@@ -75,7 +85,7 @@ function PendingAssistantBubble() {
             </div>
             <Message from="assistant" className="max-w-[86%] sm:max-w-[76%]">
                 <MessageContent className="rounded-2xl rounded-tl-md border border-blue-100 bg-white px-5 py-4 text-slate-700 shadow-sm shadow-blue-900/5">
-                    <PendingMessageContent isUsingTool={false} />
+                    <PendingMessageContent activity="thinking" />
                 </MessageContent>
             </Message>
         </div>
@@ -86,11 +96,11 @@ function MessageBubble({ message, isStreaming }: Readonly<{ message: UIMessage; 
     const [copied, setCopied] = useState(false);
     const isAssistant = message.role === 'assistant';
     const content = getMessageText(message);
-    const isUsingTool = isAssistant && hasToolPart(message);
+    const isUsingTool = isAssistant && hasActiveToolPart(message);
     let renderedContent = content ? <MessageResponse isAnimating={isStreaming && isAssistant}>{content}</MessageResponse> : null;
 
     if (!content && isStreaming && isAssistant) {
-        renderedContent = <PendingMessageContent isUsingTool={isUsingTool} />;
+        renderedContent = <PendingMessageContent activity={isUsingTool ? 'tool' : 'thinking'} />;
     }
 
     const copyMessage = async () => {
