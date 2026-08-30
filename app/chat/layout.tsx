@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: 'Kural AI | Thirukkural API',
-    description: 'A thoughtful AI chat experience powered by the Thirukkural API.',
+    title: 'Valluvar AI | Explore Thirukkural Wisdom',
+    description: 'Explore the wisdom of the Thirukkural through thoughtful conversations with Valluvar AI.',
 };
 
 export default function ChatLayout({ children }: Readonly<{ children: React.ReactNode }>) {
