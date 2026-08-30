@@ -1,8 +1,7 @@
-import {Kural} from "@/app/domain/kurals-db";
-import kuralService from "@/app/service/kural-service";
+import { Kural } from '@/app/domain/kurals-db';
+import kuralService from '@/app/service/kural-service';
 
 class DailyKuralService {
-
     public kuralOfTheDay(): Kural {
         const id = this.getKuralNumberOfTheDay();
         return kuralService.search(id)!;
@@ -23,9 +22,8 @@ class DailyKuralService {
 
         // Step 4: Calculate the Kural number
         // Use a simple formula to generate an index from 1 to 1330
-        return ((dayDiff % 1330) + 1);
+        return (dayDiff % 1330) + 1;
     }
-
 }
 
 const dailyKuralService = new DailyKuralService();

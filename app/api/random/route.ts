@@ -1,5 +1,5 @@
-import {NextRequest, NextResponse} from "next/server";
-import randomKuralService from "@/app/service/random-kural-service";
+import { NextRequest, NextResponse } from 'next/server';
+import randomKuralService from '@/app/service/random-kural-service';
 
 export async function GET(request: NextRequest) {
     const searchParams = request.nextUrl.searchParams;
@@ -9,7 +9,7 @@ export async function GET(request: NextRequest) {
     if (chapterId && !Number.isNaN(Number.parseInt(chapterId, 10))) {
         return NextResponse.json(randomKuralService.getRandomKuralByChapter(Number.parseInt(chapterId, 10)));
     }
-    
+
     // when section number provided, return random kural from the section
     const sectionId = searchParams.get('section');
     if (sectionId && ['1', '2', '3'].includes(sectionId)) {
