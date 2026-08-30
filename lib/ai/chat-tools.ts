@@ -71,5 +71,19 @@ export const kuralTools = {
         inputSchema: chapterIdSchema,
         execute: ({ chapterId }) => randomKuralService.getRandomKuralByChapter(chapterId),
     }),
+    getKuralByKeyword: tool({
+        description: 'Retrieve Kurals that match the given keywords with pagination.',
+        inputSchema: jsonSchema<{ keywords: string[]; page?: number; limit?: number }>({
+            type: 'object',
+            properties: {
+                keywords: { type: 'array', items: { type: 'string' } },
+                page: { type: 'integer', minimum: 1, default: 1 },
+                limit: { type: 'integer', minimum: 1, default: 10 },
+            },
+            required: ['keywords'],
+            additionalProperties: false,
+        }),
+        execute: ({ keywords, page, limit }) => kuralService.searchByKeyword(keywords, page, limit),
+    }),
 };
 
