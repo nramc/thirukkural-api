@@ -16,7 +16,7 @@ function printMissingKeyMessage() {
     console.error('OPENROUTER_API_KEY is missing. Create a key at https://openrouter.ai/settings/keys, then start Next.js with it.');
 }
 
-async function postChat(messages: Message[], stream: boolean): Promise<Response> {
+async function postChat(messages: Message[], stream: boolean | 'text'): Promise<Response> {
     return fetch(CHAT_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -37,7 +37,7 @@ async function smokeTest() {
 }
 
 async function streamAssistant(messages: Message[]): Promise<string> {
-    const response = await postChat(messages, true);
+    const response = await postChat(messages, 'text');
     if (!response.ok) {
         const message = await response.text();
         if (response.status === 500 && message.includes('OPENROUTER_API_KEY')) {
@@ -51,43 +51,16 @@ async function streamAssistant(messages: Message[]): Promise<string> {
 
     const reader = response.body.getReader();
     const decoder = new TextDecoder();
-    let buffer = '';
     let answer = '';
 
-    const consumeEvent = (event: string) => {
-        const data = event
-            .split('\n')
-            .filter((line) => line.startsWith('data: '))
-            .map((line) => line.slice(6))
-            .join('');
-        if (!data || data === '[DONE]') {
-            return data === '[DONE]';
-        }
-
-        const payload = JSON.parse(data) as { content?: string; error?: string };
-        if (payload.error) {
-            throw new Error(payload.error);
-        }
-
-        const content = payload.content;
+    while (true) {
+        const { done, value } = await reader.read();
+        const content = decoder.decode(value, { stream: !done });
         if (content) {
             process.stdout.write(content);
             answer += content;
         }
-        return false;
-    };
-
-    while (true) {
-        const { done, value } = await reader.read();
-        buffer += decoder.decode(value, { stream: !done });
-        const events = buffer.split('\n\n');
-        buffer = events.pop() ?? '';
-        if (events.some(consumeEvent) || done) {
-            break;
-        }
-    }
-    if (buffer.trim()) {
-        consumeEvent(buffer);
+        if (done) break;
     }
     return answer;
 }

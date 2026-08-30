@@ -1,25 +1,16 @@
-import { OpenRouter } from '@openrouter/sdk';
+import { createOpenAI } from '@ai-sdk/openai';
+import { convertToModelMessages, generateText, streamText, type UIMessage } from 'ai';
 
 export const runtime = 'nodejs';
 
 const MAX_MESSAGES = 100;
 const MAX_MESSAGE_LENGTH = 12_000;
-const client = new OpenRouter({ apiKey: process.env.LLM_API_KEY });
 
-type Role = 'system' | 'user' | 'assistant';
-
-type ChatMessage = {
-    role: Role;
-    content: string;
-};
-
-type StreamChunk = {
-    choices: Array<{ delta?: { content?: string | null } }>;
-};
-
-type NormalizedCompletion = {
-    choices: Array<{ message: { role: 'assistant'; content: string } }>;
-    usage?: { promptTokens?: number; completionTokens?: number };
+type ChatInput = {
+    id?: unknown;
+    role?: unknown;
+    content?: unknown;
+    parts?: unknown;
 };
 
 function getProvider() {
@@ -41,18 +32,50 @@ function getModel() {
     return model;
 }
 
-function isChatMessage(value: unknown): value is ChatMessage {
-    if (typeof value !== 'object' || value === null) {
-        return false;
+function getTextContent(input: ChatInput) {
+    if (typeof input.content === 'string') {
+        return input.content;
     }
 
-    const message = value as Record<string, unknown>;
-    return (
-        (message.role === 'system' || message.role === 'user' || message.role === 'assistant') &&
-        typeof message.content === 'string' &&
-        message.content.trim().length > 0 &&
-        message.content.length <= MAX_MESSAGE_LENGTH
-    );
+    if (Array.isArray(input.parts)) {
+        return input.parts
+            .filter((part): part is { type: 'text'; text: string } => typeof part === 'object' && part !== null && (part as { type?: unknown }).type === 'text' && typeof (part as { text?: unknown }).text === 'string')
+            .map((part) => part.text)
+            .join('');
+    }
+
+    return '';
+}
+
+function normalizeMessages(value: unknown): UIMessage[] | null {
+    if (!Array.isArray(value) || value.length === 0 || value.length > MAX_MESSAGES) {
+        return null;
+    }
+
+    const messages: UIMessage[] = [];
+    for (const [index, entry] of value.entries()) {
+        if (typeof entry !== 'object' || entry === null) {
+            return null;
+        }
+
+        const input = entry as ChatInput;
+        if (input.role !== 'system' && input.role !== 'user' && input.role !== 'assistant') {
+            return null;
+        }
+
+        const text = getTextContent(input);
+        if (!text.trim() || text.length > MAX_MESSAGE_LENGTH) {
+            return null;
+        }
+
+        messages.push({
+            id: typeof input.id === 'string' && input.id ? input.id : `message-${index}`,
+            role: input.role,
+            parts: [{ type: 'text', text }],
+        });
+    }
+
+    return messages;
 }
 
 function errorResponse(message: string, status: number) {
@@ -63,72 +86,37 @@ function getErrorMessage(error: unknown) {
     if (error instanceof Error) {
         return error.message;
     }
-    if (typeof error === 'object' && error !== null && 'message' in error && typeof error.message === 'string') {
-        return error.message;
-    }
     return 'Unknown language model error.';
 }
 
-function sse(content: unknown) {
-    return `data: ${JSON.stringify(content)}\n\n`;
-}
+function getLanguageModel(provider: 'ollama' | 'openrouter', model: string) {
+    if (provider === 'openrouter') {
+        const apiKey = process.env.LLM_API_KEY?.trim();
+        if (!apiKey) {
+            throw new Error('LLM_API_KEY is missing for the openrouter provider.');
+        }
 
-async function callOllama(messages: ChatMessage[], model: string, stream: boolean) {
+        const openrouter = createOpenAI({
+            apiKey,
+            baseURL: 'https://openrouter.ai/api/v1',
+            headers: {
+                ...(process.env.OPENROUTER_SITE_URL ? { 'HTTP-Referer': process.env.OPENROUTER_SITE_URL } : {}),
+                ...(process.env.OPENROUTER_APP_NAME ? { 'X-Title': process.env.OPENROUTER_APP_NAME } : {}),
+            },
+        });
+        return openrouter.chat(model);
+    }
+
     const baseUrl = process.env.OLLAMA_BASE_URL?.trim().replace(/\/$/, '');
     if (!baseUrl) {
         throw new Error('OLLAMA_BASE_URL is missing for the ollama provider.');
     }
-    const response = await fetch(`${baseUrl}/api/chat`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ model, messages, stream }),
+
+    const ollama = createOpenAI({
+        apiKey: 'ollama',
+        baseURL: `${baseUrl}/v1`,
     });
-
-    if (!response.ok) {
-        throw new Error(`Ollama returned HTTP ${response.status}: ${await response.text()}`);
-    }
-    return response;
-}
-
-async function callOpenRouter(messages: ChatMessage[], model: string, stream: boolean) {
-    if (!process.env.LLM_API_KEY) {
-        throw new Error('LLM_API_KEY is missing for the openrouter provider. Create a key at https://openrouter.ai/settings/keys.');
-    }
-
-    return client.chat.send({
-        chatRequest: {
-            model,
-            messages,
-            stream,
-        },
-    });
-}
-
-async function streamOllama(response: Response, controller: ReadableStreamDefaultController<Uint8Array>, encoder: TextEncoder) {
-    if (!response.body) {
-        throw new Error('Ollama returned no response body.');
-    }
-
-    const reader = response.body.getReader();
-    const decoder = new TextDecoder();
-    let buffer = '';
-    while (true) {
-        const { done, value } = await reader.read();
-        buffer += decoder.decode(value, { stream: !done });
-        const lines = buffer.split('\n');
-        buffer = lines.pop() ?? '';
-        for (const line of lines) {
-            if (!line.trim()) continue;
-            const chunk = JSON.parse(line) as { message?: { content?: string }; done?: boolean };
-            const content = chunk.message?.content;
-            if (content) controller.enqueue(encoder.encode(sse({ content })));
-        }
-        if (done) break;
-    }
-    if (buffer.trim()) {
-        const chunk = JSON.parse(buffer) as { message?: { content?: string } };
-        if (chunk.message?.content) controller.enqueue(encoder.encode(sse({ content: chunk.message.content })));
-    }
+    return ollama.chat(model);
 }
 
 export async function POST(request: Request) {
@@ -139,70 +127,48 @@ export async function POST(request: Request) {
         return errorResponse('Request body must be valid JSON.', 400);
     }
 
-    const messages = body.messages;
-    if (!Array.isArray(messages) || messages.length === 0 || messages.length > MAX_MESSAGES || !messages.every(isChatMessage)) {
+    const messages = normalizeMessages(body.messages);
+    if (!messages) {
         return errorResponse(`messages must contain 1-${MAX_MESSAGES} valid messages.`, 400);
     }
 
     try {
         const provider = getProvider();
         const model = getModel();
-        const stream = body.stream !== false;
+        const modelMessages = await convertToModelMessages(
+            messages.map((message) => Object.fromEntries(Object.entries(message).filter(([key]) => key !== 'id')) as Omit<UIMessage, 'id'>),
+        );
+        const languageModel = getLanguageModel(provider, model);
 
-        if (!stream) {
-            if (provider === 'ollama') {
-                const response = await callOllama(messages, model, false);
-                const result = (await response.json()) as {
-                    message?: { content?: string };
-                    prompt_eval_count?: number;
-                    eval_count?: number;
-                };
-                const completion: NormalizedCompletion = {
-                    choices: [{ message: { role: 'assistant', content: result.message?.content ?? '' } }],
-                    usage: { promptTokens: result.prompt_eval_count, completionTokens: result.eval_count },
-                };
-                return Response.json(completion);
-            }
-
-            const completion = await callOpenRouter(messages, model, false);
-            return Response.json(completion);
+        if (body.stream === false) {
+            const completion = await generateText({
+                model: languageModel,
+                messages: modelMessages,
+                abortSignal: request.signal,
+            });
+            return Response.json({
+                choices: [{ message: { role: 'assistant', content: completion.text } }],
+                usage: {
+                    promptTokens: completion.usage.inputTokens,
+                    completionTokens: completion.usage.outputTokens,
+                },
+            });
         }
 
-        const encoder = new TextEncoder();
-        const readable = new ReadableStream({
-            async start(controller) {
-                try {
-                    if (provider === 'ollama') {
-                        await streamOllama(await callOllama(messages, model, true), controller, encoder);
-                    } else {
-                        const completion = await callOpenRouter(messages, model, true);
-                        for await (const chunk of completion as AsyncIterable<StreamChunk>) {
-                            const content = chunk.choices[0]?.delta?.content;
-                            if (content) controller.enqueue(encoder.encode(sse({ content })));
-                        }
-                    }
-                    controller.enqueue(encoder.encode(sse('[DONE]')));
-                    controller.close();
-                } catch (error) {
-                    const message = getErrorMessage(error);
-                    console.error(`${provider} streaming request failed:`, message);
-                    controller.enqueue(encoder.encode(sse({ error: message })));
-                    controller.enqueue(encoder.encode(sse('[DONE]')));
-                    controller.close();
-                }
-            },
+        const result = streamText({
+            model: languageModel,
+            messages: modelMessages,
+            abortSignal: request.signal,
         });
 
-        return new Response(readable, {
-            headers: {
-                'Cache-Control': 'no-cache',
-                Connection: 'keep-alive',
-                'Content-Type': 'text/event-stream',
-            },
-        });
+        if (body.stream === 'text') {
+            return result.toTextStreamResponse();
+        }
+
+        return result.toUIMessageStreamResponse();
     } catch (error) {
         const message = getErrorMessage(error);
         console.error('Language model request failed:', message);
-        return errorResponse(message, 502);
+        return errorResponse('The language model is currently unavailable.', 502);
     }
 }

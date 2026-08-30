@@ -1,18 +1,12 @@
 'use client';
 
+import { DefaultChatTransport, type UIMessage } from 'ai';
+import { useChat } from '@ai-sdk/react';
 import { FormEvent, KeyboardEvent, useEffect, useRef, useState } from 'react';
-
-type Role = 'user' | 'assistant';
-
-type ChatMessage = {
-    id: number;
-    role: Role;
-    content: string;
-};
 
 const suggestions = ['Explain a complex idea simply', 'Help me plan my next project', 'Write a thoughtful introduction'];
 
-function SparkIcon({ className = 'size-5' }: { className?: string }) {
+function SparkIcon({ className = 'size-5' }: Readonly<{ className?: string }>) {
     return (
         <svg className={className} viewBox="0 0 24 24" fill="none" aria-hidden="true">
             <path d="M12 2.75 13.65 9l5.6 3-5.6 3L12 21.25 10.35 15l-5.6-3 5.6-3L12 2.75Z" fill="currentColor" />
@@ -41,12 +35,20 @@ function CopyIcon() {
     );
 }
 
-function MessageBubble({ message }: { message: ChatMessage }) {
+function getMessageText(message: UIMessage) {
+    return message.parts
+        .filter((part): part is Extract<UIMessage['parts'][number], { type: 'text' }> => part.type === 'text')
+        .map((part) => part.text)
+        .join('');
+}
+
+function MessageBubble({ message }: Readonly<{ message: UIMessage }>) {
     const [copied, setCopied] = useState(false);
     const isAssistant = message.role === 'assistant';
+    const content = getMessageText(message);
 
     const copyMessage = async () => {
-        await navigator.clipboard.writeText(message.content);
+        await navigator.clipboard.writeText(content);
         setCopied(true);
         window.setTimeout(() => setCopied(false), 1600);
     };
@@ -68,7 +70,7 @@ function MessageBubble({ message }: { message: ChatMessage }) {
                             : 'rounded-2xl rounded-tr-md bg-indigo-500 px-4 py-3 text-white shadow-lg shadow-indigo-950/20'
                     }`}
                 >
-                    {message.content || (
+                    {content || (
                         <span className="inline-flex gap-1.5 py-2">
                             <i className="size-1.5 animate-pulse rounded-full bg-slate-400" />
                             <i className="size-1.5 animate-pulse rounded-full bg-slate-400 [animation-delay:150ms]" />
@@ -76,7 +78,7 @@ function MessageBubble({ message }: { message: ChatMessage }) {
                         </span>
                     )}
                 </div>
-                {isAssistant && message.content && (
+                {isAssistant && content && (
                     <button
                         type="button"
                         onClick={copyMessage}
@@ -92,96 +94,26 @@ function MessageBubble({ message }: { message: ChatMessage }) {
 }
 
 export default function Home() {
-    const [messages, setMessages] = useState<ChatMessage[]>([]);
+    const { messages, sendMessage, stop, setMessages, error, clearError, status } = useChat({
+        transport: new DefaultChatTransport({ api: '/api/chat' }),
+    });
     const [input, setInput] = useState('');
-    const [isStreaming, setIsStreaming] = useState(false);
-    const [error, setError] = useState<string | null>(null);
     const conversationRef = useRef<HTMLDivElement>(null);
-    const abortRef = useRef<AbortController | null>(null);
+    const isStreaming = status === 'submitted' || status === 'streaming';
 
     useEffect(() => {
         const conversation = conversationRef.current;
         if (conversation) conversation.scrollTo({ top: conversation.scrollHeight, behavior: 'smooth' });
     }, [messages]);
 
-    useEffect(() => {
-        return () => abortRef.current?.abort();
-    }, []);
-
-    const submitMessage = async (event?: FormEvent) => {
+    const submitMessage = (event?: FormEvent) => {
         event?.preventDefault();
         const content = input.trim();
         if (!content || isStreaming) return;
 
-        const userMessage: ChatMessage = { id: Date.now(), role: 'user', content };
-        const assistantMessage: ChatMessage = { id: Date.now() + 1, role: 'assistant', content: '' };
-        const nextMessages = [...messages, userMessage];
-        setMessages([...nextMessages, assistantMessage]);
         setInput('');
-        setError(null);
-        setIsStreaming(true);
-
-        const controller = new AbortController();
-        abortRef.current = controller;
-        let answer = '';
-
-        try {
-            const response = await fetch('/api/chat', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ messages: nextMessages.map(({ role, content: text }) => ({ role, content: text })), stream: true }),
-                signal: controller.signal,
-            });
-
-            if (!response.ok) {
-                const payload = (await response.json().catch(() => null)) as { error?: string } | null;
-                throw new Error(payload?.error || 'The assistant could not respond. Please try again.');
-            }
-            if (!response.body) throw new Error('The assistant returned an empty response.');
-
-            const reader = response.body.getReader();
-            const decoder = new TextDecoder();
-            let buffer = '';
-            let finished = false;
-
-            const handleEvent = (eventText: string) => {
-                const data = eventText
-                    .split('\n')
-                    .filter((line) => line.startsWith('data: '))
-                    .map((line) => line.slice(6))
-                    .join('');
-                if (!data) return;
-                if (data === '[DONE]') {
-                    finished = true;
-                    return;
-                }
-
-                const payload = JSON.parse(data) as { content?: string; error?: string };
-                if (payload.error) throw new Error(payload.error);
-                if (payload.content) {
-                    answer += payload.content;
-                    setMessages((current) => current.map((message) => (message.id === assistantMessage.id ? { ...message, content: answer } : message)));
-                }
-            };
-
-            while (!finished) {
-                const { done, value } = await reader.read();
-                buffer += decoder.decode(value, { stream: !done });
-                const events = buffer.split('\n\n');
-                buffer = events.pop() ?? '';
-                events.forEach(handleEvent);
-                if (done) break;
-            }
-            if (buffer.trim() && !finished) handleEvent(buffer);
-        } catch (caughtError) {
-            if ((caughtError as Error).name !== 'AbortError') {
-                setError(caughtError instanceof Error ? caughtError.message : 'Something went wrong. Please try again.');
-                setMessages((current) => current.filter((message) => message.id !== assistantMessage.id));
-            }
-        } finally {
-            abortRef.current = null;
-            setIsStreaming(false);
-        }
+        clearError();
+        void sendMessage({ text: content });
     };
 
     const handleKeyDown = (event: KeyboardEvent<HTMLTextAreaElement>) => {
@@ -191,12 +123,12 @@ export default function Home() {
         }
     };
 
-    const stopStreaming = () => abortRef.current?.abort();
+    const stopStreaming = () => stop();
     const startNewChat = () => {
         if (isStreaming) stopStreaming();
         setMessages([]);
         setInput('');
-        setError(null);
+        clearError();
     };
 
     return (
@@ -274,10 +206,10 @@ export default function Home() {
                                 role="alert"
                                 className="mb-3 flex items-start justify-between gap-3 rounded-xl border border-rose-400/20 bg-rose-400/[0.07] px-4 py-3 text-sm text-rose-200"
                             >
-                                <span>{error}</span>
+                                <span>{error.message}</span>
                                 <button
                                     type="button"
-                                    onClick={() => setError(null)}
+                                    onClick={clearError}
                                     className="text-rose-300/70 hover:text-rose-100"
                                     aria-label="Dismiss error"
                                 >
@@ -286,7 +218,7 @@ export default function Home() {
                             </div>
                         )}
                         <form
-                            onSubmit={(event) => void submitMessage(event)}
+                            onSubmit={submitMessage}
                             className="rounded-2xl border border-white/[0.12] bg-white/[0.06] p-2 shadow-2xl shadow-black/20 backdrop-blur-xl focus-within:border-indigo-400/40 focus-within:ring-4 focus-within:ring-indigo-500/10"
                         >
                             <textarea
