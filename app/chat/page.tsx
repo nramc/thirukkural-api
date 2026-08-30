@@ -7,7 +7,13 @@ import { Message, MessageAction, MessageActions, MessageContent, MessageResponse
 import { Suggestion, Suggestions } from '@/components/ai-elements/suggestion';
 import { useState } from 'react';
 
-const suggestions = ['Explain a complex idea simply', 'Help me plan my next project', 'Write a thoughtful introduction'];
+const suggestions = [
+    'Today\'s Kural',
+    'Find a Kural about perseverance',
+    'Why is lifelong learning important?',
+    'What does Thirukkural say about education?',
+    'Give me a Thirukkural and explain its modern relevance',
+];
 
 function SparkIcon({ className = 'size-5' }: Readonly<{ className?: string }>) {
     return (
@@ -62,14 +68,14 @@ function PendingMessageContent({ activity }: Readonly<{ activity: 'thinking' | '
     if (activity === 'tool') {
         return (
             <span className="text-sm text-slate-500" role="status" aria-live="polite">
-                Checking the Kural library…
+                Looking up a Kural…
             </span>
         );
     }
 
     return (
         <span className="inline-flex items-center gap-2 py-2 text-sm text-slate-500" role="status" aria-live="polite">
-            <span>Thinking</span>
+            <span>Reflecting</span>
             <i className="size-1.5 animate-pulse rounded-full bg-slate-400" aria-hidden="true" />
             <i className="size-1.5 animate-pulse rounded-full bg-slate-400 [animation-delay:150ms]" aria-hidden="true" />
             <i className="size-1.5 animate-pulse rounded-full bg-slate-400 [animation-delay:300ms]" aria-hidden="true" />
@@ -131,8 +137,8 @@ function MessageBubble({ message, isStreaming }: Readonly<{ message: UIMessage; 
                 {isAssistant && content && (
                     <MessageActions className="mt-2">
                         <MessageAction
-                            label={copied ? 'Copied' : 'Copy'}
-                            title={copied ? 'Copied' : 'Copy'}
+                            label={copied ? 'Response copied' : 'Copy response'}
+                            title={copied ? 'Response copied' : 'Copy response'}
                             onClick={copyMessage}
                             className="text-slate-400 hover:bg-blue-50 hover:text-blue-800"
                         >
@@ -181,14 +187,16 @@ export default function Home() {
 
             <div className="relative mx-auto flex min-h-screen w-full max-w-5xl flex-col px-4 sm:px-8">
                 <header className="flex h-20 shrink-0 items-center justify-between border-b border-blue-100">
-                    <div className="flex items-center gap-3">
-                        <div className="flex size-9 items-center justify-center rounded-xl bg-linear-to-br from-blue-600 to-indigo-700 text-white shadow-lg shadow-blue-700/20">
-                            <SparkIcon className="size-5" />
-                        </div>
-                        <div>
-                            <p className="text-sm font-semibold tracking-tight text-blue-950">Kural AI</p>
-                            <p className="text-[11px] text-slate-500">Thoughtful conversations</p>
-                        </div>
+                    <div
+                        className="group flex items-center gap-3 rounded-xl"
+                    >
+                        <span className="flex size-11 items-center justify-center overflow-hidden rounded-2xl border border-blue-100 bg-white shadow-lg shadow-blue-900/10 transition-transform group-hover:scale-105">
+                            <SparkIcon className="size-7 text-blue-700" />
+                        </span>
+                        <span>
+                            <span className="block text-sm font-semibold tracking-tight text-blue-950">Valluvar AI</span>
+                            <span className="block text-[11px] text-slate-500">Explore timeless wisdom</span>
+                        </span>
                     </div>
                     <div className="flex items-center gap-2 sm:gap-4">
                         <div className="hidden items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1.5 text-xs text-emerald-700 sm:flex">
@@ -200,7 +208,7 @@ export default function Home() {
                             onClick={startNewChat}
                             className="rounded-lg px-3 py-2 text-xs font-medium text-slate-500 transition hover:bg-blue-100 hover:text-blue-900"
                         >
-                            New chat
+                            New conversation
                         </button>
                     </div>
                 </header>
@@ -212,12 +220,12 @@ export default function Home() {
                                 <div className="mb-6 flex size-16 items-center justify-center rounded-3xl border border-blue-200 bg-blue-100 text-blue-700 shadow-xl shadow-blue-900/10">
                                     <SparkIcon className="size-8" />
                                 </div>
-                                <p className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-blue-700/80">Your thinking companion</p>
+                                <p className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-blue-700/80">Timeless wisdom, made conversational</p>
                                 <h1 className="max-w-xl text-3xl font-semibold tracking-tight text-blue-950 sm:text-5xl sm:leading-[1.12]">
-                                    What would you like to explore?
+                                    Explore the Thirukkural with Valluvar AI
                                 </h1>
                                 <p className="mt-5 max-w-md text-sm leading-6 text-slate-600 sm:text-base">
-                                    Ask a question, shape an idea, or start a thoughtful conversation. Your assistant is ready when you are.
+                                    Ask about a Kural, explore an idea, or bring timeless wisdom into your everyday life.
                                 </p>
                                 <Suggestions className="mx-auto mt-8 flex w-full max-w-2xl flex-wrap justify-center gap-3 whitespace-normal">
                                     {suggestions.map((suggestion) => (
@@ -225,7 +233,7 @@ export default function Home() {
                                             key={suggestion}
                                             suggestion={suggestion}
                                             onClick={setInput}
-                                            className="rounded-xl border border-blue-100 bg-white px-3 py-3 text-left text-xs text-slate-600 shadow-sm transition hover:border-blue-300 hover:bg-blue-50 hover:text-blue-900"
+                                            className="rounded-full border-blue-200/80 bg-white/80 px-4 py-3 text-left text-xs font-medium text-slate-600 shadow-sm shadow-blue-900/5 backdrop-blur-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-blue-400 hover:bg-blue-50 hover:text-blue-950 hover:shadow-md hover:shadow-blue-900/10 focus-visible:ring-4 focus-visible:ring-blue-200 active:translate-y-0"
                                         />
                                     ))}
                                 </Suggestions>
@@ -246,7 +254,7 @@ export default function Home() {
                                 role="alert"
                                 className="mb-3 flex items-start justify-between gap-3 rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700"
                             >
-                                <span>{error.message}</span>
+                                    <span>Something went wrong: {error.message}</span>
                                 <button
                                     type="button"
                                     onClick={clearError}
@@ -273,8 +281,8 @@ export default function Home() {
                                         submitMessage(input);
                                     }
                                 }}
-                                placeholder="Message your assistant..."
-                                aria-label="Message your assistant"
+                                placeholder="Ask Valluvar AI about the Thirukkural..."
+                                aria-label="Ask Valluvar AI about the Thirukkural"
                                 rows={1}
                                 disabled={isStreaming}
                                 className="max-h-36 min-h-12 w-full resize-none bg-transparent px-3 py-3 text-sm leading-6 text-slate-800 outline-none placeholder:text-slate-400 disabled:cursor-not-allowed disabled:opacity-60"
@@ -286,13 +294,13 @@ export default function Home() {
                                     onClick={isStreaming ? stopStreaming : undefined}
                                     disabled={!isStreaming && !input.trim()}
                                     className="flex size-9 items-center justify-center rounded-xl bg-blue-800 text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-blue-50 disabled:text-blue-300"
-                                    aria-label={isStreaming ? 'Stop generating' : 'Send message'}
+                                    aria-label={isStreaming ? 'Stop response' : 'Ask Valluvar AI'}
                                 >
                                     {isStreaming ? <StopIcon /> : <ArrowUpIcon />}
                                 </button>
                             </div>
                         </form>
-                        <p className="mt-3 text-center text-[11px] text-slate-400">AI can make mistakes. Check important information before relying on it.</p>
+                        <p className="mt-3 text-center text-[11px] text-slate-400">Valluvar AI can make mistakes. Verify important information before relying on it.</p>
                     </div>
                 </section>
             </div>
