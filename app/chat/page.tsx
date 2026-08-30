@@ -8,7 +8,7 @@ import { Suggestion, Suggestions } from '@/components/ai-elements/suggestion';
 import { useState } from 'react';
 
 const suggestions = [
-    'Today\'s Kural',
+    "Today's Kural",
     'Find a Kural about perseverance',
     'Why is lifelong learning important?',
     'What does Thirukkural say about education?',
@@ -119,7 +119,7 @@ function MessageBubble({ message, isStreaming }: Readonly<{ message: UIMessage; 
         <div className={`flex gap-3 sm:gap-4 ${isAssistant ? '' : 'flex-row-reverse'}`}>
             <div
                 className={`mt-1 flex size-8 shrink-0 items-center justify-center rounded-xl text-xs font-semibold ${
-                            isAssistant ? 'bg-linear-to-br from-blue-600 to-indigo-700 text-white shadow-lg shadow-blue-900/20' : 'bg-blue-100 text-blue-800'
+                    isAssistant ? 'bg-linear-to-br from-blue-600 to-indigo-700 text-white shadow-lg shadow-blue-900/20' : 'bg-blue-100 text-blue-800'
                 }`}
             >
                 {isAssistant ? <SparkIcon className="size-4" /> : 'You'}
@@ -169,7 +169,6 @@ export default function Home() {
         void sendMessage({ text: content });
     };
 
-
     const stopStreaming = () => stop();
     const startNewChat = () => {
         if (isStreaming) stopStreaming();
@@ -187,9 +186,7 @@ export default function Home() {
 
             <div className="relative mx-auto flex min-h-screen w-full max-w-5xl flex-col px-4 sm:px-8">
                 <header className="flex h-20 shrink-0 items-center justify-between border-b border-blue-100">
-                    <div
-                        className="group flex items-center gap-3 rounded-xl"
-                    >
+                    <div className="group flex items-center gap-3 rounded-xl">
                         <span className="flex size-11 items-center justify-center overflow-hidden rounded-2xl border border-blue-100 bg-white shadow-lg shadow-blue-900/10 transition-transform group-hover:scale-105">
                             <SparkIcon className="size-7 text-blue-700" />
                         </span>
@@ -254,13 +251,8 @@ export default function Home() {
                                 role="alert"
                                 className="mb-3 flex items-start justify-between gap-3 rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700"
                             >
-                                    <span>Something went wrong: {error.message}</span>
-                                <button
-                                    type="button"
-                                    onClick={clearError}
-                                    className="text-rose-500/70 hover:text-rose-800"
-                                    aria-label="Dismiss error"
-                                >
+                                <span>Something went wrong: {error.message}</span>
+                                <button type="button" onClick={clearError} className="text-rose-500/70 hover:text-rose-800" aria-label="Dismiss error">
                                     ×
                                 </button>
                             </div>
@@ -300,7 +292,9 @@ export default function Home() {
                                 </button>
                             </div>
                         </form>
-                        <p className="mt-3 text-center text-[11px] text-slate-400">Valluvar AI can make mistakes. Verify important information before relying on it.</p>
+                        <p className="mt-3 text-center text-[11px] text-slate-400">
+                            Valluvar AI can make mistakes. Verify important information before relying on it.
+                        </p>
                     </div>
                 </section>
             </div>
