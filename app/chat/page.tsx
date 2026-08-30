@@ -51,15 +51,34 @@ function hasToolPart(message: UIMessage) {
 
 function PendingMessageContent({ isUsingTool }: Readonly<{ isUsingTool: boolean }>) {
     if (isUsingTool) {
-        return <span className="text-sm text-slate-500">Checking the Kural library…</span>;
+        return (
+            <span className="text-sm text-slate-500" role="status" aria-live="polite">
+                Checking the Kural library…
+            </span>
+        );
     }
 
     return (
-        <span className="inline-flex gap-1.5 py-2">
-            <i className="size-1.5 animate-pulse rounded-full bg-slate-400" />
-            <i className="size-1.5 animate-pulse rounded-full bg-slate-400 [animation-delay:150ms]" />
-            <i className="size-1.5 animate-pulse rounded-full bg-slate-400 [animation-delay:300ms]" />
+        <span className="inline-flex gap-1.5 py-2" role="status" aria-label="Assistant is typing" aria-live="polite">
+            <i className="size-1.5 animate-pulse rounded-full bg-slate-400" aria-hidden="true" />
+            <i className="size-1.5 animate-pulse rounded-full bg-slate-400 [animation-delay:150ms]" aria-hidden="true" />
+            <i className="size-1.5 animate-pulse rounded-full bg-slate-400 [animation-delay:300ms]" aria-hidden="true" />
         </span>
+    );
+}
+
+function PendingAssistantBubble() {
+    return (
+        <div className="flex gap-3 sm:gap-4">
+            <div className="mt-1 flex size-8 shrink-0 items-center justify-center rounded-xl bg-linear-to-br from-blue-600 to-indigo-700 text-xs font-semibold text-white shadow-lg shadow-blue-900/20">
+                <SparkIcon className="size-4" />
+            </div>
+            <Message from="assistant" className="max-w-[86%] sm:max-w-[76%]">
+                <MessageContent className="rounded-2xl rounded-tl-md border border-blue-100 bg-white px-5 py-4 text-slate-700 shadow-sm shadow-blue-900/5">
+                    <PendingMessageContent isUsingTool={false} />
+                </MessageContent>
+            </Message>
+        </div>
     );
 }
 
@@ -68,6 +87,11 @@ function MessageBubble({ message, isStreaming }: Readonly<{ message: UIMessage; 
     const isAssistant = message.role === 'assistant';
     const content = getMessageText(message);
     const isUsingTool = isAssistant && hasToolPart(message);
+    let renderedContent = content ? <MessageResponse isAnimating={isStreaming && isAssistant}>{content}</MessageResponse> : null;
+
+    if (!content && isStreaming && isAssistant) {
+        renderedContent = <PendingMessageContent isUsingTool={isUsingTool} />;
+    }
 
     const copyMessage = async () => {
         await navigator.clipboard.writeText(content);
@@ -92,7 +116,7 @@ function MessageBubble({ message, isStreaming }: Readonly<{ message: UIMessage; 
                             : 'rounded-2xl rounded-tr-md bg-blue-800 px-5 py-4 text-white shadow-lg shadow-blue-900/15'
                     }`}
                 >
-                    {content ? <MessageResponse isAnimating={isStreaming && isAssistant}>{content}</MessageResponse> : <PendingMessageContent isUsingTool={isUsingTool} />}
+                    {renderedContent}
                 </MessageContent>
                 {isAssistant && content && (
                     <MessageActions className="mt-2">
@@ -117,6 +141,8 @@ export default function Home() {
     });
     const [input, setInput] = useState('');
     const isStreaming = status === 'submitted' || status === 'streaming';
+    const lastMessage = messages.at(-1);
+    const showPendingAssistant = isStreaming && lastMessage?.role !== 'assistant';
 
     const submitMessage = (value: string) => {
         const content = value.trim();
@@ -199,6 +225,7 @@ export default function Home() {
                                 {messages.map((message) => (
                                     <MessageBubble key={message.id} message={message} isStreaming={isStreaming} />
                                 ))}
+                                {showPendingAssistant && <PendingAssistantBubble />}
                             </ConversationContent>
                         )}
                     </Conversation>
