@@ -45,10 +45,29 @@ function getMessageText(message: UIMessage) {
         .join('');
 }
 
+function hasToolPart(message: UIMessage) {
+    return message.parts.some((part) => part.type.startsWith('tool-'));
+}
+
+function PendingMessageContent({ isUsingTool }: Readonly<{ isUsingTool: boolean }>) {
+    if (isUsingTool) {
+        return <span className="text-sm text-slate-500">Checking the Kural library…</span>;
+    }
+
+    return (
+        <span className="inline-flex gap-1.5 py-2">
+            <i className="size-1.5 animate-pulse rounded-full bg-slate-400" />
+            <i className="size-1.5 animate-pulse rounded-full bg-slate-400 [animation-delay:150ms]" />
+            <i className="size-1.5 animate-pulse rounded-full bg-slate-400 [animation-delay:300ms]" />
+        </span>
+    );
+}
+
 function MessageBubble({ message, isStreaming }: Readonly<{ message: UIMessage; isStreaming: boolean }>) {
     const [copied, setCopied] = useState(false);
     const isAssistant = message.role === 'assistant';
     const content = getMessageText(message);
+    const isUsingTool = isAssistant && hasToolPart(message);
 
     const copyMessage = async () => {
         await navigator.clipboard.writeText(content);
@@ -73,13 +92,7 @@ function MessageBubble({ message, isStreaming }: Readonly<{ message: UIMessage; 
                             : 'rounded-2xl rounded-tr-md bg-blue-800 px-5 py-4 text-white shadow-lg shadow-blue-900/15'
                     }`}
                 >
-                    {content ? <MessageResponse isAnimating={isStreaming && isAssistant}>{content}</MessageResponse> : (
-                        <span className="inline-flex gap-1.5 py-2">
-                            <i className="size-1.5 animate-pulse rounded-full bg-slate-400" />
-                            <i className="size-1.5 animate-pulse rounded-full bg-slate-400 [animation-delay:150ms]" />
-                            <i className="size-1.5 animate-pulse rounded-full bg-slate-400 [animation-delay:300ms]" />
-                        </span>
-                    )}
+                    {content ? <MessageResponse isAnimating={isStreaming && isAssistant}>{content}</MessageResponse> : <PendingMessageContent isUsingTool={isUsingTool} />}
                 </MessageContent>
                 {isAssistant && content && (
                     <MessageActions className="mt-2">

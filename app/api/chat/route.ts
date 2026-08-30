@@ -1,140 +1,39 @@
-import { createOpenAI } from '@ai-sdk/openai';
-import { convertToModelMessages, generateText, streamText, type UIMessage } from 'ai';
+import { convertToModelMessages, createUIMessageStreamResponse, generateText, stepCountIs, streamText, toTextStream, toUIMessageStream, type UIMessage } from 'ai';
+import { SYSTEM_INSTRUCTIONS, normalizeMessages } from '@/lib/ai/chat-policy';
+import { kuralTools } from '@/lib/ai/chat-tools';
+import { ConfigurationError, getLanguageModel, getModel, getProvider } from '@/lib/ai/model-resolver';
 
 export const runtime = 'nodejs';
 
-const MAX_MESSAGES = 100;
-const MAX_MESSAGE_LENGTH = 12_000;
+const MAX_OUTPUT_TOKENS = 1_024;
+const registeredToolNames = Object.keys(kuralTools);
 
-type ChatInput = {
-    id?: unknown;
-    role?: unknown;
-    content?: unknown;
-    parts?: unknown;
-};
-
-function getProvider() {
-    const provider = process.env.LLM_PROVIDER?.trim().toLowerCase();
-    if (!provider) {
-        throw new Error('LLM_PROVIDER is missing. Set it to "ollama" or "openrouter".');
-    }
-    if (provider !== 'ollama' && provider !== 'openrouter') {
-        throw new Error(`Unsupported LLM_PROVIDER "${provider}". Use "ollama" or "openrouter".`);
-    }
-    return provider;
+function logToolEvent(event: Record<string, unknown>) {
+    console.info(JSON.stringify({ event: 'chat_tool_activity', ...event }));
 }
 
-function getModel() {
-    const model = process.env.LLM_MODEL?.trim();
-    if (!model) {
-        throw new Error('LLM_MODEL is missing. Set it to a model installed in Ollama or available in OpenRouter.');
-    }
-    return model;
-}
-
-function getTextContent(input: ChatInput) {
-    if (typeof input.content === 'string') {
-        return input.content;
-    }
-
-    if (Array.isArray(input.parts)) {
-        return input.parts
-            .filter((part): part is { type: 'text'; text: string } => typeof part === 'object' && part !== null && (part as { type?: unknown }).type === 'text' && typeof (part as { text?: unknown }).text === 'string')
-            .map((part) => part.text)
-            .join('');
-    }
-
-    return '';
-}
-
-function normalizeMessages(value: unknown): UIMessage[] | null {
-    if (!Array.isArray(value) || value.length === 0 || value.length > MAX_MESSAGES) {
-        return null;
-    }
-
-    const messages: UIMessage[] = [];
-    for (const [index, entry] of value.entries()) {
-        if (typeof entry !== 'object' || entry === null) {
-            return null;
-        }
-
-        const input = entry as ChatInput;
-        if (input.role !== 'system' && input.role !== 'user' && input.role !== 'assistant') {
-            return null;
-        }
-
-        const text = getTextContent(input);
-        if (!text.trim() || text.length > MAX_MESSAGE_LENGTH) {
-            return null;
-        }
-
-        messages.push({
-            id: typeof input.id === 'string' && input.id ? input.id : `message-${index}`,
-            role: input.role,
-            parts: [{ type: 'text', text }],
-        });
-    }
-
-    return messages;
-}
-
-function errorResponse(message: string, status: number) {
-    return Response.json({ error: message }, { status });
-}
-
-function getErrorMessage(error: unknown) {
-    if (error instanceof Error) {
-        return error.message;
-    }
-    return 'Unknown language model error.';
-}
-
-function getLanguageModel(provider: 'ollama' | 'openrouter', model: string) {
-    if (provider === 'openrouter') {
-        const apiKey = process.env.LLM_API_KEY?.trim();
-        if (!apiKey) {
-            throw new Error('LLM_API_KEY is missing for the openrouter provider.');
-        }
-
-        const openrouter = createOpenAI({
-            apiKey,
-            baseURL: 'https://openrouter.ai/api/v1',
-            headers: {
-                ...(process.env.OPENROUTER_SITE_URL ? { 'HTTP-Referer': process.env.OPENROUTER_SITE_URL } : {}),
-                ...(process.env.OPENROUTER_APP_NAME ? { 'X-Title': process.env.OPENROUTER_APP_NAME } : {}),
-            },
-        });
-        return openrouter.chat(model);
-    }
-
-    const baseUrl = process.env.OLLAMA_BASE_URL?.trim().replace(/\/$/, '');
-    if (!baseUrl) {
-        throw new Error('OLLAMA_BASE_URL is missing for the ollama provider.');
-    }
-
-    const ollama = createOpenAI({
-        apiKey: 'ollama',
-        baseURL: `${baseUrl}/v1`,
-    });
-    return ollama.chat(model);
+function errorResponse(message: string, status: number, requestId: string) {
+    return Response.json({ error: message, requestId }, { status, headers: { 'X-Request-ID': requestId } });
 }
 
 export async function POST(request: Request) {
+    const requestId = crypto.randomUUID();
     let body: { messages?: unknown; stream?: unknown };
     try {
         body = await request.json();
     } catch {
-        return errorResponse('Request body must be valid JSON.', 400);
+        return errorResponse('Request body must be valid JSON.', 400, requestId);
     }
 
-    const messages = normalizeMessages(body.messages);
+    const messages = await normalizeMessages(body.messages);
     if (!messages) {
-        return errorResponse(`messages must contain 1-${MAX_MESSAGES} valid messages.`, 400);
+        return errorResponse('Please send a conversation containing readable user or assistant text.', 400, requestId);
     }
 
     try {
         const provider = getProvider();
         const model = getModel();
+        logToolEvent({ requestId, phase: 'registered', provider, model, tools: registeredToolNames });
         const modelMessages = await convertToModelMessages(
             messages.map((message) => Object.fromEntries(Object.entries(message).filter(([key]) => key !== 'id')) as Omit<UIMessage, 'id'>),
         );
@@ -143,8 +42,34 @@ export async function POST(request: Request) {
         if (body.stream === false) {
             const completion = await generateText({
                 model: languageModel,
+                system: SYSTEM_INSTRUCTIONS,
                 messages: modelMessages,
+                tools: kuralTools,
+                stopWhen: stepCountIs(5),
+                maxOutputTokens: MAX_OUTPUT_TOKENS,
                 abortSignal: request.signal,
+                onStepEnd: ({ stepNumber, toolCalls, toolResults }) => {
+                    logToolEvent({
+                        requestId,
+                        phase: 'step_completed',
+                        stepNumber,
+                        toolCalls: toolCalls.map((toolCall) => toolCall.toolName),
+                        toolResults: toolResults.length,
+                    });
+                },
+                onToolExecutionStart: ({ callId, toolCall }) => {
+                    logToolEvent({ requestId, phase: 'execution_started', callId, tool: toolCall.toolName });
+                },
+                onToolExecutionEnd: ({ callId, toolCall, toolExecutionMs, toolOutput }) => {
+                    logToolEvent({
+                        requestId,
+                        phase: 'execution_completed',
+                        callId,
+                        tool: toolCall.toolName,
+                        durationMs: toolExecutionMs,
+                        resultType: toolOutput.type,
+                    });
+                },
             });
             return Response.json({
                 choices: [{ message: { role: 'assistant', content: completion.text } }],
@@ -152,23 +77,63 @@ export async function POST(request: Request) {
                     promptTokens: completion.usage.inputTokens,
                     completionTokens: completion.usage.outputTokens,
                 },
-            });
+            }, { headers: { 'X-Request-ID': requestId } });
         }
 
         const result = streamText({
             model: languageModel,
+            system: SYSTEM_INSTRUCTIONS,
             messages: modelMessages,
+            tools: kuralTools,
+            stopWhen: stepCountIs(5),
+            maxOutputTokens: MAX_OUTPUT_TOKENS,
             abortSignal: request.signal,
+            onStepEnd: ({ stepNumber, toolCalls, toolResults }) => {
+                logToolEvent({
+                    requestId,
+                    phase: 'step_completed',
+                    stepNumber,
+                    toolCalls: toolCalls.map((toolCall) => toolCall.toolName),
+                    toolResults: toolResults.length,
+                });
+            },
+            onToolExecutionStart: ({ callId, toolCall }) => {
+                logToolEvent({ requestId, phase: 'execution_started', callId, tool: toolCall.toolName });
+            },
+            onToolExecutionEnd: ({ callId, toolCall, toolExecutionMs, toolOutput }) => {
+                logToolEvent({
+                    requestId,
+                    phase: 'execution_completed',
+                    callId,
+                    tool: toolCall.toolName,
+                    durationMs: toolExecutionMs,
+                    resultType: toolOutput.type,
+                });
+            },
         });
 
         if (body.stream === 'text') {
-            return result.toTextStreamResponse();
+            const textStream = toTextStream({ stream: result.stream });
+            return new Response(textStream.pipeThrough(new TextEncoderStream()), {
+                headers: {
+                    'Cache-Control': 'no-cache',
+                    'Content-Type': 'text/plain; charset=utf-8',
+                    'X-Request-ID': requestId,
+                },
+            });
         }
 
-        return result.toUIMessageStreamResponse();
+        return createUIMessageStreamResponse({
+            headers: { 'X-Request-ID': requestId },
+            stream: toUIMessageStream({ stream: result.stream }),
+        });
     } catch (error) {
-        const message = getErrorMessage(error);
-        console.error('Language model request failed:', message);
-        return errorResponse('The language model is currently unavailable.', 502);
+        const message = error instanceof Error ? error.message : 'Unknown language model error.';
+        console.error(JSON.stringify({ event: 'chat_request_failed', requestId, message }));
+        return errorResponse(
+            error instanceof ConfigurationError ? 'Chat service configuration is incomplete.' : 'The language model is currently unavailable.',
+            error instanceof ConfigurationError ? 500 : 502,
+            requestId,
+        );
     }
 }

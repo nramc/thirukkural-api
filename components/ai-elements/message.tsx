@@ -326,6 +326,7 @@ const streamdownPlugins = { cjk, code, math, mermaid };
 export const MessageResponse = memo(
   ({ className, ...props }: MessageResponseProps) => (
     <Streamdown
+            dir="auto"
       className={cn(
         "size-full [&>*:first-child]:mt-0 [&>*:last-child]:mb-0",
         className
