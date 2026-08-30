@@ -65,8 +65,7 @@ Make sure you have the following installed on your local machine:
 
 The chat route supports local Ollama development and OpenRouter deployment.
 Configure the server with `LLM_PROVIDER`, `LLM_MODEL`, and, for OpenRouter,
-server-only `LLM_API_KEY`. Local values belong in the ignored `.env.local` file;
-see [`docs/cli-chat.md`](docs/cli-chat.md) for setup and CLI instructions.
+server-only `LLM_API_KEY`. Local values belong in the ignored `.env.local` file.
 
 ## Project Structure
 
@@ -78,7 +77,7 @@ see [`docs/cli-chat.md`](docs/cli-chat.md) for setup and CLI instructions.
 - **/app/api/kural/[id]/**: A serverless function that returns a requested Kural as JSON.
 - **/app/api/daily/**: A serverless function that returns a Kural of the day as JSON.
 - **/app/api/random/**: A serverless function that returns a random Kural as JSON, with optional section filtering.
-- **/app/api/chat/**: The secure chat route used by the browser and CLI.
+- **/app/api/chat/**: The server-side AI SDK chat route used by the browser.
 - **/app/chat/page.tsx**: The dedicated browser chat experience, available at `/chat`.
 - **/app/page.tsx**: The main React component for the homepage.
 

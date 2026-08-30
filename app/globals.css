@@ -2,14 +2,24 @@
 
 :root {
     --background: #ffffff;
-    --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
-    :root {
-        --background: #0a0a0a;
-        --foreground: #ededed;
-    }
+    --foreground: #172554;
+    --card: #ffffff;
+    --card-foreground: #172554;
+    --popover: #ffffff;
+    --popover-foreground: #172554;
+    --primary: #1e40af;
+    --primary-foreground: #ffffff;
+    --secondary: #dbeafe;
+    --secondary-foreground: #1e3a8a;
+    --muted: #eff6ff;
+    --muted-foreground: #64748b;
+    --accent: #dbeafe;
+    --accent-foreground: #1e3a8a;
+    --destructive: #dc2626;
+    --border: #dbeafe;
+    --input: #bfdbfe;
+    --ring: #60a5fa;
+    --radius: 0.9rem;
 }
 
 html,
@@ -26,11 +36,6 @@ body {
     -moz-osx-font-smoothing: grayscale;
 }
 
-* {
-    box-sizing: border-box;
-    padding: 0;
-    margin: 0;
-}
 
 a {
     color: inherit;

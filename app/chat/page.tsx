@@ -2,7 +2,10 @@
 
 import { DefaultChatTransport, type UIMessage } from 'ai';
 import { useChat } from '@ai-sdk/react';
-import { FormEvent, KeyboardEvent, useEffect, useRef, useState } from 'react';
+import { Conversation, ConversationContent, ConversationEmptyState } from '@/components/ai-elements/conversation';
+import { Message, MessageAction, MessageActions, MessageContent, MessageResponse } from '@/components/ai-elements/message';
+import { Suggestion, Suggestions } from '@/components/ai-elements/suggestion';
+import { useState } from 'react';
 
 const suggestions = ['Explain a complex idea simply', 'Help me plan my next project', 'Write a thoughtful introduction'];
 
@@ -42,7 +45,7 @@ function getMessageText(message: UIMessage) {
         .join('');
 }
 
-function MessageBubble({ message }: Readonly<{ message: UIMessage }>) {
+function MessageBubble({ message, isStreaming }: Readonly<{ message: UIMessage; isStreaming: boolean }>) {
     const [copied, setCopied] = useState(false);
     const isAssistant = message.role === 'assistant';
     const content = getMessageText(message);
@@ -57,38 +60,40 @@ function MessageBubble({ message }: Readonly<{ message: UIMessage }>) {
         <div className={`flex gap-3 sm:gap-4 ${isAssistant ? '' : 'flex-row-reverse'}`}>
             <div
                 className={`mt-1 flex size-8 shrink-0 items-center justify-center rounded-xl text-xs font-semibold ${
-                    isAssistant ? 'bg-gradient-to-br from-violet-500 to-indigo-600 text-white shadow-lg shadow-indigo-500/20' : 'bg-slate-800 text-slate-300'
+                            isAssistant ? 'bg-linear-to-br from-blue-600 to-indigo-700 text-white shadow-lg shadow-blue-900/20' : 'bg-blue-100 text-blue-800'
                 }`}
             >
                 {isAssistant ? <SparkIcon className="size-4" /> : 'You'}
             </div>
-            <div className={`group max-w-[86%] sm:max-w-[76%] ${isAssistant ? '' : 'items-end'}`}>
-                <div
-                    className={`whitespace-pre-wrap break-words text-[0.95rem] leading-7 ${
+            <Message from={message.role} className="max-w-[86%] sm:max-w-[76%]">
+                <MessageContent
+                    className={`whitespace-pre-wrap wrap-break-word text-[0.95rem] leading-7 ${
                         isAssistant
-                            ? 'rounded-2xl rounded-tl-md border border-white/10 bg-white/[0.07] px-4 py-3 text-slate-200'
-                            : 'rounded-2xl rounded-tr-md bg-indigo-500 px-4 py-3 text-white shadow-lg shadow-indigo-950/20'
+                            ? 'rounded-2xl rounded-tl-md border border-blue-100 bg-white px-5 py-4 text-slate-700 shadow-sm shadow-blue-900/5'
+                            : 'rounded-2xl rounded-tr-md bg-blue-800 px-5 py-4 text-white shadow-lg shadow-blue-900/15'
                     }`}
                 >
-                    {content || (
+                    {content ? <MessageResponse isAnimating={isStreaming && isAssistant}>{content}</MessageResponse> : (
                         <span className="inline-flex gap-1.5 py-2">
                             <i className="size-1.5 animate-pulse rounded-full bg-slate-400" />
                             <i className="size-1.5 animate-pulse rounded-full bg-slate-400 [animation-delay:150ms]" />
                             <i className="size-1.5 animate-pulse rounded-full bg-slate-400 [animation-delay:300ms]" />
                         </span>
                     )}
-                </div>
+                </MessageContent>
                 {isAssistant && content && (
-                    <button
-                        type="button"
-                        onClick={copyMessage}
-                        className="mt-2 inline-flex items-center gap-1.5 rounded-lg px-2 py-1 text-xs text-slate-500 opacity-100 transition hover:bg-white/[0.06] hover:text-slate-300 sm:opacity-0 sm:group-hover:opacity-100"
-                    >
-                        <CopyIcon />
-                        {copied ? 'Copied' : 'Copy'}
-                    </button>
+                    <MessageActions className="mt-2">
+                        <MessageAction
+                            label={copied ? 'Copied' : 'Copy'}
+                            title={copied ? 'Copied' : 'Copy'}
+                            onClick={copyMessage}
+                            className="text-slate-400 hover:bg-blue-50 hover:text-blue-800"
+                        >
+                            <CopyIcon />
+                        </MessageAction>
+                    </MessageActions>
                 )}
-            </div>
+            </Message>
         </div>
     );
 }
@@ -98,17 +103,10 @@ export default function Home() {
         transport: new DefaultChatTransport({ api: '/api/chat' }),
     });
     const [input, setInput] = useState('');
-    const conversationRef = useRef<HTMLDivElement>(null);
     const isStreaming = status === 'submitted' || status === 'streaming';
 
-    useEffect(() => {
-        const conversation = conversationRef.current;
-        if (conversation) conversation.scrollTo({ top: conversation.scrollHeight, behavior: 'smooth' });
-    }, [messages]);
-
-    const submitMessage = (event?: FormEvent) => {
-        event?.preventDefault();
-        const content = input.trim();
+    const submitMessage = (value: string) => {
+        const content = value.trim();
         if (!content || isStreaming) return;
 
         setInput('');
@@ -116,12 +114,6 @@ export default function Home() {
         void sendMessage({ text: content });
     };
 
-    const handleKeyDown = (event: KeyboardEvent<HTMLTextAreaElement>) => {
-        if (event.key === 'Enter' && (event.metaKey || event.ctrlKey)) {
-            event.preventDefault();
-            void submitMessage();
-        }
-    };
 
     const stopStreaming = () => stop();
     const startNewChat = () => {
@@ -132,85 +124,83 @@ export default function Home() {
     };
 
     return (
-        <main className="min-h-screen bg-[#080b14] text-slate-100 selection:bg-indigo-500/30">
+        <main className="min-h-screen bg-linear-to-br from-blue-50 via-white to-indigo-50 text-slate-900 selection:bg-blue-200">
             <div className="pointer-events-none fixed inset-0 overflow-hidden" aria-hidden="true">
-                <div className="absolute -left-40 -top-40 size-[28rem] rounded-full bg-indigo-600/10 blur-[110px]" />
-                <div className="absolute -right-40 top-1/3 size-[28rem] rounded-full bg-violet-600/[0.08] blur-[120px]" />
+                <div className="absolute -left-40 -top-40 size-112 rounded-full bg-blue-200/50 blur-[110px]" />
+                <div className="absolute -right-40 top-1/3 size-112 rounded-full bg-indigo-200/50 blur-[120px]" />
             </div>
 
-            <div className="relative mx-auto flex min-h-screen w-full max-w-6xl flex-col px-4 sm:px-6 lg:px-8">
-                <header className="flex h-20 shrink-0 items-center justify-between border-b border-white/[0.07]">
+            <div className="relative mx-auto flex min-h-screen w-full max-w-5xl flex-col px-4 sm:px-8">
+                <header className="flex h-20 shrink-0 items-center justify-between border-b border-blue-100">
                     <div className="flex items-center gap-3">
-                        <div className="flex size-9 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-400 to-violet-600 text-white shadow-lg shadow-indigo-600/20">
+                        <div className="flex size-9 items-center justify-center rounded-xl bg-linear-to-br from-blue-600 to-indigo-700 text-white shadow-lg shadow-blue-700/20">
                             <SparkIcon className="size-5" />
                         </div>
                         <div>
-                            <p className="text-sm font-semibold tracking-tight text-white">Kural AI</p>
+                            <p className="text-sm font-semibold tracking-tight text-blue-950">Kural AI</p>
                             <p className="text-[11px] text-slate-500">Thoughtful conversations</p>
                         </div>
                     </div>
                     <div className="flex items-center gap-2 sm:gap-4">
-                        <div className="hidden items-center gap-2 rounded-full border border-emerald-400/15 bg-emerald-400/[0.06] px-3 py-1.5 text-xs text-emerald-300 sm:flex">
-                            <span className="size-1.5 rounded-full bg-emerald-400 shadow-[0_0_8px] shadow-emerald-400" />
+                        <div className="hidden items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1.5 text-xs text-emerald-700 sm:flex">
+                            <span className="size-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px] shadow-emerald-400" />
                             Online
                         </div>
                         <button
                             type="button"
                             onClick={startNewChat}
-                            className="rounded-lg px-3 py-2 text-xs font-medium text-slate-400 transition hover:bg-white/[0.06] hover:text-white"
+                            className="rounded-lg px-3 py-2 text-xs font-medium text-slate-500 transition hover:bg-blue-100 hover:text-blue-900"
                         >
                             New chat
                         </button>
                     </div>
                 </header>
 
-                <section className="flex min-h-0 flex-1 flex-col py-8 sm:py-10">
-                    <div ref={conversationRef} className="min-h-0 flex-1 overflow-y-auto pb-6 [scrollbar-color:#334155_transparent] [scrollbar-width:thin]">
+                <section className="flex min-h-0 flex-1 flex-col items-center py-6 sm:py-10">
+                    <Conversation className="min-h-0 w-full max-w-4xl flex-1 rounded-3xl bg-white/45 pb-6 shadow-sm ring-1 ring-blue-100/80 [scrollbar-color:#bfdbfe_transparent] [scrollbar-width:thin]">
                         {messages.length === 0 ? (
-                            <div className="flex min-h-[58vh] flex-col items-center justify-center text-center">
-                                <div className="mb-6 flex size-16 items-center justify-center rounded-3xl border border-indigo-400/20 bg-indigo-400/[0.08] text-indigo-300 shadow-2xl shadow-indigo-950/30">
+                            <ConversationEmptyState className="min-h-[58vh] bg-transparent">
+                                <div className="mb-6 flex size-16 items-center justify-center rounded-3xl border border-blue-200 bg-blue-100 text-blue-700 shadow-xl shadow-blue-900/10">
                                     <SparkIcon className="size-8" />
                                 </div>
-                                <p className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-indigo-300/80">Your thinking companion</p>
-                                <h1 className="max-w-xl text-3xl font-semibold tracking-tight text-white sm:text-5xl sm:leading-[1.12]">
+                                <p className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-blue-700/80">Your thinking companion</p>
+                                <h1 className="max-w-xl text-3xl font-semibold tracking-tight text-blue-950 sm:text-5xl sm:leading-[1.12]">
                                     What would you like to explore?
                                 </h1>
-                                <p className="mt-5 max-w-md text-sm leading-6 text-slate-500 sm:text-base">
+                                <p className="mt-5 max-w-md text-sm leading-6 text-slate-600 sm:text-base">
                                     Ask a question, shape an idea, or start a thoughtful conversation. Your assistant is ready when you are.
                                 </p>
-                                <div className="mt-8 grid w-full max-w-2xl gap-2 sm:grid-cols-3">
+                                <Suggestions className="mx-auto mt-8 flex w-full max-w-2xl flex-wrap justify-center gap-3 whitespace-normal">
                                     {suggestions.map((suggestion) => (
-                                        <button
+                                        <Suggestion
                                             key={suggestion}
-                                            type="button"
-                                            onClick={() => setInput(suggestion)}
-                                            className="rounded-xl border border-white/[0.08] bg-white/[0.03] px-3 py-3 text-left text-xs text-slate-400 transition hover:border-indigo-400/30 hover:bg-indigo-400/[0.07] hover:text-slate-200"
-                                        >
-                                            {suggestion}
-                                        </button>
+                                            suggestion={suggestion}
+                                            onClick={setInput}
+                                            className="rounded-xl border border-blue-100 bg-white px-3 py-3 text-left text-xs text-slate-600 shadow-sm transition hover:border-blue-300 hover:bg-blue-50 hover:text-blue-900"
+                                        />
                                     ))}
-                                </div>
-                            </div>
+                                </Suggestions>
+                            </ConversationEmptyState>
                         ) : (
-                            <div className="mx-auto flex w-full max-w-3xl flex-col gap-7">
+                            <ConversationContent className="mx-auto w-full max-w-3xl px-3 py-6 sm:px-6 sm:py-8">
                                 {messages.map((message) => (
-                                    <MessageBubble key={message.id} message={message} />
+                                    <MessageBubble key={message.id} message={message} isStreaming={isStreaming} />
                                 ))}
-                            </div>
+                            </ConversationContent>
                         )}
-                    </div>
+                    </Conversation>
 
-                    <div className="mx-auto w-full max-w-3xl">
+                    <div className="mx-auto mt-5 w-full max-w-4xl sm:mt-7">
                         {error && (
                             <div
                                 role="alert"
-                                className="mb-3 flex items-start justify-between gap-3 rounded-xl border border-rose-400/20 bg-rose-400/[0.07] px-4 py-3 text-sm text-rose-200"
+                                className="mb-3 flex items-start justify-between gap-3 rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700"
                             >
                                 <span>{error.message}</span>
                                 <button
                                     type="button"
                                     onClick={clearError}
-                                    className="text-rose-300/70 hover:text-rose-100"
+                                    className="text-rose-500/70 hover:text-rose-800"
                                     aria-label="Dismiss error"
                                 >
                                     ×
@@ -218,33 +208,41 @@ export default function Home() {
                             </div>
                         )}
                         <form
-                            onSubmit={submitMessage}
-                            className="rounded-2xl border border-white/[0.12] bg-white/[0.06] p-2 shadow-2xl shadow-black/20 backdrop-blur-xl focus-within:border-indigo-400/40 focus-within:ring-4 focus-within:ring-indigo-500/10"
+                            onSubmit={(event) => {
+                                event.preventDefault();
+                                submitMessage(input);
+                            }}
+                            className="rounded-2xl border border-blue-200 bg-white p-2 shadow-xl shadow-blue-900/10 transition focus-within:border-blue-500 focus-within:ring-4 focus-within:ring-blue-100"
                         >
                             <textarea
                                 value={input}
                                 onChange={(event) => setInput(event.target.value)}
-                                onKeyDown={handleKeyDown}
+                                onKeyDown={(event) => {
+                                    if (event.key === 'Enter' && (event.metaKey || event.ctrlKey)) {
+                                        event.preventDefault();
+                                        submitMessage(input);
+                                    }
+                                }}
                                 placeholder="Message your assistant..."
                                 aria-label="Message your assistant"
                                 rows={1}
                                 disabled={isStreaming}
-                                className="max-h-36 min-h-12 w-full resize-none bg-transparent px-3 py-3 text-sm leading-6 text-white outline-none placeholder:text-slate-500 disabled:cursor-not-allowed disabled:opacity-60"
+                                className="max-h-36 min-h-12 w-full resize-none bg-transparent px-3 py-3 text-sm leading-6 text-slate-800 outline-none placeholder:text-slate-400 disabled:cursor-not-allowed disabled:opacity-60"
                             />
                             <div className="flex items-center justify-between px-2 pb-1">
-                                <p className="text-[11px] text-slate-600">⌘ Enter to send</p>
+                                <p className="text-[11px] text-slate-400">⌘ Enter to send · Shift+Enter for a new line</p>
                                 <button
                                     type={isStreaming ? 'button' : 'submit'}
                                     onClick={isStreaming ? stopStreaming : undefined}
                                     disabled={!isStreaming && !input.trim()}
-                                    className="flex size-9 items-center justify-center rounded-xl bg-indigo-500 text-white transition hover:bg-indigo-400 disabled:cursor-not-allowed disabled:bg-white/[0.08] disabled:text-slate-600"
+                                    className="flex size-9 items-center justify-center rounded-xl bg-blue-800 text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-blue-50 disabled:text-blue-300"
                                     aria-label={isStreaming ? 'Stop generating' : 'Send message'}
                                 >
                                     {isStreaming ? <StopIcon /> : <ArrowUpIcon />}
                                 </button>
                             </div>
                         </form>
-                        <p className="mt-3 text-center text-[11px] text-slate-600">AI can make mistakes. Check important information before relying on it.</p>
+                        <p className="mt-3 text-center text-[11px] text-slate-400">AI can make mistakes. Check important information before relying on it.</p>
                     </div>
                 </section>
             </div>
