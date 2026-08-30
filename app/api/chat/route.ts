@@ -1,11 +1,12 @@
 import { convertToModelMessages, createUIMessageStreamResponse, generateText, stepCountIs, streamText, toTextStream, toUIMessageStream, type UIMessage } from 'ai';
-import { SYSTEM_INSTRUCTIONS, normalizeMessages } from '@/lib/ai/chat-policy';
+import { getRecentMessages, MAX_CONTEXT_MESSAGES, SYSTEM_INSTRUCTIONS, normalizeMessages } from '@/lib/ai/chat-policy';
 import { kuralTools } from '@/lib/ai/chat-tools';
 import { ConfigurationError, getLanguageModel, getModel, getProvider } from '@/lib/ai/model-resolver';
 
 export const runtime = 'nodejs';
 
 const MAX_OUTPUT_TOKENS = 1_024;
+const MAX_STEP_COUNT = 5;
 const registeredToolNames = Object.keys(kuralTools);
 
 function logToolEvent(event: Record<string, unknown>) {
@@ -35,7 +36,7 @@ export async function POST(request: Request) {
         const model = getModel();
         logToolEvent({ requestId, phase: 'registered', provider, model, tools: registeredToolNames });
         const modelMessages = await convertToModelMessages(
-            messages.map((message) => Object.fromEntries(Object.entries(message).filter(([key]) => key !== 'id')) as Omit<UIMessage, 'id'>),
+            getRecentMessages(messages, MAX_CONTEXT_MESSAGES).map((message) => Object.fromEntries(Object.entries(message).filter(([key]) => key !== 'id')) as Omit<UIMessage, 'id'>),
         );
         const languageModel = getLanguageModel(provider, model);
 
@@ -45,7 +46,7 @@ export async function POST(request: Request) {
                 system: SYSTEM_INSTRUCTIONS,
                 messages: modelMessages,
                 tools: kuralTools,
-                stopWhen: stepCountIs(5),
+                stopWhen: stepCountIs(MAX_STEP_COUNT),
                 maxOutputTokens: MAX_OUTPUT_TOKENS,
                 abortSignal: request.signal,
                 onStepEnd: ({ stepNumber, toolCalls, toolResults }) => {
@@ -85,7 +86,7 @@ export async function POST(request: Request) {
             system: SYSTEM_INSTRUCTIONS,
             messages: modelMessages,
             tools: kuralTools,
-            stopWhen: stepCountIs(5),
+            stopWhen: stepCountIs(MAX_STEP_COUNT),
             maxOutputTokens: MAX_OUTPUT_TOKENS,
             abortSignal: request.signal,
             onStepEnd: ({ stepNumber, toolCalls, toolResults }) => {
