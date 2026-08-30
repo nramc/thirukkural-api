@@ -137,5 +137,3 @@ export function isModelAllowed(model: string) {
     const allowedModels = getAllowedModels();
     return allowedModels.size === 0 || allowedModels.has(model);
 }
-
-

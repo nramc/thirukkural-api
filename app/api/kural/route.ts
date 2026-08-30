@@ -1,4 +1,4 @@
-import kuralService from "@/app/service/kural-service";
+import kuralService from '@/app/service/kural-service';
 
 export async function GET(request: Request) {
     const searchParams = new URL(request.url).searchParams;

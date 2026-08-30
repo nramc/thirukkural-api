@@ -86,4 +86,3 @@ export const kuralTools = {
         execute: ({ keywords, page, limit }) => kuralService.searchByKeyword(keywords, page, limit),
     }),
 };
-

@@ -63,7 +63,3 @@ function createOllamaChatModel(model: string): LanguageModel {
 export function getLanguageModel(provider: LlmProvider, model: string): LanguageModel {
     return provider === 'openrouter' ? createOpenAICompatibleChatModel(model) : createOllamaChatModel(model);
 }
-
-
-
-

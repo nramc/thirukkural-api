@@ -1,4 +1,13 @@
-import { convertToModelMessages, createUIMessageStreamResponse, generateText, stepCountIs, streamText, toTextStream, toUIMessageStream, type UIMessage } from 'ai';
+import {
+    convertToModelMessages,
+    createUIMessageStreamResponse,
+    generateText,
+    stepCountIs,
+    streamText,
+    toTextStream,
+    toUIMessageStream,
+    type UIMessage,
+} from 'ai';
 import { getRecentMessages, MAX_CONTEXT_MESSAGES, SYSTEM_INSTRUCTIONS, normalizeMessages } from '@/lib/ai/chat-policy';
 import { kuralTools } from '@/lib/ai/chat-tools';
 import { ConfigurationError, getLanguageModel, getModel, getProvider } from '@/lib/ai/model-resolver';
@@ -36,7 +45,9 @@ export async function POST(request: Request) {
         const model = getModel();
         logToolEvent({ requestId, phase: 'registered', provider, model, tools: registeredToolNames });
         const modelMessages = await convertToModelMessages(
-            getRecentMessages(messages, MAX_CONTEXT_MESSAGES).map((message) => Object.fromEntries(Object.entries(message).filter(([key]) => key !== 'id')) as Omit<UIMessage, 'id'>),
+            getRecentMessages(messages, MAX_CONTEXT_MESSAGES).map(
+                (message) => Object.fromEntries(Object.entries(message).filter(([key]) => key !== 'id')) as Omit<UIMessage, 'id'>,
+            ),
         );
         const languageModel = getLanguageModel(provider, model);
 
@@ -72,13 +83,16 @@ export async function POST(request: Request) {
                     });
                 },
             });
-            return Response.json({
-                choices: [{ message: { role: 'assistant', content: completion.text } }],
-                usage: {
-                    promptTokens: completion.usage.inputTokens,
-                    completionTokens: completion.usage.outputTokens,
+            return Response.json(
+                {
+                    choices: [{ message: { role: 'assistant', content: completion.text } }],
+                    usage: {
+                        promptTokens: completion.usage.inputTokens,
+                        completionTokens: completion.usage.outputTokens,
+                    },
                 },
-            }, { headers: { 'X-Request-ID': requestId } });
+                { headers: { 'X-Request-ID': requestId } },
+            );
         }
 
         const result = streamText({

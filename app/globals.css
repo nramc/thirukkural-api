@@ -31,12 +31,11 @@ body {
 body {
     color: var(--foreground);
     background: var(--background);
-    font-family: "Noto Sans Tamil", "Tamil Sangam MN", "Latha", Arial, Helvetica, sans-serif;
+    font-family: 'Noto Sans Tamil', 'Tamil Sangam MN', 'Latha', Arial, Helvetica, sans-serif;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
-
 
 a {
     color: inherit;
