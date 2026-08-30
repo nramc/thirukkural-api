@@ -69,12 +69,13 @@ export default function Home() {
                 }}
             >
                 <Image src={'/images/api/swagger-logo.png'} alt={'Swagger UI OpenAPI Doc'} width={'50'} height={'50'} />
-                View API Documentation (Swagger UI)
+                REST API Documentation
             </a>
             <Link
                 href="/chat"
                 className="rounded-full px-5! py-2.5! text-sm font-bold text-white! shadow-md transition cursor-pointer"
                 style={{ backgroundColor: primaryColor, marginBottom: '20px' }}
+                target={'_blank'}
             >
                 Chat with Valluvar AI
             </Link>
