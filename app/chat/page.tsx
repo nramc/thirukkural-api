@@ -8,11 +8,12 @@ import { Suggestion, Suggestions } from '@/components/ai-elements/suggestion';
 import { useState } from 'react';
 
 const suggestions = [
-    "Today's Kural",
+    "What Can I Learn Today?",
     'Find a Kural about perseverance',
-    'Why is lifelong learning important?',
-    'What does Thirukkural say about education?',
-    'Give me a Thirukkural and explain its modern relevance',
+    'Help Me Stay Motivated',
+    'Surprise Me with a Kural',
+    'Give me a random Kural',
+    'Explain This Kural'
 ];
 
 function SparkIcon({ className = 'size-5' }: Readonly<{ className?: string }>) {
