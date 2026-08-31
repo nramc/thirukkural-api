@@ -42,7 +42,7 @@ export default function AppMenu() {
                     <span
                         className="flex size-10 items-center justify-center overflow-hidden rounded-xl bg-blue-50 ring-1 ring-blue-100 transition-transform duration-200 group-hover:scale-105 sm:size-11">
                         <Image
-                            src="/logo/thirukkural-logo-transparant.png"
+                            src="/favicon-96x96.png"
                             alt="Thirukkural API Logo"
                             width={44}
                             height={44}
@@ -51,7 +51,7 @@ export default function AppMenu() {
                         />
                     </span>
                     <span className="sm:block">
-                        <span className="block text-base font-bold tracking-tight text-blue-950">Thirukkural API</span>
+                        <span className="block text-base font-bold tracking-tight text-blue-800">Thirukkural API</span>
                         <span className="block text-xs font-medium text-slate-500">Ancient wisdom. Modern access.</span>
                     </span>
                 </Link>
