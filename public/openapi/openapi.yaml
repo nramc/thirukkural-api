@@ -4,7 +4,7 @@ info:
     description: 'Connecting ancient Tamil philosophy with today’s digital landscape. Explore the ancient wisdom of Thirukkural, a classic Tamil text consisting of 1,330 couplets or Kurals, dealing with various aspects of life and morality.'
     version: 1.0.0
 servers:
-    - url: 'https://tamil-kural-api.vercel.app/api'
+    - url: 'https://kural.codewithram.dev/api'
       description: 'Production server'
     - url: 'http://localhost:3000/api'
       description: 'Local development server'
