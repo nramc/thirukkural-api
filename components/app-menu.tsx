@@ -4,7 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import {usePathname} from 'next/navigation';
 import {useState} from 'react';
-import {BookOpen, Code2, GitFork, HomeIcon, type LucideIcon, Mail, Menu, Phone, Sparkles, X} from 'lucide-react';
+import {BookOpen, Code2, GitFork, HomeIcon, type LucideIcon, Menu, Phone, Sparkles, X} from 'lucide-react';
 
 type NavigationItem = {
     label: string;
@@ -15,8 +15,8 @@ type NavigationItem = {
 
 const navigationItems: NavigationItem[] = [
     {label: 'Home', href: '/', icon: HomeIcon},
-    {label: 'API Explorer', href: '/api/kural', icon: Code2, external: true},
-    {label: 'Documentation', href: '/openapi/swagger-ui.html#Kural', icon: BookOpen, external: true},
+    {label: 'API', href: '/api/kural', icon: Code2, external: true},
+    {label: 'Doc', href: '/openapi/swagger-ui.html#Kural', icon: BookOpen, external: true},
     {label: 'GitHub', href: 'https://github.com/nramc/thirukkural-api', icon: GitFork, external: true},
     {label: 'Contact', href: 'https://myprofile.codewithram.dev/', icon: Phone, external: true},
 ];
@@ -56,7 +56,13 @@ export default function AppMenu() {
                     </span>
                 </Link>
 
-                <nav className="hidden items-center gap-1 lg:flex" aria-label="Primary navigation">
+                <nav
+                    id="mobile-navigation"
+                    className={`absolute inset-x-4 top-[calc(100%+0.5rem)] flex-col gap-1 rounded-2xl border border-blue-100 bg-white p-2 shadow-xl shadow-blue-950/10 ${
+                        isMenuOpen ? 'flex' : 'hidden'
+                    } lg:static lg:flex lg:flex-row lg:items-center lg:rounded-none lg:border-0 lg:bg-transparent lg:p-0 lg:shadow-none`}
+                    aria-label="Primary navigation"
+                >
                     {navigationItems.map(({label, href, icon: Icon, external}) => {
                         const active = isActive(href, external);
 
@@ -65,19 +71,31 @@ export default function AppMenu() {
                                 key={label}
                                 href={href}
                                 {...(external ? externalLinkProps : {})}
+                                onClick={closeMenu}
                                 aria-current={active ? 'page' : undefined}
-                                className={`group inline-flex items-center gap-2 rounded-lg px-3.5 py-2.5 text-[15px] font-semibold transition-colors focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-100 ${
-                                    active ? 'bg-blue-50 text-blue-800 ring-1 ring-blue-100' : 'text-slate-600 hover:bg-blue-50 hover:text-blue-800'
+                                className={`group flex items-center gap-3 rounded-xl px-4 py-3.5 text-base font-semibold transition-colors focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-100 lg:inline-flex lg:gap-2 lg:rounded-lg lg:px-3.5 lg:py-2.5 lg:text-[15px] ${
+                                    active
+                                        ? 'bg-blue-50 text-blue-800 ring-1 ring-blue-100'
+                                        : 'text-slate-700 hover:bg-blue-50 hover:text-blue-800 lg:text-slate-600'
                                 }`}
                             >
                                 <Icon
-                                    className={`size-4 transition-colors ${active ? 'text-blue-800' : 'text-slate-400 group-hover:text-blue-800'}`}
+                                    className={`size-4 transition-colors ${active ? 'text-blue-800' : 'text-blue-700 group-hover:text-blue-800 lg:text-slate-400'}`}
                                     aria-hidden="true"
                                 />
                                 {label}
                             </Link>
                         );
                     })}
+                    <Link
+                        href="/chat"
+                        {...externalLinkProps}
+                        onClick={closeMenu}
+                        className="mt-1 flex items-center justify-center gap-2 rounded-xl bg-blue-800 px-4 py-3.5 text-base font-semibold text-white! transition-colors hover:bg-blue-900 lg:hidden"
+                    >
+                        <Sparkles className="size-4" aria-hidden="true"/>
+                        Ask Valluvar AI
+                    </Link>
                 </nav>
 
                 <div className="flex items-center gap-2">
@@ -101,52 +119,6 @@ export default function AppMenu() {
                             <Menu className="size-5" aria-hidden="true"/>}
                     </button>
                 </div>
-
-                {isMenuOpen && (
-                    <nav
-                        id="mobile-navigation"
-                        className="absolute inset-x-4 top-[calc(100%+0.5rem)] rounded-2xl border border-blue-100 bg-white p-2 shadow-xl shadow-blue-950/10 lg:hidden"
-                        aria-label="Mobile navigation"
-                    >
-                        {navigationItems.map(({label, href, icon: Icon, external}) => {
-                            const active = isActive(href, external);
-
-                            return (
-                                <Link
-                                    key={label}
-                                    href={href}
-                                    {...(external ? externalLinkProps : {})}
-                                    onClick={closeMenu}
-                                    aria-current={active ? 'page' : undefined}
-                                    className={`flex items-center gap-3 rounded-xl px-4 py-3.5 text-base font-semibold transition-colors ${
-                                        active ? 'bg-blue-50 text-blue-800 ring-1 ring-blue-100' : 'text-slate-700 hover:bg-blue-50 hover:text-blue-800'
-                                    }`}
-                                >
-                                    <Icon className={`size-4 ${active ? 'text-blue-800' : 'text-blue-700'}`}
-                                          aria-hidden="true"/>
-                                    {label}
-                                </Link>
-                            );
-                        })}
-                        <Link
-                            href="mailto:ramachandrannellai@gmail.com"
-                            onClick={closeMenu}
-                            className="flex items-center gap-3 rounded-xl px-4 py-3.5 text-base font-semibold text-slate-700 transition-colors hover:bg-blue-50 hover:text-blue-800"
-                        >
-                            <Mail className="size-4 text-blue-700" aria-hidden="true"/>
-                            Contact
-                        </Link>
-                        <Link
-                            href="/chat"
-                            {...externalLinkProps}
-                            onClick={closeMenu}
-                            className="mt-1 flex items-center justify-center gap-2 rounded-xl bg-blue-800 px-4 py-3.5 text-base font-semibold text-white! transition-colors hover:bg-blue-900"
-                        >
-                            <Sparkles className="size-4" aria-hidden="true"/>
-                            Ask Valluvar AI
-                        </Link>
-                    </nav>
-                )}
             </div>
         </header>
     );
