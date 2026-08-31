@@ -88,7 +88,7 @@ export default function Home() {
 
             <div className="relative mx-auto max-w-7xl px-4 pb-16 sm:px-8 lg:px-10">
                 <section className="grid items-center gap-12 pb-14 pt-12 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16 lg:pb-20 lg:pt-20">
-                    <div className="max-w-2xl">
+                    <div className="order-1 max-w-2xl lg:order-2">
                         <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-blue-200 bg-white/70 px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.18em] text-blue-700 shadow-sm backdrop-blur">
                             <Crown className="size-3.5 text-amber-500" />
                             Ancient wisdom · modern access
@@ -120,7 +120,7 @@ export default function Home() {
                         </div>
                     </div>
 
-                    <div className="relative mx-auto w-full max-w-md lg:max-w-lg">
+                    <div className="order-2 relative mx-auto w-full max-w-md lg:order-1 lg:max-w-lg">
                         <div className="absolute inset-8 rounded-full bg-blue-200/60 blur-3xl" aria-hidden="true" />
                         <div className="relative flex aspect-square items-center justify-center rounded-[2.5rem] border border-white/80 bg-white/55 p-8 shadow-2xl shadow-blue-900/10 backdrop-blur-sm sm:p-12">
                             <Image
