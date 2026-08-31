@@ -194,78 +194,7 @@ export default function Home() {
 
             <hr />
 
-            <section
-                className={'content-wrapper'}
-                style={{
-                    padding: '2rem',
-                    marginTop: '1rem',
-                    marginBottom: '2rem',
-                    overflowX: 'auto',
-                    backgroundColor: 'white',
-                    borderRadius: '15px',
-                    boxShadow: `0 6px 12px ${primaryLight}`,
-                    width: '100%',
-                    border: `2px solid ${primaryColor}`,
-                }}
-            >
-                <h2
-                    style={{
-                        fontSize: '1.5em',
-                        color: `${primaryColor}`,
-                        marginBottom: '10px',
-                        borderBottom: `2px solid ${primaryColor}`,
-                        paddingBottom: '5px',
-                    }}
-                >
-                    API Information
-                </h2>
-                <div>
-                    <p>
-                        Please refer{' '}
-                        <a style={{ color: `${primaryColor}` }} href={'./openapi/swagger-ui.html#Kural'} target={'_blank'}>
-                            OpenAPI Specification with Swagger UI
-                        </a>{' '}
-                        for detailed information.{' '}
-                    </p>
-                </div>
 
-                <div className={'api-spec'}>
-                    <p style={{ color: `${primaryColor}` }}>Use the following API to get kural of the day:</p>
-                    <code style={{ backgroundColor: `${backgroundColor}` }}>https://tamil-kural-api.vercel.app/api/daily</code>
-                </div>
-
-                <div className={'api-spec'}>
-                    <p style={{ color: `${primaryColor}` }}>Use the following API to get specific kural by id:</p>
-                    <code style={{ backgroundColor: `${backgroundColor}` }}>https://tamil-kural-api.vercel.app/api/kural/:id</code>
-                </div>
-
-                <div className={'api-spec'}>
-                    <p style={{ color: `${primaryColor}` }}>Use the following API to get random kural:</p>
-                    <code style={{ backgroundColor: `${backgroundColor}` }}>https://tamil-kural-api.vercel.app/api/random</code>
-                </div>
-
-                <h3
-                    style={{
-                        fontSize: '0.9em',
-                        color: `${primaryColor}`,
-                        marginBottom: '10px',
-                    }}
-                >
-                    Response
-                </h3>
-                <pre
-                    style={{
-                        backgroundColor: `${backgroundColor}`,
-                        padding: '1rem',
-                        borderRadius: '5px',
-                        fontSize: '0.9em',
-                        overflowX: 'auto',
-                        color: '#333',
-                    }}
-                >
-                    {JSON.stringify(kural, null, 2)}
-                </pre>
-            </section>
         </div>
     );
 }
