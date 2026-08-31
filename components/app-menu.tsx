@@ -4,7 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import {usePathname} from 'next/navigation';
 import {useState} from 'react';
-import {BookOpen, Code2, GitFork, HomeIcon, type LucideIcon, Menu, Phone, Sparkles, X} from 'lucide-react';
+import {BookOpen, CircleUserRound, Code2, GitFork, HomeIcon, type LucideIcon, Menu, Sparkles, X} from 'lucide-react';
 
 type NavigationItem = {
     label: string;
@@ -18,7 +18,7 @@ const navigationItems: NavigationItem[] = [
     {label: 'API', href: '/api/kural', icon: Code2, external: true},
     {label: 'Doc', href: '/openapi/swagger-ui.html#Kural', icon: BookOpen, external: true},
     {label: 'GitHub', href: 'https://github.com/nramc/thirukkural-api', icon: GitFork, external: true},
-    {label: 'Contact', href: 'https://myprofile.codewithram.dev/', icon: Phone, external: true},
+    {label: 'Contact', href: 'https://myprofile.codewithram.dev/', icon: CircleUserRound, external: true},
 ];
 
 const externalLinkProps = {
