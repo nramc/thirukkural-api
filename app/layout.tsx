@@ -3,7 +3,7 @@ import localFont from 'next/font/local';
 import './globals.css';
 import './assets/css/card-layout.css';
 import React from 'react';
-import AppMenu from "@/components/app-menu";
+import AppMenu from '@/components/app-menu';
 
 const geistSans = localFont({
     src: './fonts/GeistVF.woff',
@@ -17,8 +17,47 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-    title: 'Thirukkural API',
-    description: 'Connecting ancient Tamil philosophy with today’s digital landscape.',
+    metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? 'https://kural.codewithram.dev'),
+    title: {
+        default: 'Thirukkural | Free Tamil Wisdom for Everyone',
+        template: '%s | Thirukkural',
+    },
+    description: 'Explore 1,330 Thirukkural couplets and meanings freely. Made with love for Tamil, connecting ancient wisdom with today’s digital life.',
+    keywords: ['Thirukkural', 'Tamil wisdom', 'Tamil literature', 'Valluvar', 'Tamil couplets', 'Thirukkural API'],
+    alternates: {
+        canonical: '/',
+    },
+    openGraph: {
+        title: 'Thirukkural | Free Tamil Wisdom for Everyone',
+        description: 'Explore 1,330 Thirukkural couplets and meanings freely. Made with love for Tamil, connecting ancient wisdom with today’s digital life.',
+        url: '/',
+        siteName: 'Thirukkural',
+        type: 'website',
+        locale: 'en_US',
+        images: [
+            {
+                url: '/images/thirukkural-api-banner.png',
+                width: 1920,
+                height: 1080,
+                alt: 'Thirukkural API — ancient Tamil wisdom for today',
+            },
+        ],
+    },
+    robots: {
+        index: true,
+        follow: true,
+    },
+    manifest: '/site.webmanifest',
+    icons: {
+        icon: [
+            { url: '/favicon.svg', type: 'image/svg+xml' },
+            { url: '/favicon-96x96.png', type: 'image/png', sizes: '96x96' },
+            { url: '/favicon-32x32.png', type: 'image/png', sizes: '32x32' },
+            { url: '/favicon-16x16.png', type: 'image/png', sizes: '16x16' },
+        ],
+        shortcut: '/favicon.ico',
+        apple: '/apple-touch-icon.png',
+    },
 };
 
 export default function RootLayout({
@@ -28,22 +67,10 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="ta">
-        <head>
-            <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96"/>
-            <link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
-            <link rel="shortcut icon" href="/favicon.ico"/>
-            <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"/>
-            <meta name="apple-mobile-web-app-title" content="Thirukkural"/>
-            <link rel="manifest" href="/site.webmanifest"/>
-            <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"/>
-            <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"/>
-
-            <title>Thirukkural</title>
-        </head>
-        <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <AppMenu/>
-        {children}
-        </body>
+            <body className={`${geistSans.variable} ${geistMono.variable}`}>
+                <AppMenu />
+                {children}
+            </body>
         </html>
     );
 }
