@@ -4,6 +4,7 @@ import './globals.css';
 import './assets/css/card-layout.css';
 import React from 'react';
 import AppMenu from '@/components/app-menu';
+import Footer from '@/components/footer';
 
 const geistSans = localFont({
     src: './fonts/GeistVF.woff',
@@ -70,6 +71,7 @@ export default function RootLayout({
             <body className={`${geistSans.variable} ${geistMono.variable}`}>
                 <AppMenu />
                 {children}
+                <Footer />
             </body>
         </html>
     );
