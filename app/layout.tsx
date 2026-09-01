@@ -3,8 +3,7 @@ import localFont from 'next/font/local';
 import './globals.css';
 import './assets/css/card-layout.css';
 import React from 'react';
-import AppMenu from '@/components/app-menu';
-import Footer from '@/components/footer';
+import SiteChrome from '@/components/site-chrome';
 
 const geistSans = localFont({
     src: './fonts/GeistVF.woff',
@@ -69,9 +68,7 @@ export default function RootLayout({
     return (
         <html lang="ta">
             <body className={`${geistSans.variable} ${geistMono.variable}`}>
-                <AppMenu />
-                {children}
-                <Footer />
+                <SiteChrome>{children}</SiteChrome>
             </body>
         </html>
     );
