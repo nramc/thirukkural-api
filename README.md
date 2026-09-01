@@ -1,257 +1,220 @@
 <p align="center">
-
-<img src="/public/images/thirukkural-api-banner.png" alt="Thirukkural API"/>
-
+  <img src="./public/favicon.svg" width="120" alt="Thirukkural API logo" style="border: 1px solid #000;border-radius: 50%;" />
 </p>
 
-# Thirukkural API
+<h1 align="center">Thirukkural API</h1>
 
-> Connecting ancient Tamil philosophy with today’s digital landscape.
+<p align="center">
+  A developer-friendly REST API for exploring the 1,330 couplets of <em>Thirukkural</em> — with Tamil text, translations, and meanings.
+</p>
 
-[![Website](https://img.shields.io/badge/website-online-brightgreen.svg)](https://tamil-kural-api.vercel.app/)
-[![Documentation](https://img.shields.io/badge/Swagger-85EA2D?style=for-the-badge&logo=Swagger&logoColor=black&style=for-the-badge)](https://tamil-kural-api.vercel.app/openapi/swagger-ui.html#Kural)
-[![Thirukkural API](https://img.shields.io/badge/Thirukkural-OpenAPI-green?logo=swagger&logoColor=white)](https://tamil-kural-api.vercel.app/openapi/openapi.yaml)
-[![Badge](https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=159&style=flat)](https://www.linkedin.com/in/ramachandran-nellaiyappan/)
+<p align="center">
+  <a href="https://kural.codewithram.dev">Live App</a> ·
+  <a href="https://kural.codewithram.dev/openapi/swagger-ui.html">Swagger UI</a> ·
+  <a href="https://kural.codewithram.dev/openapi/openapi.yaml">OpenAPI specification</a>
+</p>
 
-Welcome to the Thirukkural API project!
+<p align="center">
+  <a href="./LICENSE"><img src="https://img.shields.io/badge/license-MIT-green?logo=opensourceinitiative&logoColor=white" alt="MIT License" /></a>
+  <a href="./public/openapi/openapi.yaml"><img src="https://img.shields.io/badge/OpenAPI-3.1-6BA539?logo=openapiinitiative&logoColor=white" alt="OpenAPI 3.1 specification" /></a>
+  <a href="./package.json"><img src="https://img.shields.io/badge/Node.js-24.20.0-339933?logo=nodedotjs&logoColor=white" alt="Node.js 24.20.0" /></a>
+  <a href="https://www.linkedin.com/in/ramachandran-nellaiyappan/"><img src="https://img.shields.io/badge/LinkedIn-Connect-blue?logo=linkedin&logoColor=white" alt="Connect on LinkedIn" /></a>
+</p>
 
-This project provides a simple REST API to access Thirukkural verses, using a serverless function deployed on Vercel.
-Additionally, it includes a React-based frontend to display a random "Kural of the Day" and information about how to use
-the API.
+## Why this project?
 
-## Features
+Thirukkural is a classic Tamil work of 1,330 couplets covering virtue, prosperity, and love. This project makes that
+wisdom easy to discover and integrate into applications through a small, serverless-friendly API and a Next.js web
+experience.
 
-- **Kural of the Day**: Displays a random Thirukkural verse with its meaning in multiple languages.
-- **REST API**: A simple serverless API that returns requested Kural in JSON format.
-- **Multiple Meanings**: Includes meanings by Mu. Varadarajan, Solomon Pappaiah, Kalaignar Karunanidhi, and English translation.
-- **Modern Web Technology**: Built using TypeScript, React, and Vercel's serverless architecture.
+### Highlights
 
-## Getting Started
+- **Complete collection** — retrieve any Kural from 1–1330.
+- **Useful discovery endpoints** — daily, random, chapter, section, and keyword search.
+- **Rich responses** — Tamil couplets plus meanings by Mu. Varadarajan, Solomon Pappayya, Kalaignar, and an English
+  translation.
+- **AI-assisted exploration** — an optional chat experience powered by Ollama or OpenRouter.
+- **OpenAPI included** — browse the interactive Swagger UI or import the specification into your favorite client.
 
-### Prerequisites
+## Quick start
 
-Make sure you have the following installed on your local machine:
+### Requirements
 
-- **Node.js** (version 20.x or higher)
-- **npm** or **yarn**
-- **Vercel CLI** (for deployment)
+- [Node.js](https://nodejs.org/) `24.20.0` (see `package.json`)
+- npm
 
-### Installation
+### Run locally
 
-1. **Clone the Repository**
-
-    ```bash
-    git clone https://github.com/nramc/thirukkural-api.git
-    cd thirukkural-api
-    ```
-
-2. **Install Dependencies**
-
-    ```bash
-    npm install
-    or
-    yarn install
-    ```
-
-3. **Run the Project Locally**
-
-    ```bash
-    npm run dev
-    ```
-
-4. Your application will be available at [http://localhost:3000](http://localhost:3000)
-
-### Local LLM development
-
-The chat route supports local Ollama development and OpenRouter deployment.
-Configure the server with `LLM_PROVIDER`, `LLM_MODEL`, and, for OpenRouter,
-server-only `LLM_API_KEY`. `LLM_ALLOWED_MODELS` can restrict the configured
-model to a comma-separated server-approved list. Local values belong in the
-ignored `.env.local` file.
-
-## Project Structure
-
-- **/public/data/kurals.json**: Contains the full list of Thirukkural verses in JSON format.
-- **/app/service/
-    - kural-service.ts**: A service file that loads and retrieves Kurals.
-    - daily-kural-service.ts**: A service file that provides the Kural of the day.
-    - random-kural-service.ts**: A service file that provides random Kurals with optional section filtering.
-- **/app/api/kural/[id]/**: A serverless function that returns a requested Kural as JSON.
-- **/app/api/daily/**: A serverless function that returns a Kural of the day as JSON.
-- **/app/api/random/**: A serverless function that returns a random Kural as JSON, with optional section filtering.
-- **/app/api/chat/**: The server-side AI SDK chat route used by the browser.
-- **/app/chat/page.tsx**: The dedicated browser chat experience, available at `/chat`.
-- **/app/page.tsx**: The main React component for the homepage.
-
-## Usage
-
-### Kural of the Day API
-
-You can use the following endpoint to get Thirukkural of the day:
-
-```http request
-GET https://tamil-kural-api.vercel.app/api/daily
+```bash
+git clone https://github.com/nramc/thirukkural-api.git
+cd thirukkural-api
+npm install
+npm run dev
 ```
 
-Example Response
+Open [http://localhost:3000](http://localhost:3000) to view the app. The local API is available under
+`http://localhost:3000/api`.
+
+For a production-like local run:
+
+```bash
+npm run build
+npm run start
+```
+
+## API at a glance
+
+The production API base URL is `https://kural.codewithram.dev/api`. Single-Kural, daily, and random endpoints return
+this core shape:
 
 ```json
 {
-    "chapter": "கடவுள் வாழ்த்து",
-    "kural": ["அகர முதல எழுத்தெல்லாம் ஆதி", "பகவன் முதற்றே உலகு."],
-    "number": 1,
-    "section": "அறத்துப்பால்",
-    "meaning": {
-        "ta_mu_va": "மு.வ : எழுத்துக்கள் எல்லாம் அகரத்தை அடிப்படையாக கொண்டிருக்கின்றன. அதுபோல உலகம் கடவுளை அடிப்படையாக கொண்டிருக்கிறது.",
-        "ta_salamon": "சாலமன் பாப்பையா : எழுத்துக்கள் எல்லாம் அகரத்தில் தொடங்குகின்றன; (அது போல) உலகம் கடவுளில் தொடங்குகிறது.",
-        "ta_kalaignar": "கலைஞர் : அகரம் எழுத்துக்களுக்கு முதன்மை; ஆதிபகவன், உலகில் வாழும் உயிர்களுக்கு முதன்மை",
-        "en": "As the letter A is the first of all letters, so the eternal God is first in the world."
-    }
+  "number": 1,
+  "section": "அறத்துப்பால்",
+  "chapter": "கடவுள் வாழ்த்து",
+  "kural": [
+    "அகர முதல எழுத்தெல்லாம் ஆதி",
+    "பகவன் முதற்றே உலகு."
+  ],
+  "meaning": {
+    "ta_mu_va": "...",
+    "ta_salamon": "...",
+    "ta_kalaignar": "...",
+    "en": "As the letter A is the first of all letters, so the eternal God is first in the world."
+  }
 }
 ```
 
-### Kural API
+| Endpoint                                     | Description                                                                                                                                                                                                                                                                  |
+|----------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `GET /api/kural/{id}`                        | Get one Kural by number (`1`–`1330`).                                                                                                                                                                                                                                        |
+| `GET /api/kural?q={keyword}&page=1&limit=10` | Search meanings and couplet text. `q` accepts comma-separated keywords. Search requests return `{ results, total, page, limit }`. The `page` and `limit` query parameters default to `1` and `10`, respectively; `total` is the number of matching Kurals before pagination. |
+| `GET /api/daily`                             | Get the date-based Kural of the day.                                                                                                                                                                                                                                         |
+| `GET /api/random`                            | Get a random Kural.                                                                                                                                                                                                                                                          |
+| `GET /api/random?section={1\|2\|3}`          | Get a random Kural from a section.                                                                                                                                                                                                                                           |
+| `GET /api/random?chapter={1..133}`           | Get a random Kural from a chapter. `chapter` takes precedence over `section`.                                                                                                                                                                                                |
 
-You can use the following endpoint to get Thirukkural by kural id(1 <= id <= 1330):
+### Examples
 
-```http request
-GET https://tamil-kural-api.vercel.app/api/kural/{id}
+```bash
+# Get Kural 1
+curl https://kural.codewithram.dev/api/kural/1
+
+# Search for Kurals containing a keyword
+curl 'https://kural.codewithram.dev/api/kural?q=அறம்&page=1&limit=5'
+
+# Get a random Kural from the Virtue section
+curl 'https://kural.codewithram.dev/api/random?section=1'
+
+# Get today's Kural
+curl https://kural.codewithram.dev/api/daily
 ```
 
-Example
+Section ranges are `1` — அறத்துப்பால் / Virtue (`1`–`380`), `2` — பொருட்பால் / Wealth (`381`–`1080`), and `3` —
+காமத்துப்பால் / Love (`1081`–`1330`).
 
-```http request
-GET https://tamil-kural-api.vercel.app/api/kural/1
+The complete contract is available in [`public/openapi/openapi.yaml`](./public/openapi/openapi.yaml). The OpenAPI file
+currently focuses on the core Kural endpoints; search and chat are documented above and in the source route handlers.
+
+## Optional AI chat
+
+The `/chat` page and `POST /api/chat` route support two providers:
+
+- **Ollama** for local development
+- **OpenRouter** for hosted models
+
+Create `.env.local` (never commit credentials) and configure the provider you want. See [`.env.example`](./.env.example)
+for the repository defaults.
+
+| Variable              | Required       | Purpose                                               |
+|-----------------------|----------------|-------------------------------------------------------|
+| `LLM_PROVIDER`        | Yes            | `ollama` or `openrouter`.                             |
+| `LLM_MODEL`           | Yes            | Model identifier to use.                              |
+| `LLM_ALLOWED_MODELS`  | No             | Comma-separated allowlist for server-approved models. |
+| `OLLAMA_BASE_URL`     | For Ollama     | Ollama server URL.                                    |
+| `LLM_API_KEY`         | For OpenRouter | Server-only OpenRouter API key.                       |
+| `OPENROUTER_SITE_URL` | No             | Optional OpenRouter HTTP referer.                     |
+| `OPENROUTER_APP_NAME` | No             | Optional OpenRouter application title.                |
+
+Example local Ollama configuration:
+
+```dotenv
+LLM_PROVIDER=ollama
+LLM_MODEL=mistral
+OLLAMA_BASE_URL=http://localhost:11434
+LLM_ALLOWED_MODELS=mistral
 ```
 
-```json
-{
-    "chapter": "கடவுள் வாழ்த்து",
-    "kural": ["அகர முதல எழுத்தெல்லாம் ஆதி", "பகவன் முதற்றே உலகு."],
-    "number": 1,
-    "section": "அறத்துப்பால்",
-    "meaning": {
-        "ta_mu_va": "மு.வ : எழுத்துக்கள் எல்லாம் அகரத்தை அடிப்படையாக கொண்டிருக்கின்றன. அதுபோல உலகம் கடவுளை அடிப்படையாக கொண்டிருக்கிறது.",
-        "ta_salamon": "சாலமன் பாப்பையா : எழுத்துக்கள் எல்லாம் அகரத்தில் தொடங்குகின்றன; (அது போல) உலகம் கடவுளில் தொடங்குகிறது.",
-        "ta_kalaignar": "கலைஞர் : அகரம் எழுத்துக்களுக்கு முதன்மை; ஆதிபகவன், உலகில் வாழும் உயிர்களுக்கு முதன்மை",
-        "en": "As the letter A is the first of all letters, so the eternal God is first in the world."
-    }
-}
+The chat API validates messages, limits context size, and exposes Kural lookup tools so the assistant can answer with
+source-backed content. Keep `LLM_API_KEY` server-side and rotate any key that may have been exposed.
+
+## Project layout
+
+```text
+app/
+├── api/                 # REST and chat route handlers
+├── chat/                # AI chat page
+├── domain/              # Kural data types and data access
+├── service/             # Kural, daily, random, and search services
+└── components/          # Shared UI components
+lib/ai/                  # Model resolution, policy, and chat tools
+public/data/             # Chapters, sections, and 1,330 Kurals
+public/openapi/          # OpenAPI YAML and Swagger UI
 ```
 
-### Random Kural API
+## Developer workflow
 
-You can use the following endpoint to get random Thirukkural:
-
-```http request
-GET https://tamil-kural-api.vercel.app/api/random
+```bash
+npm run lint           # ESLint
+npm run typecheck      # TypeScript project check
+npm run format:check   # Prettier check
+npm run security:check # High-severity npm audit check
+npm run verify         # Run the full repository verification suite
 ```
 
-**Optional Query Parameter:**
+`npm test` is currently a placeholder that exits unsuccessfully because no automated test suite has been wired in yet.
+Add tests before changing that behavior.
 
-You can filter random kurals by section using the `section` query parameter:
+## Deploy to Vercel
 
-```http request
-GET https://tamil-kural-api.vercel.app/api/random?section={id}
+The app is designed for [Vercel](https://vercel.com/). Import the repository into a Vercel project, set the environment
+variables required by the optional chat feature, and deploy. For CLI deployment:
+
+```bash
+npm install -g vercel
+vercel login
+vercel
 ```
 
-**Section IDs:**
+Set `NEXT_PUBLIC_SITE_URL` to your canonical public URL when deploying a custom domain so generated metadata and robots
+configuration can use it.
 
-- `1` - அறத்துப்பால் (Arathu Paal - Virtue) - Kurals 1-380
-- `2` - பொருட்பால் (Porutpaal - Wealth) - Kurals 381-1080
-- `3` - காமத்துப்பால் (Inbathubaal - Love) - Kurals 1081-1330
+## Contributing
 
-**Examples:**
+Contributions, corrections, and ideas are welcome. A typical workflow is:
 
-Get random kural from all kurals:
+1. Fork the repository and create a focused branch: `git checkout -b feature/my-improvement`.
+2. Make the change and update documentation when behavior changes.
+3. Run `npm run verify` (or the relevant checks while developing).
+4. Open a pull request with a clear summary and testing notes.
 
-```http request
-GET https://tamil-kural-api.vercel.app/api/random
-```
+Please do not commit `.env.local`, API keys, generated build output, or unrelated formatting changes.
 
-Get random kural from a specific section (e.g., Virtue section):
+## License and credits
 
-```http request
-GET https://tamil-kural-api.vercel.app/api/random?section=1
-```
+The source code in this repository is licensed under the [MIT License](./LICENSE), which permits free use, modification,
+and redistribution, including for commercial purposes, subject to the license terms.
 
-Example Response
+The Thirukkural source text, translations, meanings, images, fonts, and other third-party assets may have separate
+copyright or license terms. Review the applicable attribution and license notices before redistributing those materials.
 
-```json
-{
-    "chapter": "கடவுள் வாழ்த்து",
-    "kural": ["அகர முதல எழுத்தெல்லாம் ஆதி", "பகவன் முதற்றே உலகு."],
-    "number": 1,
-    "section": "அறத்துப்பால்",
-    "meaning": {
-        "ta_mu_va": "மு.வ : எழுத்துக்கள் எல்லாம் அகரத்தை அடிப்படையாக கொண்டிருக்கின்றன. அதுபோல உலகம் கடவுளை அடிப்படையாக கொண்டிருக்கிறது.",
-        "ta_salamon": "சாலமன் பாப்பையா : எழுத்துக்கள் எல்லாம் அகரத்தில் தொடங்குகின்றன; (அது போல) உலகம் கடவுளில் தொடங்குகிறது.",
-        "ta_kalaignar": "கலைஞர் : அகரம் எழுத்துக்களுக்கு முதன்மை; ஆதிபகவன், உலகில் வாழும் உயிர்களுக்கு முதன்மை",
-        "en": "As the letter A is the first of all letters, so the eternal God is first in the world."
-    }
-}
-```
+Built with [Next.js](https://nextjs.org/), [React](https://react.dev/), [TypeScript](https://www.typescriptlang.org/),
+and [Vercel](https://vercel.com/).
 
-## Deployment
+Questions or suggestions? Connect with [Ramachandran Nellaiyappan](https://myprofile.codewithram.dev/) or open an issue.
 
-You can deploy this project on Vercel with the following steps:
-
-1. **Login to Vercel**
-
-    ```bash
-    vercel login
-    ```
-
-2. **Deploy the Project**
-
-    ```bash
-       vercel
-    ```
-
-3. Follow the prompts to complete the deployment.
-
-## Technologies Used
-
-- [React](https://react.dev/): For the frontend
-- [TypeScript](https://www.typescriptlang.org/): For type-safe code
-- [Vercel](https://vercel.com/): For serverless deployment
-- [Node.js](https://nodejs.org/): Backend runtime for the serverless function
-- [Renovate](https://docs.renovatebot.com/): Automated dependency updates
-
-## Contribution
-
-Any contributions you make are **greatly appreciated**.
-
-If you like the project and have a suggestion that would make this better, please fork the repo and create a pull
-request.
-You can also simply open an issue with the tag "enhancement".
-
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'feat: Add the AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-## License
-
-This project is open-source and available under the MIT License.
-
-## Contact
-
-Ramachandran
-Nellaiyappan [Website](https://github.com/nramc) | [Twitter](https://twitter.com/ram_n_74) | [E-Mail](mailto:ramachandrannellai@gmail.com)
-
-## Credits
-
-Sincere Thanks to following open source community for their wonderful efforts to make our life much easier.
-
-- [Vercel](https://vercel.com/)
-- [Next.js](https://nextjs.org/)
-
-## Show your support
-
-Give a ⭐️ if you like this project!
-
-**Enjoy using the Thirukkural API and spreading the wisdom of Thirukkural!**
-
----
+<p align="center">
+  <img src="./public/favicon.svg" width="32" alt="Thirukkural icon" />
+  <br />
+  If this project helps you, consider giving it a ⭐ on GitHub.
+</p>

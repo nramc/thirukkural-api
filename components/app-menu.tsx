@@ -86,7 +86,6 @@ export default function AppMenu() {
                     })}
                     <Link
                         href="/chat"
-                        {...externalLinkProps}
                         onClick={closeMenu}
                         className="mt-1 flex items-center justify-center gap-2 rounded-xl bg-blue-800 px-4 py-3.5 text-base font-semibold text-white! transition-colors hover:bg-blue-900 lg:hidden"
                     >
@@ -98,7 +97,6 @@ export default function AppMenu() {
                 <div className="flex items-center gap-2">
                     <Link
                         href="/chat"
-                        {...externalLinkProps}
                         className="hidden items-center gap-2 rounded-lg bg-blue-800 px-4 py-2.5 text-[15px] font-semibold text-white! shadow-md shadow-blue-800/20 transition-all hover:-translate-y-0.5 hover:bg-blue-900 hover:shadow-lg hover:shadow-blue-800/25 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-200 sm:inline-flex"
                     >
                         <Sparkles className="size-4" aria-hidden="true" />
