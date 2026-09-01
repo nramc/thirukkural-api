@@ -162,17 +162,16 @@ export default function Home() {
     const showPendingAssistant = isStreaming && lastMessage?.role !== 'assistant';
 
     useEffect(() => {
-        if (messages.length === 0) return;
 
         const frameId = window.requestAnimationFrame(() => {
             window.scrollTo({
                 top: document.documentElement.scrollHeight,
-                behavior: status === 'streaming' ? 'auto' : 'smooth',
+                behavior: 'smooth',
             });
         });
 
         return () => window.cancelAnimationFrame(frameId);
-    }, [messages, status]);
+    }, [lastMessage?.id, lastMessage?.role]);
 
     const submitMessage = (value: string) => {
         const content = value.trim();

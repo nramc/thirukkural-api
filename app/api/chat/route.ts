@@ -15,7 +15,7 @@ import { ConfigurationError, getLanguageModel, getModel, getProvider } from '@/l
 export const runtime = 'nodejs';
 
 const MAX_OUTPUT_TOKENS = 1_024;
-const MAX_STEP_COUNT = 5;
+const MAX_STEP_COUNT = 3;
 const registeredToolNames = Object.keys(kuralTools);
 
 function logToolEvent(event: Record<string, unknown>) {
