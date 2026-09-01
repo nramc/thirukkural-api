@@ -86,14 +86,14 @@ this core shape:
 }
 ```
 
-| Endpoint                                     | Description                                                                   |
-|----------------------------------------------|-------------------------------------------------------------------------------|
-| `GET /api/kural/{id}`                        | Get one Kural by number (`1`–`1330`).                                         |
-| `GET /api/kural?q={keyword}&page=1&limit=10` | Search meanings and couplet text. `q` accepts comma-separated keywords.       |
-| `GET /api/daily`                             | Get the date-based Kural of the day.                                          |
-| `GET /api/random`                            | Get a random Kural.                                                           |
-| `GET /api/random?section={1\|2\|3}`          | Get a random Kural from a section.                                            |
-| `GET /api/random?chapter={1..133}`           | Get a random Kural from a chapter. `chapter` takes precedence over `section`. |
+| Endpoint                                     | Description                                                                                                                                                                                                                                                                  |
+|----------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `GET /api/kural/{id}`                        | Get one Kural by number (`1`–`1330`).                                                                                                                                                                                                                                        |
+| `GET /api/kural?q={keyword}&page=1&limit=10` | Search meanings and couplet text. `q` accepts comma-separated keywords. Search requests return `{ results, total, page, limit }`. The `page` and `limit` query parameters default to `1` and `10`, respectively; `total` is the number of matching Kurals before pagination. |
+| `GET /api/daily`                             | Get the date-based Kural of the day.                                                                                                                                                                                                                                         |
+| `GET /api/random`                            | Get a random Kural.                                                                                                                                                                                                                                                          |
+| `GET /api/random?section={1\|2\|3}`          | Get a random Kural from a section.                                                                                                                                                                                                                                           |
+| `GET /api/random?chapter={1..133}`           | Get a random Kural from a chapter. `chapter` takes precedence over `section`.                                                                                                                                                                                                |
 
 ### Examples
 
