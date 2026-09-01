@@ -3,6 +3,9 @@ info:
     title: 'Thirukkural REST API'
     description: 'Connecting ancient Tamil philosophy with today’s digital landscape. Explore the ancient wisdom of Thirukkural, a classic Tamil text consisting of 1,330 couplets or Kurals, dealing with various aspects of life and morality.'
     version: 1.0.0
+    license:
+        name: 'MIT License'
+        url: 'https://opensource.org/license/mit/'
 servers:
     - url: 'https://kural.codewithram.dev/api'
       description: 'Production server'

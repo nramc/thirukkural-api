@@ -15,10 +15,9 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/nramc/thirukkural-api"><img src="https://img.shields.io/badge/source-GitHub-181717?logo=github" alt="GitHub repository" /></a>
-  <a href="https://nextjs.org/"><img src="https://img.shields.io/badge/Next.js-16-black?logo=next.js" alt="Next.js 16" /></a>
-  <a href="https://www.typescriptlang.org/"><img src="https://img.shields.io/badge/TypeScript-type--safe-3178C6?logo=typescript&logoColor=white" alt="TypeScript" /></a>
-  <a href="https://vercel.com/"><img src="https://img.shields.io/badge/deploy-Vercel-black?logo=vercel" alt="Deploy with Vercel" /></a>
+  <a href="./LICENSE"><img src="https://img.shields.io/badge/license-MIT-green?logo=opensourceinitiative&logoColor=white" alt="MIT License" /></a>
+  <a href="./public/openapi/openapi.yaml"><img src="https://img.shields.io/badge/OpenAPI-3.1-6BA539?logo=openapiinitiative&logoColor=white" alt="OpenAPI 3.1 specification" /></a>
+  <a href="./package.json"><img src="https://img.shields.io/badge/Node.js-24.20.0-339933?logo=nodedotjs&logoColor=white" alt="Node.js 24.20.0" /></a>
   <a href="https://www.linkedin.com/in/ramachandran-nellaiyappan/"><img src="https://img.shields.io/badge/LinkedIn-Connect-blue?logo=linkedin&logoColor=white" alt="Connect on LinkedIn" /></a>
 </p>
 
@@ -203,13 +202,16 @@ Please do not commit `.env.local`, API keys, generated build output, or unrelate
 
 ## License and credits
 
-The repository currently does not include a `LICENSE` file. Confirm the intended license with the project maintainer
-before redistributing or adding a license notice.
+The source code in this repository is licensed under the [MIT License](./LICENSE), which permits free use, modification,
+and redistribution, including for commercial purposes, subject to the license terms.
+
+The Thirukkural source text, translations, meanings, images, fonts, and other third-party assets may have separate
+copyright or license terms. Review the applicable attribution and license notices before redistributing those materials.
 
 Built with [Next.js](https://nextjs.org/), [React](https://react.dev/), [TypeScript](https://www.typescriptlang.org/),
 and [Vercel](https://vercel.com/).
 
-Questions or suggestions? Connect with [Ramachandran Nellaiyappan](https://github.com/nramc) or open an issue.
+Questions or suggestions? Connect with [Ramachandran Nellaiyappan](https://myprofile.codewithram.dev/) or open an issue.
 
 <p align="center">
   <img src="./public/favicon.svg" width="32" alt="Thirukkural icon" />
