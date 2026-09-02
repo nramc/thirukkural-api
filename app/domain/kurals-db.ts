@@ -33,5 +33,6 @@ export interface Kural {
     section: TaxonomyReference;
     chapter: TaxonomyReference;
     kural: string[];
+    transliteration: [string, string];
     meaning: { [name: string]: string };
 }

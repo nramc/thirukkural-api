@@ -231,6 +231,7 @@ components:
                 - kural
                 - number
                 - section
+                - transliteration
                 - meaning
             properties:
                 chapter:
@@ -245,6 +246,13 @@ components:
                     description: Kural number (1–1330).
                 section:
                     $ref: '#/components/schemas/TaxonomyReference'
+                transliteration:
+                    type: array
+                    description: Two Latin-script transliteration lines corresponding to the Kural couplet.
+                    minItems: 2
+                    maxItems: 2
+                    items:
+                        type: string
                 meaning:
                     $ref: '#/components/schemas/Meaning'
         KuralSearchResponse:

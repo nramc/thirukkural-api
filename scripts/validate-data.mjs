@@ -21,8 +21,20 @@ if (sections.some((section) => !namesAreValid(section.names) || section.firstKur
 if (chapters.some((chapter) => !namesAreValid(chapter.names) || !ids(sections).has(chapter.sectionId) || chapter.firstKural > chapter.lastKural)) {
     throw new Error('Invalid chapter names, section references, or ranges');
 }
-if (kurals.some((kural, index) => kural.number !== index + 1 || !ids(sections).has(kural.sectionId) || !ids(chapters).has(kural.chapterId))) {
-    throw new Error('Kurals must be sequential and reference valid taxonomy IDs');
+if (
+    kurals.some(
+        (kural, index) =>
+            kural.number !== index + 1 ||
+            !ids(sections).has(kural.sectionId) ||
+            !ids(chapters).has(kural.chapterId) ||
+            !Array.isArray(kural.kural) ||
+            kural.kural.length !== 2 ||
+            !Array.isArray(kural.transliteration) ||
+            kural.transliteration.length !== 2 ||
+            kural.transliteration.some((line) => typeof line !== 'string' || !line.trim()),
+    )
+) {
+    throw new Error('Kurals must be sequential, reference valid taxonomy IDs, and contain two transliteration lines');
 }
 for (const kural of kurals) {
     const chapter = chapters.find((item) => item.id === kural.chapterId);

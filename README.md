@@ -73,6 +73,7 @@ this core shape:
     "section": { "id": 1, "names": { "ta": "அறத்துப்பால்", "en": "Virtue" } },
     "chapter": { "id": 1, "names": { "ta": "கடவுள் வாழ்த்து", "en": "The Praise of God" } },
     "kural": ["அகர முதல எழுத்தெல்லாம் ஆதி", "பகவன் முதற்றே உலகு."],
+    "transliteration": ["Akara Mudhala Ezhuththellaam Aadhi", "Pakavan Mudhatre Ulaku"],
     "meaning": {
         "ta_mu_va": "...",
         "ta_salamon": "...",
@@ -82,18 +83,18 @@ this core shape:
 }
 ```
 
-| Endpoint                                     | Description                                                                                                                                                                                                                                                                  |
-| -------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `GET /api/kural/{id}`                        | Get one Kural by number (`1`–`1330`).                                                                                                                                                                                                                                        |
-| `GET /api/kural?q={keyword}&page=1&limit=10` | Search meanings and couplet text. `q` accepts comma-separated keywords. Search requests return `{ results, total, page, limit }`. The `page` and `limit` query parameters default to `1` and `10`, respectively; `total` is the number of matching Kurals before pagination. |
-| `GET /api/kural?section={1\|2\|3}`           | Discover Kurals in a section. `chapter` takes precedence when both filters are supplied.                                                                                                                                                                                     |
-| `GET /api/kural?chapter={1..133}`            | Discover Kurals in a chapter.                                                                                                                                                                                                                                                |
-| `GET /api/sections`                          | List sections with stable IDs, localized names, and Kural ranges.                                                                                                                                                                                                            |
-| `GET /api/chapters?section={1\|2\|3}`        | List chapters, optionally filtered by section, with localized names and Kural ranges.                                                                                                                                                                                        |
-| `GET /api/daily`                             | Get the date-based Kural of the day.                                                                                                                                                                                                                                         |
-| `GET /api/random`                            | Get a random Kural.                                                                                                                                                                                                                                                          |
-| `GET /api/random?section={1\|2\|3}`          | Get a random Kural from a section.                                                                                                                                                                                                                                           |
-| `GET /api/random?chapter={1..133}`           | Get a random Kural from a chapter. `chapter` takes precedence over `section`.                                                                                                                                                                                                |
+| Endpoint                                     | Description                                                                                                                                                                                                                                                                                          |
+| -------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `GET /api/kural/{id}`                        | Get one Kural by number (`1`–`1330`).                                                                                                                                                                                                                                                                |
+| `GET /api/kural?q={keyword}&page=1&limit=10` | Search meanings, Tamil couplet text, and transliteration. `q` accepts comma-separated keywords. Search requests return `{ results, total, page, limit }`. The `page` and `limit` query parameters default to `1` and `10`, respectively; `total` is the number of matching Kurals before pagination. |
+| `GET /api/kural?section={1\|2\|3}`           | Discover Kurals in a section. `chapter` takes precedence when both filters are supplied.                                                                                                                                                                                                             |
+| `GET /api/kural?chapter={1..133}`            | Discover Kurals in a chapter.                                                                                                                                                                                                                                                                        |
+| `GET /api/sections`                          | List sections with stable IDs, localized names, and Kural ranges.                                                                                                                                                                                                                                    |
+| `GET /api/chapters?section={1\|2\|3}`        | List chapters, optionally filtered by section, with localized names and Kural ranges.                                                                                                                                                                                                                |
+| `GET /api/daily`                             | Get the date-based Kural of the day.                                                                                                                                                                                                                                                                 |
+| `GET /api/random`                            | Get a random Kural.                                                                                                                                                                                                                                                                                  |
+| `GET /api/random?section={1\|2\|3}`          | Get a random Kural from a section.                                                                                                                                                                                                                                                                   |
+| `GET /api/random?chapter={1..133}`           | Get a random Kural from a chapter. `chapter` takes precedence over `section`.                                                                                                                                                                                                                        |
 
 ### Examples
 
@@ -119,6 +120,10 @@ positional strings. Each record has a stable numeric `id`, a language-keyed `nam
 `firstKural`/`lastKural` boundaries. Add a locale by adding a key to `names` without changing IDs or Kural records.
 Kural responses expose structured `section` and `chapter` taxonomy references. The source records keep canonical IDs
 internally for validation and filtering; the IDs are available through these references.
+
+Each Kural also includes a two-item `transliteration` array corresponding to the two Tamil couplet lines. The current
+reader-friendly Latin transliterations are sourced from the `transliteration1` and `transliteration2` fields in the
+[public Thirukkural dataset](https://github.com/tk120404/thirukkural/blob/master/thirukkural.json).
 
 The English chapter labels are based on the ordered chapter metadata in the public
 [Thirukkural dataset](https://github.com/tk120404/thirukkural/blob/master/detail.json); the Tamil labels and Kural
