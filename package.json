@@ -13,6 +13,7 @@
         "lint": "eslint .",
         "lint:fix": "eslint . --fix",
         "typecheck": "tsc -b",
+        "validate:data": "node scripts/validate-data.mjs",
         "security:check": "npm audit --audit-level=high",
         "housekeeping": "npm run lint:fix && npm run format",
         "prepare:commit": "npm run housekeeping && npm run build",

@@ -1,3 +1,5 @@
+import taxonomyService from '@/app/service/taxonomy-service';
+
 export class RandomKuralUtils {
     private static randomFromRange(minNumber: number, maxNumber: number) {
         // Generate random kural number within the range
@@ -5,36 +7,25 @@ export class RandomKuralUtils {
     }
 
     static random() {
-        return this.randomFromRange(1, 1330); // Kural numbers range from 1 to 1330
+        const sections = taxonomyService.getSections();
+        return this.randomFromRange(sections[0].firstKural, sections.at(-1)!.lastKural);
     }
 
     static randomFromSection(sectionId: number): number {
-        // Define kural number ranges for each section
-        let minNumber = 0;
-        let maxNumber = 0;
-
-        switch (sectionId) {
-            case 1: // அறத்துப்பால் (Virtue)
-                minNumber = 1;
-                maxNumber = 380;
-                break;
-            case 2: // பொருட்பால் (Wealth)
-                minNumber = 381;
-                maxNumber = 1080;
-                break;
-            case 3: // காமத்துப்பால் (Love)
-                minNumber = 1081;
-                maxNumber = 1330;
-                break;
+        const section = taxonomyService.getSection(sectionId);
+        if (!section) {
+            throw new Error(`Section ${sectionId} was not found`);
         }
 
-        return this.randomFromRange(minNumber, maxNumber);
+        return this.randomFromRange(section.firstKural, section.lastKural);
     }
 
     static randomFromChapter(chapterId: number) {
-        const minNumber = (chapterId - 1) * 10 + 1;
-        const maxNumber = chapterId * 10;
+        const chapter = taxonomyService.getChapter(chapterId);
+        if (!chapter) {
+            throw new Error(`Chapter ${chapterId} was not found`);
+        }
 
-        return this.randomFromRange(minNumber, maxNumber);
+        return this.randomFromRange(chapter.firstKural, chapter.lastKural);
     }
 }

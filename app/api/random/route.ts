@@ -6,14 +6,24 @@ export async function GET(request: NextRequest) {
 
     // when chapter number provided, return random kural from the chapter
     const chapterId = searchParams.get('chapter');
-    if (chapterId && !Number.isNaN(Number.parseInt(chapterId, 10))) {
-        return NextResponse.json(randomKuralService.getRandomKuralByChapter(Number.parseInt(chapterId, 10)));
+    if (chapterId) {
+        const id = Number(chapterId);
+        if (!Number.isInteger(id) || id < 1 || id > 133) {
+            return NextResponse.json({ error: 'chapter must be an integer between 1 and 133' }, { status: 400 });
+        }
+
+        return NextResponse.json(randomKuralService.getRandomKuralByChapter(id));
     }
 
     // when section number provided, return random kural from the section
     const sectionId = searchParams.get('section');
-    if (sectionId && ['1', '2', '3'].includes(sectionId)) {
-        return NextResponse.json(randomKuralService.getRandomKuralBySection(Number.parseInt(sectionId, 10)));
+    if (sectionId) {
+        const id = Number(sectionId);
+        if (!Number.isInteger(id) || id < 1 || id > 3) {
+            return NextResponse.json({ error: 'section must be an integer between 1 and 3' }, { status: 400 });
+        }
+
+        return NextResponse.json(randomKuralService.getRandomKuralBySection(id));
     }
 
     // Get random kural

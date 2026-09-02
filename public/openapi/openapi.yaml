@@ -50,6 +50,22 @@ paths:
                   schema:
                       type: integer
                       default: 10
+                - name: section
+                  in: query
+                  required: false
+                  description: Filter by section ID. Ignored when chapter is supplied.
+                  schema:
+                      type: integer
+                      minimum: 1
+                      maximum: 3
+                - name: chapter
+                  in: query
+                  required: false
+                  description: Filter by chapter ID. Takes precedence over section.
+                  schema:
+                      type: integer
+                      minimum: 1
+                      maximum: 133
             responses:
                 200:
                     description: Paginated Kural search results
@@ -131,8 +147,83 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/Kural'
+    /sections:
+        get:
+            tags:
+                - Taxonomy
+            summary: List sections
+            responses:
+                200:
+                    description: Sections with localized names and inclusive Kural ranges.
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                required: [sections]
+                                properties:
+                                    sections:
+                                        type: array
+                                        items:
+                                            $ref: '#/components/schemas/Section'
+    /chapters:
+        get:
+            tags:
+                - Taxonomy
+            summary: List chapters
+            parameters:
+                - name: section
+                  in: query
+                  required: false
+                  description: Filter chapters by section ID.
+                  schema:
+                      type: integer
+                      minimum: 1
+                      maximum: 3
+            responses:
+                200:
+                    description: Chapters with localized names and inclusive Kural ranges.
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                required: [chapters]
+                                properties:
+                                    chapters:
+                                        type: array
+                                        items:
+                                            $ref: '#/components/schemas/Chapter'
 components:
     schemas:
+        LocalizedNames:
+            type: object
+            description: Language-keyed display names. Keys use locale codes such as ta and en.
+            additionalProperties:
+                type: string
+        TaxonomyReference:
+            type: object
+            required: [id, names]
+            properties:
+                id:
+                    type: integer
+                names:
+                    $ref: '#/components/schemas/LocalizedNames'
+        Section:
+            type: object
+            required: [id, names, firstKural, lastKural]
+            properties:
+                id: { type: integer, minimum: 1, maximum: 3 }
+                names: { $ref: '#/components/schemas/LocalizedNames' }
+                firstKural: { type: integer, minimum: 1, maximum: 1330 }
+                lastKural: { type: integer, minimum: 1, maximum: 1330 }
+        Chapter:
+            type: object
+            required: [id, sectionId, names, firstKural, lastKural]
+            properties:
+                id: { type: integer, minimum: 1, maximum: 133 }
+                sectionId: { type: integer, minimum: 1, maximum: 3 }
+                names: { $ref: '#/components/schemas/LocalizedNames' }
+                firstKural: { type: integer, minimum: 1, maximum: 1330 }
+                lastKural: { type: integer, minimum: 1, maximum: 1330 }
         Kural:
             type: object
             required:
@@ -140,11 +231,11 @@ components:
                 - kural
                 - number
                 - section
+                - transliteration
                 - meaning
             properties:
                 chapter:
-                    type: string
-                    description: Chapter name in Tamil.
+                    $ref: '#/components/schemas/TaxonomyReference'
                 kural:
                     type: array
                     description: Two lines of the Kural.
@@ -154,8 +245,14 @@ components:
                     type: integer
                     description: Kural number (1–1330).
                 section:
-                    type: string
-                    description: Section name in Tamil.
+                    $ref: '#/components/schemas/TaxonomyReference'
+                transliteration:
+                    type: array
+                    description: Two Latin-script transliteration lines corresponding to the Kural couplet.
+                    minItems: 2
+                    maxItems: 2
+                    items:
+                        type: string
                 meaning:
                     $ref: '#/components/schemas/Meaning'
         KuralSearchResponse:

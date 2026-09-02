@@ -1,3 +1,31 @@
 {
-    "sections": ["அறத்துப்பால்", "பொருட்பால்", "காமத்துப்பால்"]
+    "sections": [
+        {
+            "id": 1,
+            "names": {
+                "ta": "அறத்துப்பால்",
+                "en": "Virtue"
+            },
+            "firstKural": 1,
+            "lastKural": 380
+        },
+        {
+            "id": 2,
+            "names": {
+                "ta": "பொருட்பால்",
+                "en": "Wealth"
+            },
+            "firstKural": 381,
+            "lastKural": 1080
+        },
+        {
+            "id": 3,
+            "names": {
+                "ta": "காமத்துப்பால்",
+                "en": "Love"
+            },
+            "firstKural": 1081,
+            "lastKural": 1330
+        }
+    ]
 }

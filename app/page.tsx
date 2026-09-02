@@ -57,13 +57,23 @@ export default function Home() {
                     <Link href={`/kural/${kural.number}`} className="hover:text-white">
                         குறள் · Couplet {kural.number}
                     </Link>
-                    <span className="rounded-full bg-white/10 px-3 py-1 normal-case tracking-normal text-blue-100">{kural.chapter}</span>
+                    <span className="rounded-full bg-white/10 px-3 py-1 normal-case tracking-normal text-blue-100">
+                        {kural.chapter.names.ta} · {kural.chapter.names.en}
+                    </span>
                 </div>
+                <p className="mt-3 text-sm text-blue-200">
+                    {kural.section.names.ta} · {kural.section.names.en}
+                </p>
                 <blockquote className="mt-7 border-l-2 border-amber-300 pl-5 font-serif text-xl font-medium leading-9 text-white sm:text-2xl sm:leading-10">
                     {kural.kural[0]}
                     <br />
                     {kural.kural[1]}
                 </blockquote>
+                <p className="mt-3 border-l-2 border-blue-300/50 pl-5 text-sm italic leading-7 text-blue-100 sm:text-base">
+                    {kural.transliteration[0]}
+                    <br />
+                    {kural.transliteration[1]}
+                </p>
                 <div className="mt-7 grid gap-3 sm:grid-cols-2">
                     <p className="rounded-2xl bg-white/10 p-4 text-sm leading-6 text-blue-50">
                         <span className="mb-1 block text-xs font-bold uppercase tracking-wider text-amber-200">தமிழ் விளக்கம்</span>
