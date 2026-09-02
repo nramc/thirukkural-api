@@ -1,8 +1,10 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import { Kural, KuralsDb } from '@/app/domain/kurals-db';
+import { Kural } from '@/app/domain/kurals-db';
+import taxonomyService from '@/app/service/taxonomy-service';
 
 type KuralPageable = { results: Kural[]; total: number; page: number; limit: number };
+type RawKural = Omit<Kural, 'sectionRef' | 'chapterRef'>;
 
 class KuralService {
     private readonly kurals: Kural[];
@@ -13,8 +15,28 @@ class KuralService {
 
     // Load the JSON data once when the service is instantiated
     private loadKurals(): Kural[] {
-        const kuralsDB = JSON.parse(fs.readFileSync(path.resolve('public/data/kurals.json'), 'utf-8')) as KuralsDb;
-        return kuralsDB.kurals;
+        const kuralsDB = JSON.parse(fs.readFileSync(path.resolve('public/data/kurals.json'), 'utf-8')) as { kurals: RawKural[] };
+        return kuralsDB.kurals.map((kural) => {
+            const section = taxonomyService.getSection(kural.sectionId);
+            const chapter = taxonomyService.getChapter(kural.chapterId);
+            if (
+                !section ||
+                !chapter ||
+                chapter.sectionId !== section.id ||
+                kural.number < chapter.firstKural ||
+                kural.number > chapter.lastKural ||
+                kural.section !== section.names.ta ||
+                kural.chapter !== chapter.names.ta
+            ) {
+                throw new Error(`Kural ${kural.number} does not map to valid taxonomy data`);
+            }
+
+            return {
+                ...kural,
+                sectionRef: { id: section.id, names: section.names },
+                chapterRef: { id: chapter.id, names: chapter.names },
+            };
+        });
     }
 
     // Search function to find Kurals based on ID
@@ -23,7 +45,7 @@ class KuralService {
     }
 
     // search kural by query param q and pagination
-    public searchByKeyword(keywords: string[], page: number = 1, limit: number = 10): KuralPageable {
+    public searchByKeyword(keywords: string[], page: number = 1, limit: number = 10, sectionId?: number, chapterId?: number): KuralPageable {
         let filteredKurals: Kural[] = [];
 
         if (keywords.length > 0) {
@@ -35,6 +57,12 @@ class KuralService {
         } else {
             filteredKurals = this.kurals;
         }
+
+        filteredKurals = filteredKurals.filter(
+            (kural) =>
+                (chapterId === undefined || kural.chapterId === chapterId) &&
+                (chapterId !== undefined || sectionId === undefined || kural.sectionId === sectionId),
+        );
 
         const total = filteredKurals.length;
         const startIndex = (page - 1) * limit;
