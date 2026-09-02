@@ -79,4 +79,3 @@ Before considering a change complete:
 2. Update documentation for externally visible behavior.
 3. Run the relevant formatter, lint, typecheck, build, and security checks.
 4. Review the diff for secrets, unrelated formatting, and accidental generated files.
-

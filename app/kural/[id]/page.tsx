@@ -135,4 +135,3 @@ export default async function KuralPage({ params }: Readonly<KuralPageProps>) {
         </main>
     );
 }
-

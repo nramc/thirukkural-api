@@ -108,48 +108,48 @@ export function AddToCartButton({ productId }: { productId: string }) {
 
 ```typescript
 // app/actions/cart.ts
-"use server";
+'use server';
 
-import { revalidateTag } from "next/cache";
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
+import { revalidateTag } from 'next/cache';
+import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
 
 export async function addToCart(productId: string) {
-  const cookieStore = await cookies();
-  const sessionId = cookieStore.get("session")?.value;
+    const cookieStore = await cookies();
+    const sessionId = cookieStore.get('session')?.value;
 
-  if (!sessionId) {
-    redirect("/login");
-  }
+    if (!sessionId) {
+        redirect('/login');
+    }
 
-  try {
-    await db.cart.upsert({
-      where: { sessionId_productId: { sessionId, productId } },
-      update: { quantity: { increment: 1 } },
-      create: { sessionId, productId, quantity: 1 },
-    });
+    try {
+        await db.cart.upsert({
+            where: { sessionId_productId: { sessionId, productId } },
+            update: { quantity: { increment: 1 } },
+            create: { sessionId, productId, quantity: 1 },
+        });
 
-    revalidateTag("cart");
-    return { success: true };
-  } catch (error) {
-    return { error: "Failed to add item to cart" };
-  }
+        revalidateTag('cart');
+        return { success: true };
+    } catch (error) {
+        return { error: 'Failed to add item to cart' };
+    }
 }
 
 export async function checkout(formData: FormData) {
-  const address = formData.get("address") as string;
-  const payment = formData.get("payment") as string;
+    const address = formData.get('address') as string;
+    const payment = formData.get('payment') as string;
 
-  // Validate
-  if (!address || !payment) {
-    return { error: "Missing required fields" };
-  }
+    // Validate
+    if (!address || !payment) {
+        return { error: 'Missing required fields' };
+    }
 
-  // Process order
-  const order = await processOrder({ address, payment });
+    // Process order
+    const order = await processOrder({ address, payment });
 
-  // Redirect to confirmation
-  redirect(`/orders/${order.id}/confirmation`);
+    // Redirect to confirmation
+    redirect(`/orders/${order.id}/confirmation`);
 }
 ```
 
@@ -310,43 +310,40 @@ async function Recommendations({ productId }: { productId: string }) {
 
 ```typescript
 // app/api/products/route.ts
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(request: NextRequest) {
-  const searchParams = request.nextUrl.searchParams;
-  const category = searchParams.get("category");
+    const searchParams = request.nextUrl.searchParams;
+    const category = searchParams.get('category');
 
-  const products = await db.product.findMany({
-    where: category ? { category } : undefined,
-    take: 20,
-  });
+    const products = await db.product.findMany({
+        where: category ? { category } : undefined,
+        take: 20,
+    });
 
-  return NextResponse.json(products);
+    return NextResponse.json(products);
 }
 
 export async function POST(request: NextRequest) {
-  const body = await request.json();
+    const body = await request.json();
 
-  const product = await db.product.create({
-    data: body,
-  });
+    const product = await db.product.create({
+        data: body,
+    });
 
-  return NextResponse.json(product, { status: 201 });
+    return NextResponse.json(product, { status: 201 });
 }
 
 // app/api/products/[id]/route.ts
-export async function GET(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> },
-) {
-  const { id } = await params;
-  const product = await db.product.findUnique({ where: { id } });
+export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+    const { id } = await params;
+    const product = await db.product.findUnique({ where: { id } });
 
-  if (!product) {
-    return NextResponse.json({ error: "Product not found" }, { status: 404 });
-  }
+    if (!product) {
+        return NextResponse.json({ error: 'Product not found' }, { status: 404 });
+    }
 
-  return NextResponse.json(product);
+    return NextResponse.json(product);
 }
 ```
 
@@ -405,24 +402,24 @@ export default async function ProductPage({ params }: Props) {
 
 ```typescript
 // No cache (always fresh)
-fetch(url, { cache: "no-store" });
+fetch(url, { cache: 'no-store' });
 
 // Cache forever (static)
-fetch(url, { cache: "force-cache" });
+fetch(url, { cache: 'force-cache' });
 
 // ISR - revalidate after 60 seconds
 fetch(url, { next: { revalidate: 60 } });
 
 // Tag-based invalidation
-fetch(url, { next: { tags: ["products"] } });
+fetch(url, { next: { tags: ['products'] } });
 
 // Invalidate via Server Action
-("use server");
-import { revalidateTag, revalidatePath } from "next/cache";
+('use server');
+import { revalidateTag, revalidatePath } from 'next/cache';
 
 export async function updateProduct(id: string, data: ProductData) {
-  await db.product.update({ where: { id }, data });
-  revalidateTag("products");
-  revalidatePath("/products");
+    await db.product.update({ where: { id }, data });
+    revalidateTag('products');
+    revalidatePath('/products');
 }
 ```

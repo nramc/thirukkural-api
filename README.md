@@ -69,24 +69,21 @@ this core shape:
 
 ```json
 {
-  "number": 1,
-  "section": "அறத்துப்பால்",
-  "chapter": "கடவுள் வாழ்த்து",
-  "kural": [
-    "அகர முதல எழுத்தெல்லாம் ஆதி",
-    "பகவன் முதற்றே உலகு."
-  ],
-  "meaning": {
-    "ta_mu_va": "...",
-    "ta_salamon": "...",
-    "ta_kalaignar": "...",
-    "en": "As the letter A is the first of all letters, so the eternal God is first in the world."
-  }
+    "number": 1,
+    "section": "அறத்துப்பால்",
+    "chapter": "கடவுள் வாழ்த்து",
+    "kural": ["அகர முதல எழுத்தெல்லாம் ஆதி", "பகவன் முதற்றே உலகு."],
+    "meaning": {
+        "ta_mu_va": "...",
+        "ta_salamon": "...",
+        "ta_kalaignar": "...",
+        "en": "As the letter A is the first of all letters, so the eternal God is first in the world."
+    }
 }
 ```
 
 | Endpoint                                     | Description                                                                                                                                                                                                                                                                  |
-|----------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| -------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `GET /api/kural/{id}`                        | Get one Kural by number (`1`–`1330`).                                                                                                                                                                                                                                        |
 | `GET /api/kural?q={keyword}&page=1&limit=10` | Search meanings and couplet text. `q` accepts comma-separated keywords. Search requests return `{ results, total, page, limit }`. The `page` and `limit` query parameters default to `1` and `10`, respectively; `total` is the number of matching Kurals before pagination. |
 | `GET /api/daily`                             | Get the date-based Kural of the day.                                                                                                                                                                                                                                         |
@@ -127,7 +124,7 @@ Create `.env.local` (never commit credentials) and configure the provider you wa
 for the repository defaults.
 
 | Variable              | Required       | Purpose                                               |
-|-----------------------|----------------|-------------------------------------------------------|
+| --------------------- | -------------- | ----------------------------------------------------- |
 | `LLM_PROVIDER`        | Yes            | `ollama` or `openrouter`.                             |
 | `LLM_MODEL`           | Yes            | Model identifier to use.                              |
 | `LLM_ALLOWED_MODELS`  | No             | Comma-separated allowlist for server-approved models. |

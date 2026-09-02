@@ -1,23 +1,23 @@
 {
-  "version": 1,
-  "skills": {
-    "nextjs-app-router-patterns": {
-      "source": "wshobson/agents",
-      "sourceType": "github",
-      "skillPath": "plugins/frontend-mobile-development/skills/nextjs-app-router-patterns/SKILL.md",
-      "computedHash": "b4fea42eecf1f803155ef7fa133d5286ee8f2dbba3e616954e9e43c6f0ffc144"
-    },
-    "vercel-functions-runtime": {
-      "source": "bobmatnyc/claude-mpm-skills",
-      "sourceType": "github",
-      "skillPath": "toolchains/platforms/deployment/vercel-functions-runtime/SKILL.md",
-      "computedHash": "44a4e125d27b945499466d09a49cc2b285d6edbf44bb4975b196d3db7f32ed5b"
-    },
-    "vercel-react-best-practices": {
-      "source": "vercel-labs/agent-skills",
-      "sourceType": "github",
-      "skillPath": "skills/react-best-practices/SKILL.md",
-      "computedHash": "ca7b0c0c6e5f2750043f7f0cd72d16ac4e2abc48f9b5500d047a4b77a2506212"
+    "version": 1,
+    "skills": {
+        "nextjs-app-router-patterns": {
+            "source": "wshobson/agents",
+            "sourceType": "github",
+            "skillPath": "plugins/frontend-mobile-development/skills/nextjs-app-router-patterns/SKILL.md",
+            "computedHash": "b4fea42eecf1f803155ef7fa133d5286ee8f2dbba3e616954e9e43c6f0ffc144"
+        },
+        "vercel-functions-runtime": {
+            "source": "bobmatnyc/claude-mpm-skills",
+            "sourceType": "github",
+            "skillPath": "toolchains/platforms/deployment/vercel-functions-runtime/SKILL.md",
+            "computedHash": "44a4e125d27b945499466d09a49cc2b285d6edbf44bb4975b196d3db7f32ed5b"
+        },
+        "vercel-react-best-practices": {
+            "source": "vercel-labs/agent-skills",
+            "sourceType": "github",
+            "skillPath": "skills/react-best-practices/SKILL.md",
+            "computedHash": "ca7b0c0c6e5f2750043f7f0cd72d16ac4e2abc48f9b5500d047a4b77a2506212"
+        }
     }
-  }
 }
