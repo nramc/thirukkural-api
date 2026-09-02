@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import Link from 'next/link';
 import {useEffect, useState} from 'react';
 import {Kural} from '@/app/domain/kurals-db';
 import {ArrowDown, ArrowRight, BookOpen, Crown} from 'lucide-react';
@@ -55,7 +56,9 @@ export default function Home() {
             <div>
                 <div
                     className="flex flex-wrap items-center justify-between gap-3 text-xs font-semibold uppercase tracking-[0.18em] text-blue-200">
-                    <span>குறள் · Couplet {kural.number}</span>
+                    <Link href={`/kural/${kural.number}`} className="hover:text-white">
+                        குறள் · Couplet {kural.number}
+                    </Link>
                     <span
                         className="rounded-full bg-white/10 px-3 py-1 normal-case tracking-normal text-blue-100">{kural.chapter}</span>
                 </div>
