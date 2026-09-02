@@ -1,137 +1,1334 @@
 {
     "chapters": [
-        "கடவுள் வாழ்த்து",
-        "வான் சிறப்பு",
-        "நீத்தார் பெருமை",
-        "அரண் வலியுறுத்தல்",
-        "இல்வாழ்க்கை",
-        "வாழ்க்கைத் துணைநலம்",
-        "மக்கட்பேறு",
-        "அன்புடைமை",
-        "விருந்தோம்பல்",
-        "இனியவை கூறல்",
-        "செய்ந்நன்றி அறிதல்",
-        "நடுவு நிலைமை",
-        "அடக்கமுடைமை",
-        "ஒழுக்கமுடைமை",
-        "பிறனில் விழையாமை",
-        "பொறையுடைமை",
-        "அழுக்காறாமை",
-        "வெஃகாமை",
-        "புறங்கூறாமை",
-        "பயனில சொல்லாமை",
-        "தீவினையச்சம்",
-        "ஒப்புரவறிதல்",
-        "ஈகை",
-        "புகழ்",
-        "அருளுடைமை",
-        "புலால் மறுத்தல்",
-        "தவம்",
-        "கூடா ஒழுக்கம்",
-        "கள்ளாமை",
-        "வாய்மை",
-        "வெகுளாமை",
-        "இன்னா செய்யாமை",
-        "கொல்லாமை",
-        "நிலையாமை",
-        "துறவு",
-        "மெய்யுணர்தல்",
-        "அவா அறுத்தல்",
-        "ஊழ்",
-        "இறைமாட்சி",
-        "கல்வி",
-        "கல்லாமை",
-        "கேள்வி",
-        "அறிவுடைமை",
-        "குற்றங்கடிதல்",
-        "பெரியாரைத் துணைக்கோடல்",
-        "சிற்றினம் சேராமை",
-        "தெரிந்து செயல்வகை",
-        "வலியறிதல்",
-        "காலம் அறிதல்",
-        "இடன் அறிதல்",
-        "தெரிந்து தெளிதல்",
-        "தெரிந்து வினையாடல்",
-        "சுற்றந் தழால்",
-        "பொச்சாவாமை",
-        "செங்கோன்மை",
-        "கொடுங்கோன்மை",
-        "வெருவந்த செய்யாமை",
-        "கண்ணோட்டம்",
-        "ஒற்றாடல்",
-        "ஊக்கம் உடைமை",
-        "மடி இன்மை",
-        "ஆள்வினை உடைமை",
-        "இடுக்கண் அழியாமை",
-        "அமைச்சு",
-        "சொல்வன்மை",
-        "வினைத்தூய்மை",
-        "வினைத்திட்பம்",
-        "வினைசெயல்வகை",
-        "தூது",
-        "மன்னரைச் சேர்ந்தொழுகல்",
-        "குறிப்பறிதல்",
-        "அவை அறிதல்",
-        "அவை அஞ்சாமை",
-        "நாடு",
-        "அரண்",
-        "பொருள் செயல் வகை",
-        "படைமாட்சி",
-        "படைச் செருக்கு",
-        "நட்பு",
-        "நட்பாராய்தல்",
-        "பழைமை",
-        "தீ நட்பு",
-        "கூடா நட்பு",
-        "பேதைமை",
-        "புல்லறிவாண்மை",
-        "இகல்",
-        "பகைமாட்சி",
-        "பகைத்திறம் தெரிதல்",
-        "உட்பகை",
-        "பெரியாரைப் பிழையாமை",
-        "பெண்வழிச் சேரல்",
-        "வரைவின் மகளிர்",
-        "கள்ளுண்ணாமை",
-        "சூது",
-        "மருந்து",
-        "குடிமை",
-        "மானம்",
-        "பெருமை",
-        "சான்றாண்மை",
-        "பண்புடைமை",
-        "நன்றியில் செல்வம்",
-        "நாணுடைமை",
-        "குடிசெயல் வகை",
-        "உழவு",
-        "நல்குரவு",
-        "இரவு",
-        "இரவச்சம்",
-        "கயமை",
-        "தகையணங்குறுத்தல்",
-        "குறிப்பறிதல்",
-        "புணர்ச்சி மகிழ்தல்",
-        "நலம் புனைந்துரைத்தல்",
-        "காதற் சிறப்புரைத்தல்",
-        "நாணுத் துறவுரைத்தல்",
-        "அலர் அறிவுறுத்தல்",
-        "பிரிவாற்றாமை",
-        "படர்மெலிந் திரங்கல்",
-        "கண்விதுப்பழிதல்",
-        "பசப்புறு பருவரல்",
-        "தனிப்படர் மிகுதி",
-        "நினைந்தவர் புலம்பல்",
-        "கனவுநிலை உரைத்தல்",
-        "பொழுதுகண்டு இரங்கல்",
-        "உறுப்புநலன் அழிதல்",
-        "நெஞ்சோடு கிளத்தல்",
-        "நிறையழிதல்",
-        "அவர்வயின் விதும்பல்",
-        "குறிப்பறிவுறுத்தல்",
-        "புணர்ச்சி விதும்பல்",
-        "நெஞ்சோடு புலத்தல்",
-        "புலவி",
-        "புலவி நுணுக்கம்",
-        "ஊடலுவகை"
+        {
+            "id": 1,
+            "sectionId": 1,
+            "names": {
+                "ta": "கடவுள் வாழ்த்து",
+                "en": "The Praise of God"
+            },
+            "firstKural": 1,
+            "lastKural": 10
+        },
+        {
+            "id": 2,
+            "sectionId": 1,
+            "names": {
+                "ta": "வான் சிறப்பு",
+                "en": "The Blessing of Rain"
+            },
+            "firstKural": 11,
+            "lastKural": 20
+        },
+        {
+            "id": 3,
+            "sectionId": 1,
+            "names": {
+                "ta": "நீத்தார் பெருமை",
+                "en": "The Greatness of Ascetics"
+            },
+            "firstKural": 21,
+            "lastKural": 30
+        },
+        {
+            "id": 4,
+            "sectionId": 1,
+            "names": {
+                "ta": "அரண் வலியுறுத்தல்",
+                "en": "Assertion of the Strength of Virtue"
+            },
+            "firstKural": 31,
+            "lastKural": 40
+        },
+        {
+            "id": 5,
+            "sectionId": 1,
+            "names": {
+                "ta": "இல்வாழ்க்கை",
+                "en": "Domestic Life"
+            },
+            "firstKural": 41,
+            "lastKural": 50
+        },
+        {
+            "id": 6,
+            "sectionId": 1,
+            "names": {
+                "ta": "வாழ்க்கைத் துணைநலம்",
+                "en": "The Worth of a Wife"
+            },
+            "firstKural": 51,
+            "lastKural": 60
+        },
+        {
+            "id": 7,
+            "sectionId": 1,
+            "names": {
+                "ta": "மக்கட்பேறு",
+                "en": "The Wealth of Children"
+            },
+            "firstKural": 61,
+            "lastKural": 70
+        },
+        {
+            "id": 8,
+            "sectionId": 1,
+            "names": {
+                "ta": "அன்புடைமை",
+                "en": "The Possession of Love"
+            },
+            "firstKural": 71,
+            "lastKural": 80
+        },
+        {
+            "id": 9,
+            "sectionId": 1,
+            "names": {
+                "ta": "விருந்தோம்பல்",
+                "en": "Hospitality"
+            },
+            "firstKural": 81,
+            "lastKural": 90
+        },
+        {
+            "id": 10,
+            "sectionId": 1,
+            "names": {
+                "ta": "இனியவை கூறல்",
+                "en": "The Utterance of Pleasant Words"
+            },
+            "firstKural": 91,
+            "lastKural": 100
+        },
+        {
+            "id": 11,
+            "sectionId": 1,
+            "names": {
+                "ta": "செய்ந்நன்றி அறிதல்",
+                "en": "Gratitude"
+            },
+            "firstKural": 101,
+            "lastKural": 110
+        },
+        {
+            "id": 12,
+            "sectionId": 1,
+            "names": {
+                "ta": "நடுவு நிலைமை",
+                "en": "Impartiality"
+            },
+            "firstKural": 111,
+            "lastKural": 120
+        },
+        {
+            "id": 13,
+            "sectionId": 1,
+            "names": {
+                "ta": "அடக்கமுடைமை",
+                "en": "The Possession of Self-restraint"
+            },
+            "firstKural": 121,
+            "lastKural": 130
+        },
+        {
+            "id": 14,
+            "sectionId": 1,
+            "names": {
+                "ta": "ஒழுக்கமுடைமை",
+                "en": "The Possession of Decorum"
+            },
+            "firstKural": 131,
+            "lastKural": 140
+        },
+        {
+            "id": 15,
+            "sectionId": 1,
+            "names": {
+                "ta": "பிறனில் விழையாமை",
+                "en": "Not coveting another\"s Wife"
+            },
+            "firstKural": 141,
+            "lastKural": 150
+        },
+        {
+            "id": 16,
+            "sectionId": 1,
+            "names": {
+                "ta": "பொறையுடைமை",
+                "en": "The Possession of Patience, Forbearance"
+            },
+            "firstKural": 151,
+            "lastKural": 160
+        },
+        {
+            "id": 17,
+            "sectionId": 1,
+            "names": {
+                "ta": "அழுக்காறாமை",
+                "en": "Not Envying"
+            },
+            "firstKural": 161,
+            "lastKural": 170
+        },
+        {
+            "id": 18,
+            "sectionId": 1,
+            "names": {
+                "ta": "வெஃகாமை",
+                "en": "Not Coveting"
+            },
+            "firstKural": 171,
+            "lastKural": 180
+        },
+        {
+            "id": 19,
+            "sectionId": 1,
+            "names": {
+                "ta": "புறங்கூறாமை",
+                "en": "Not Backbiting"
+            },
+            "firstKural": 181,
+            "lastKural": 190
+        },
+        {
+            "id": 20,
+            "sectionId": 1,
+            "names": {
+                "ta": "பயனில சொல்லாமை",
+                "en": "Against Vain Speaking"
+            },
+            "firstKural": 191,
+            "lastKural": 200
+        },
+        {
+            "id": 21,
+            "sectionId": 1,
+            "names": {
+                "ta": "தீவினையச்சம்",
+                "en": "Dread of Evil Deeds"
+            },
+            "firstKural": 201,
+            "lastKural": 210
+        },
+        {
+            "id": 22,
+            "sectionId": 1,
+            "names": {
+                "ta": "ஒப்புரவறிதல்",
+                "en": "Duty to Society"
+            },
+            "firstKural": 211,
+            "lastKural": 220
+        },
+        {
+            "id": 23,
+            "sectionId": 1,
+            "names": {
+                "ta": "ஈகை",
+                "en": "Giving"
+            },
+            "firstKural": 221,
+            "lastKural": 230
+        },
+        {
+            "id": 24,
+            "sectionId": 1,
+            "names": {
+                "ta": "புகழ்",
+                "en": "Renown"
+            },
+            "firstKural": 231,
+            "lastKural": 240
+        },
+        {
+            "id": 25,
+            "sectionId": 1,
+            "names": {
+                "ta": "அருளுடைமை",
+                "en": "Compassion"
+            },
+            "firstKural": 241,
+            "lastKural": 250
+        },
+        {
+            "id": 26,
+            "sectionId": 1,
+            "names": {
+                "ta": "புலால் மறுத்தல்",
+                "en": "Abstinence from Flesh"
+            },
+            "firstKural": 251,
+            "lastKural": 260
+        },
+        {
+            "id": 27,
+            "sectionId": 1,
+            "names": {
+                "ta": "தவம்",
+                "en": "Penance"
+            },
+            "firstKural": 261,
+            "lastKural": 270
+        },
+        {
+            "id": 28,
+            "sectionId": 1,
+            "names": {
+                "ta": "கூடா ஒழுக்கம்",
+                "en": "Imposture"
+            },
+            "firstKural": 271,
+            "lastKural": 280
+        },
+        {
+            "id": 29,
+            "sectionId": 1,
+            "names": {
+                "ta": "கள்ளாமை",
+                "en": "The Absence of Fraud"
+            },
+            "firstKural": 281,
+            "lastKural": 290
+        },
+        {
+            "id": 30,
+            "sectionId": 1,
+            "names": {
+                "ta": "வாய்மை",
+                "en": "Veracity"
+            },
+            "firstKural": 291,
+            "lastKural": 300
+        },
+        {
+            "id": 31,
+            "sectionId": 1,
+            "names": {
+                "ta": "வெகுளாமை",
+                "en": "Restraining Anger"
+            },
+            "firstKural": 301,
+            "lastKural": 310
+        },
+        {
+            "id": 32,
+            "sectionId": 1,
+            "names": {
+                "ta": "இன்னா செய்யாமை",
+                "en": "Not doing Evil"
+            },
+            "firstKural": 311,
+            "lastKural": 320
+        },
+        {
+            "id": 33,
+            "sectionId": 1,
+            "names": {
+                "ta": "கொல்லாமை",
+                "en": "Not killing"
+            },
+            "firstKural": 321,
+            "lastKural": 330
+        },
+        {
+            "id": 34,
+            "sectionId": 1,
+            "names": {
+                "ta": "நிலையாமை",
+                "en": "Instability"
+            },
+            "firstKural": 331,
+            "lastKural": 340
+        },
+        {
+            "id": 35,
+            "sectionId": 1,
+            "names": {
+                "ta": "துறவு",
+                "en": "Renunciation"
+            },
+            "firstKural": 341,
+            "lastKural": 350
+        },
+        {
+            "id": 36,
+            "sectionId": 1,
+            "names": {
+                "ta": "மெய்யுணர்தல்",
+                "en": "Truth-Conciousness"
+            },
+            "firstKural": 351,
+            "lastKural": 360
+        },
+        {
+            "id": 37,
+            "sectionId": 1,
+            "names": {
+                "ta": "அவா அறுத்தல்",
+                "en": "Curbing of Desire"
+            },
+            "firstKural": 361,
+            "lastKural": 370
+        },
+        {
+            "id": 38,
+            "sectionId": 1,
+            "names": {
+                "ta": "ஊழ்",
+                "en": "Fate"
+            },
+            "firstKural": 371,
+            "lastKural": 380
+        },
+        {
+            "id": 39,
+            "sectionId": 2,
+            "names": {
+                "ta": "இறைமாட்சி",
+                "en": "The Greatness of a King"
+            },
+            "firstKural": 381,
+            "lastKural": 390
+        },
+        {
+            "id": 40,
+            "sectionId": 2,
+            "names": {
+                "ta": "கல்வி",
+                "en": "Learning"
+            },
+            "firstKural": 391,
+            "lastKural": 400
+        },
+        {
+            "id": 41,
+            "sectionId": 2,
+            "names": {
+                "ta": "கல்லாமை",
+                "en": "Ignorance"
+            },
+            "firstKural": 401,
+            "lastKural": 410
+        },
+        {
+            "id": 42,
+            "sectionId": 2,
+            "names": {
+                "ta": "கேள்வி",
+                "en": "Hearing"
+            },
+            "firstKural": 411,
+            "lastKural": 420
+        },
+        {
+            "id": 43,
+            "sectionId": 2,
+            "names": {
+                "ta": "அறிவுடைமை",
+                "en": "The Possession of Knowledge"
+            },
+            "firstKural": 421,
+            "lastKural": 430
+        },
+        {
+            "id": 44,
+            "sectionId": 2,
+            "names": {
+                "ta": "குற்றங்கடிதல்",
+                "en": "The Correction of Faults"
+            },
+            "firstKural": 431,
+            "lastKural": 440
+        },
+        {
+            "id": 45,
+            "sectionId": 2,
+            "names": {
+                "ta": "பெரியாரைத் துணைக்கோடல்",
+                "en": "Seeking the Aid of Great Men"
+            },
+            "firstKural": 441,
+            "lastKural": 450
+        },
+        {
+            "id": 46,
+            "sectionId": 2,
+            "names": {
+                "ta": "சிற்றினம் சேராமை",
+                "en": "Avoiding mean Associations"
+            },
+            "firstKural": 451,
+            "lastKural": 460
+        },
+        {
+            "id": 47,
+            "sectionId": 2,
+            "names": {
+                "ta": "தெரிந்து செயல்வகை",
+                "en": "Acting after due Consideration"
+            },
+            "firstKural": 461,
+            "lastKural": 470
+        },
+        {
+            "id": 48,
+            "sectionId": 2,
+            "names": {
+                "ta": "வலியறிதல்",
+                "en": "The Knowledge of Power"
+            },
+            "firstKural": 471,
+            "lastKural": 480
+        },
+        {
+            "id": 49,
+            "sectionId": 2,
+            "names": {
+                "ta": "காலம் அறிதல்",
+                "en": "Knowing the fitting Time"
+            },
+            "firstKural": 481,
+            "lastKural": 490
+        },
+        {
+            "id": 50,
+            "sectionId": 2,
+            "names": {
+                "ta": "இடன் அறிதல்",
+                "en": "Knowing the Place"
+            },
+            "firstKural": 491,
+            "lastKural": 500
+        },
+        {
+            "id": 51,
+            "sectionId": 2,
+            "names": {
+                "ta": "தெரிந்து தெளிதல்",
+                "en": "Selection and Confidence"
+            },
+            "firstKural": 501,
+            "lastKural": 510
+        },
+        {
+            "id": 52,
+            "sectionId": 2,
+            "names": {
+                "ta": "தெரிந்து வினையாடல்",
+                "en": "Selection and Employment"
+            },
+            "firstKural": 511,
+            "lastKural": 520
+        },
+        {
+            "id": 53,
+            "sectionId": 2,
+            "names": {
+                "ta": "சுற்றந் தழால்",
+                "en": "Cherishing Kinsmen"
+            },
+            "firstKural": 521,
+            "lastKural": 530
+        },
+        {
+            "id": 54,
+            "sectionId": 2,
+            "names": {
+                "ta": "பொச்சாவாமை",
+                "en": "Unforgetfulness"
+            },
+            "firstKural": 531,
+            "lastKural": 540
+        },
+        {
+            "id": 55,
+            "sectionId": 2,
+            "names": {
+                "ta": "செங்கோன்மை",
+                "en": "The Right Sceptre"
+            },
+            "firstKural": 541,
+            "lastKural": 550
+        },
+        {
+            "id": 56,
+            "sectionId": 2,
+            "names": {
+                "ta": "கொடுங்கோன்மை",
+                "en": "The Cruel Sceptre"
+            },
+            "firstKural": 551,
+            "lastKural": 560
+        },
+        {
+            "id": 57,
+            "sectionId": 2,
+            "names": {
+                "ta": "வெருவந்த செய்யாமை",
+                "en": "Absence of Terrorism"
+            },
+            "firstKural": 561,
+            "lastKural": 570
+        },
+        {
+            "id": 58,
+            "sectionId": 2,
+            "names": {
+                "ta": "கண்ணோட்டம்",
+                "en": "Benignity"
+            },
+            "firstKural": 571,
+            "lastKural": 580
+        },
+        {
+            "id": 59,
+            "sectionId": 2,
+            "names": {
+                "ta": "ஒற்றாடல்",
+                "en": "Detectives"
+            },
+            "firstKural": 581,
+            "lastKural": 590
+        },
+        {
+            "id": 60,
+            "sectionId": 2,
+            "names": {
+                "ta": "ஊக்கம் உடைமை",
+                "en": "Energy"
+            },
+            "firstKural": 591,
+            "lastKural": 600
+        },
+        {
+            "id": 61,
+            "sectionId": 2,
+            "names": {
+                "ta": "மடி இன்மை",
+                "en": "Unsluggishness"
+            },
+            "firstKural": 601,
+            "lastKural": 610
+        },
+        {
+            "id": 62,
+            "sectionId": 2,
+            "names": {
+                "ta": "ஆள்வினை உடைமை",
+                "en": "Manly Effort"
+            },
+            "firstKural": 611,
+            "lastKural": 620
+        },
+        {
+            "id": 63,
+            "sectionId": 2,
+            "names": {
+                "ta": "இடுக்கண் அழியாமை",
+                "en": "Hopefulness in Trouble"
+            },
+            "firstKural": 621,
+            "lastKural": 630
+        },
+        {
+            "id": 64,
+            "sectionId": 2,
+            "names": {
+                "ta": "அமைச்சு",
+                "en": "The Office of Minister of state"
+            },
+            "firstKural": 631,
+            "lastKural": 640
+        },
+        {
+            "id": 65,
+            "sectionId": 2,
+            "names": {
+                "ta": "சொல்வன்மை",
+                "en": "Power of Speech"
+            },
+            "firstKural": 641,
+            "lastKural": 650
+        },
+        {
+            "id": 66,
+            "sectionId": 2,
+            "names": {
+                "ta": "வினைத்தூய்மை",
+                "en": "Purity in Action"
+            },
+            "firstKural": 651,
+            "lastKural": 660
+        },
+        {
+            "id": 67,
+            "sectionId": 2,
+            "names": {
+                "ta": "வினைத்திட்பம்",
+                "en": "Power in Action"
+            },
+            "firstKural": 661,
+            "lastKural": 670
+        },
+        {
+            "id": 68,
+            "sectionId": 2,
+            "names": {
+                "ta": "வினைசெயல்வகை",
+                "en": "Modes of Action"
+            },
+            "firstKural": 671,
+            "lastKural": 680
+        },
+        {
+            "id": 69,
+            "sectionId": 2,
+            "names": {
+                "ta": "தூது",
+                "en": "The Envoy"
+            },
+            "firstKural": 681,
+            "lastKural": 690
+        },
+        {
+            "id": 70,
+            "sectionId": 2,
+            "names": {
+                "ta": "மன்னரைச் சேர்ந்தொழுகல்",
+                "en": "Conduct in the Presence of the King"
+            },
+            "firstKural": 691,
+            "lastKural": 700
+        },
+        {
+            "id": 71,
+            "sectionId": 2,
+            "names": {
+                "ta": "குறிப்பறிதல்",
+                "en": "The Knowledge of Indications"
+            },
+            "firstKural": 701,
+            "lastKural": 710
+        },
+        {
+            "id": 72,
+            "sectionId": 2,
+            "names": {
+                "ta": "அவை அறிதல்",
+                "en": "The Knowledge of the Council Chamber"
+            },
+            "firstKural": 711,
+            "lastKural": 720
+        },
+        {
+            "id": 73,
+            "sectionId": 2,
+            "names": {
+                "ta": "அவை அஞ்சாமை",
+                "en": "Not to dread the Council"
+            },
+            "firstKural": 721,
+            "lastKural": 730
+        },
+        {
+            "id": 74,
+            "sectionId": 2,
+            "names": {
+                "ta": "நாடு",
+                "en": "The Land"
+            },
+            "firstKural": 731,
+            "lastKural": 740
+        },
+        {
+            "id": 75,
+            "sectionId": 2,
+            "names": {
+                "ta": "அரண்",
+                "en": "The Fortification"
+            },
+            "firstKural": 741,
+            "lastKural": 750
+        },
+        {
+            "id": 76,
+            "sectionId": 2,
+            "names": {
+                "ta": "பொருள் செயல் வகை",
+                "en": "Way of Accumulating Wealth"
+            },
+            "firstKural": 751,
+            "lastKural": 760
+        },
+        {
+            "id": 77,
+            "sectionId": 2,
+            "names": {
+                "ta": "படைமாட்சி",
+                "en": "The Excellence of an Army"
+            },
+            "firstKural": 761,
+            "lastKural": 770
+        },
+        {
+            "id": 78,
+            "sectionId": 2,
+            "names": {
+                "ta": "படைச் செருக்கு",
+                "en": "Military Spirit"
+            },
+            "firstKural": 771,
+            "lastKural": 780
+        },
+        {
+            "id": 79,
+            "sectionId": 2,
+            "names": {
+                "ta": "நட்பு",
+                "en": "Friendship"
+            },
+            "firstKural": 781,
+            "lastKural": 790
+        },
+        {
+            "id": 80,
+            "sectionId": 2,
+            "names": {
+                "ta": "நட்பாராய்தல்",
+                "en": "Investigation in forming Friendships"
+            },
+            "firstKural": 791,
+            "lastKural": 800
+        },
+        {
+            "id": 81,
+            "sectionId": 2,
+            "names": {
+                "ta": "பழைமை",
+                "en": "Familiarity"
+            },
+            "firstKural": 801,
+            "lastKural": 810
+        },
+        {
+            "id": 82,
+            "sectionId": 2,
+            "names": {
+                "ta": "தீ நட்பு",
+                "en": "Evil Friendship"
+            },
+            "firstKural": 811,
+            "lastKural": 820
+        },
+        {
+            "id": 83,
+            "sectionId": 2,
+            "names": {
+                "ta": "கூடா நட்பு",
+                "en": "Unreal Friendship"
+            },
+            "firstKural": 821,
+            "lastKural": 830
+        },
+        {
+            "id": 84,
+            "sectionId": 2,
+            "names": {
+                "ta": "பேதைமை",
+                "en": "Folly"
+            },
+            "firstKural": 831,
+            "lastKural": 840
+        },
+        {
+            "id": 85,
+            "sectionId": 2,
+            "names": {
+                "ta": "புல்லறிவாண்மை",
+                "en": "Ignorance"
+            },
+            "firstKural": 841,
+            "lastKural": 850
+        },
+        {
+            "id": 86,
+            "sectionId": 2,
+            "names": {
+                "ta": "இகல்",
+                "en": "Hostility"
+            },
+            "firstKural": 851,
+            "lastKural": 860
+        },
+        {
+            "id": 87,
+            "sectionId": 2,
+            "names": {
+                "ta": "பகைமாட்சி",
+                "en": "The Might of Hatred"
+            },
+            "firstKural": 861,
+            "lastKural": 870
+        },
+        {
+            "id": 88,
+            "sectionId": 2,
+            "names": {
+                "ta": "பகைத்திறம் தெரிதல்",
+                "en": "Knowing the Quality of Hate"
+            },
+            "firstKural": 871,
+            "lastKural": 880
+        },
+        {
+            "id": 89,
+            "sectionId": 2,
+            "names": {
+                "ta": "உட்பகை",
+                "en": "Enmity within"
+            },
+            "firstKural": 881,
+            "lastKural": 890
+        },
+        {
+            "id": 90,
+            "sectionId": 2,
+            "names": {
+                "ta": "பெரியாரைப் பிழையாமை",
+                "en": "Not Offending the Great"
+            },
+            "firstKural": 891,
+            "lastKural": 900
+        },
+        {
+            "id": 91,
+            "sectionId": 2,
+            "names": {
+                "ta": "பெண்வழிச் சேரல்",
+                "en": "Being led by Women"
+            },
+            "firstKural": 901,
+            "lastKural": 910
+        },
+        {
+            "id": 92,
+            "sectionId": 2,
+            "names": {
+                "ta": "வரைவின் மகளிர்",
+                "en": "Wanton Women"
+            },
+            "firstKural": 911,
+            "lastKural": 920
+        },
+        {
+            "id": 93,
+            "sectionId": 2,
+            "names": {
+                "ta": "கள்ளுண்ணாமை",
+                "en": "Not Drinking Palm-Wine"
+            },
+            "firstKural": 921,
+            "lastKural": 930
+        },
+        {
+            "id": 94,
+            "sectionId": 2,
+            "names": {
+                "ta": "சூது",
+                "en": "Gambling"
+            },
+            "firstKural": 931,
+            "lastKural": 940
+        },
+        {
+            "id": 95,
+            "sectionId": 2,
+            "names": {
+                "ta": "மருந்து",
+                "en": "Medicine"
+            },
+            "firstKural": 941,
+            "lastKural": 950
+        },
+        {
+            "id": 96,
+            "sectionId": 2,
+            "names": {
+                "ta": "குடிமை",
+                "en": "Nobility"
+            },
+            "firstKural": 951,
+            "lastKural": 960
+        },
+        {
+            "id": 97,
+            "sectionId": 2,
+            "names": {
+                "ta": "மானம்",
+                "en": "Honour"
+            },
+            "firstKural": 961,
+            "lastKural": 970
+        },
+        {
+            "id": 98,
+            "sectionId": 2,
+            "names": {
+                "ta": "பெருமை",
+                "en": "Greatness"
+            },
+            "firstKural": 971,
+            "lastKural": 980
+        },
+        {
+            "id": 99,
+            "sectionId": 2,
+            "names": {
+                "ta": "சான்றாண்மை",
+                "en": "Perfectness"
+            },
+            "firstKural": 981,
+            "lastKural": 990
+        },
+        {
+            "id": 100,
+            "sectionId": 2,
+            "names": {
+                "ta": "பண்புடைமை",
+                "en": "Courtesy"
+            },
+            "firstKural": 991,
+            "lastKural": 1000
+        },
+        {
+            "id": 101,
+            "sectionId": 2,
+            "names": {
+                "ta": "நன்றியில் செல்வம்",
+                "en": "Wealth without Benefaction"
+            },
+            "firstKural": 1001,
+            "lastKural": 1010
+        },
+        {
+            "id": 102,
+            "sectionId": 2,
+            "names": {
+                "ta": "நாணுடைமை",
+                "en": "Shame"
+            },
+            "firstKural": 1011,
+            "lastKural": 1020
+        },
+        {
+            "id": 103,
+            "sectionId": 2,
+            "names": {
+                "ta": "குடிசெயல் வகை",
+                "en": "The Way of Maintaining the Family"
+            },
+            "firstKural": 1021,
+            "lastKural": 1030
+        },
+        {
+            "id": 104,
+            "sectionId": 2,
+            "names": {
+                "ta": "உழவு",
+                "en": "Farming"
+            },
+            "firstKural": 1031,
+            "lastKural": 1040
+        },
+        {
+            "id": 105,
+            "sectionId": 2,
+            "names": {
+                "ta": "நல்குரவு",
+                "en": "Poverty"
+            },
+            "firstKural": 1041,
+            "lastKural": 1050
+        },
+        {
+            "id": 106,
+            "sectionId": 2,
+            "names": {
+                "ta": "இரவு",
+                "en": "Mendicancy"
+            },
+            "firstKural": 1051,
+            "lastKural": 1060
+        },
+        {
+            "id": 107,
+            "sectionId": 2,
+            "names": {
+                "ta": "இரவச்சம்",
+                "en": "The Dread of Mendicancy"
+            },
+            "firstKural": 1061,
+            "lastKural": 1070
+        },
+        {
+            "id": 108,
+            "sectionId": 2,
+            "names": {
+                "ta": "கயமை",
+                "en": "Baseness"
+            },
+            "firstKural": 1071,
+            "lastKural": 1080
+        },
+        {
+            "id": 109,
+            "sectionId": 3,
+            "names": {
+                "ta": "தகையணங்குறுத்தல்",
+                "en": "The Pre-marital love"
+            },
+            "firstKural": 1081,
+            "lastKural": 1090
+        },
+        {
+            "id": 110,
+            "sectionId": 3,
+            "names": {
+                "ta": "குறிப்பறிதல்",
+                "en": "Recognition of the Signs "
+            },
+            "firstKural": 1091,
+            "lastKural": 1100
+        },
+        {
+            "id": 111,
+            "sectionId": 3,
+            "names": {
+                "ta": "புணர்ச்சி மகிழ்தல்",
+                "en": "Rejoicing in the Embrace"
+            },
+            "firstKural": 1101,
+            "lastKural": 1110
+        },
+        {
+            "id": 112,
+            "sectionId": 3,
+            "names": {
+                "ta": "நலம் புனைந்துரைத்தல்",
+                "en": "The Praise of her Beauty"
+            },
+            "firstKural": 1111,
+            "lastKural": 1120
+        },
+        {
+            "id": 113,
+            "sectionId": 3,
+            "names": {
+                "ta": "காதற் சிறப்புரைத்தல்",
+                "en": "Declaration of Love\"s special Excellence"
+            },
+            "firstKural": 1121,
+            "lastKural": 1130
+        },
+        {
+            "id": 114,
+            "sectionId": 3,
+            "names": {
+                "ta": "நாணுத் துறவுரைத்தல்",
+                "en": "The Abandonment of Reserve"
+            },
+            "firstKural": 1131,
+            "lastKural": 1140
+        },
+        {
+            "id": 115,
+            "sectionId": 3,
+            "names": {
+                "ta": "அலர் அறிவுறுத்தல்",
+                "en": "The Announcement of the Rumour"
+            },
+            "firstKural": 1141,
+            "lastKural": 1150
+        },
+        {
+            "id": 116,
+            "sectionId": 3,
+            "names": {
+                "ta": "பிரிவாற்றாமை",
+                "en": "Separation unendurable"
+            },
+            "firstKural": 1151,
+            "lastKural": 1160
+        },
+        {
+            "id": 117,
+            "sectionId": 3,
+            "names": {
+                "ta": "படர்மெலிந் திரங்கல்",
+                "en": "Complainings"
+            },
+            "firstKural": 1161,
+            "lastKural": 1170
+        },
+        {
+            "id": 118,
+            "sectionId": 3,
+            "names": {
+                "ta": "கண்விதுப்பழிதல்",
+                "en": "Eyes consumed with Grief"
+            },
+            "firstKural": 1171,
+            "lastKural": 1180
+        },
+        {
+            "id": 119,
+            "sectionId": 3,
+            "names": {
+                "ta": "பசப்புறு பருவரல்",
+                "en": "The Pallid Hue"
+            },
+            "firstKural": 1181,
+            "lastKural": 1190
+        },
+        {
+            "id": 120,
+            "sectionId": 3,
+            "names": {
+                "ta": "தனிப்படர் மிகுதி",
+                "en": "The Solitary Anguish"
+            },
+            "firstKural": 1191,
+            "lastKural": 1200
+        },
+        {
+            "id": 121,
+            "sectionId": 3,
+            "names": {
+                "ta": "நினைந்தவர் புலம்பல்",
+                "en": "Sad Memories"
+            },
+            "firstKural": 1201,
+            "lastKural": 1210
+        },
+        {
+            "id": 122,
+            "sectionId": 3,
+            "names": {
+                "ta": "கனவுநிலை உரைத்தல்",
+                "en": "The Visions of the Night"
+            },
+            "firstKural": 1211,
+            "lastKural": 1220
+        },
+        {
+            "id": 123,
+            "sectionId": 3,
+            "names": {
+                "ta": "பொழுதுகண்டு இரங்கல்",
+                "en": "Lamentations at Eventide"
+            },
+            "firstKural": 1221,
+            "lastKural": 1230
+        },
+        {
+            "id": 124,
+            "sectionId": 3,
+            "names": {
+                "ta": "உறுப்புநலன் அழிதல்",
+                "en": "Wasting Away"
+            },
+            "firstKural": 1231,
+            "lastKural": 1240
+        },
+        {
+            "id": 125,
+            "sectionId": 3,
+            "names": {
+                "ta": "நெஞ்சோடு கிளத்தல்",
+                "en": "Soliloquy"
+            },
+            "firstKural": 1241,
+            "lastKural": 1250
+        },
+        {
+            "id": 126,
+            "sectionId": 3,
+            "names": {
+                "ta": "நிறையழிதல்",
+                "en": "Reserve Overcome"
+            },
+            "firstKural": 1251,
+            "lastKural": 1260
+        },
+        {
+            "id": 127,
+            "sectionId": 3,
+            "names": {
+                "ta": "அவர்வயின் விதும்பல்",
+                "en": "Mutual Desire"
+            },
+            "firstKural": 1261,
+            "lastKural": 1270
+        },
+        {
+            "id": 128,
+            "sectionId": 3,
+            "names": {
+                "ta": "குறிப்பறிவுறுத்தல்",
+                "en": "The Reading of the Signs"
+            },
+            "firstKural": 1271,
+            "lastKural": 1280
+        },
+        {
+            "id": 129,
+            "sectionId": 3,
+            "names": {
+                "ta": "புணர்ச்சி விதும்பல்",
+                "en": "Desire for Reunion"
+            },
+            "firstKural": 1281,
+            "lastKural": 1290
+        },
+        {
+            "id": 130,
+            "sectionId": 3,
+            "names": {
+                "ta": "நெஞ்சோடு புலத்தல்",
+                "en": "Expostulation with Oneself"
+            },
+            "firstKural": 1291,
+            "lastKural": 1300
+        },
+        {
+            "id": 131,
+            "sectionId": 3,
+            "names": {
+                "ta": "புலவி",
+                "en": "Pouting"
+            },
+            "firstKural": 1301,
+            "lastKural": 1310
+        },
+        {
+            "id": 132,
+            "sectionId": 3,
+            "names": {
+                "ta": "புலவி நுணுக்கம்",
+                "en": "Feigned Anger"
+            },
+            "firstKural": 1311,
+            "lastKural": 1320
+        },
+        {
+            "id": 133,
+            "sectionId": 3,
+            "names": {
+                "ta": "ஊடலுவகை",
+                "en": "The Pleasures of Temporary Variance"
+            },
+            "firstKural": 1321,
+            "lastKural": 1330
+        }
     ]
 }
