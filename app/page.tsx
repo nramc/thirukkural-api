@@ -57,7 +57,7 @@ export default function Home() {
                     <Link href={`/kural/${kural.number}`} className="hover:text-white">
                         குறள் · Couplet {kural.number}
                     </Link>
-                    <span className="rounded-full bg-white/10 px-3 py-1 normal-case tracking-normal text-blue-100">{kural.chapter}</span>
+                    <span className="rounded-full bg-white/10 px-3 py-1 normal-case tracking-normal text-blue-100">{kural.chapter.names.ta}</span>
                 </div>
                 <blockquote className="mt-7 border-l-2 border-amber-300 pl-5 font-serif text-xl font-medium leading-9 text-white sm:text-2xl sm:leading-10">
                     {kural.kural[0]}

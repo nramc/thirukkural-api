@@ -28,8 +28,8 @@ function getKuralFromParams(id: string) {
 function getDescription(kural: NonNullable<ReturnType<typeof getKuralFromParams>>): string {
     const englishMeaning = kural.meaning.en?.trim();
     return englishMeaning
-        ? `Read Thirukkural ${kural.number} from the chapter ${kural.chapter}, with the original Tamil couplet and English meaning: ${englishMeaning}`
-        : `Read Thirukkural ${kural.number} from the chapter ${kural.chapter}, with the original Tamil couplet and traditional meanings.`;
+        ? `Read Thirukkural ${kural.number} from the chapter ${kural.chapter.names.en ?? kural.chapter.names.ta}, with the original Tamil couplet and English meaning: ${englishMeaning}`
+        : `Read Thirukkural ${kural.number} from the chapter ${kural.chapter.names.en ?? kural.chapter.names.ta}, with the original Tamil couplet and traditional meanings.`;
 }
 
 export async function generateStaticParams() {
@@ -45,7 +45,7 @@ export async function generateMetadata({ params }: KuralPageProps): Promise<Meta
     }
 
     const description = getDescription(kural);
-    const title = `Kural ${kural.number} — ${kural.chapter}`;
+    const title = `Kural ${kural.number} — ${kural.chapter.names.ta}`;
     const url = `/kural/${kural.number}`;
 
     return {
@@ -76,7 +76,7 @@ export default async function KuralPage({ params }: Readonly<KuralPageProps>) {
         '@context': 'https://schema.org',
         '@type': 'CreativeWork',
         name: `Kural ${kural.number}`,
-        headline: `Kural ${kural.number} — ${kural.chapter}`,
+        headline: `Kural ${kural.number} — ${kural.chapter.names.ta}`,
         description,
         url: `${siteUrl}/kural/${kural.number}`,
         isPartOf: {
@@ -92,8 +92,8 @@ export default async function KuralPage({ params }: Readonly<KuralPageProps>) {
 
                 <header>
                     <p className="text-sm font-bold uppercase tracking-[0.2em] text-blue-600">Kural {kural.number}</p>
-                    <h1 className="mt-3 text-3xl font-semibold tracking-tight text-blue-950 sm:text-5xl">{kural.chapter}</h1>
-                    <p className="mt-3 text-base text-slate-600">{kural.section}</p>
+                    <h1 className="mt-3 text-3xl font-semibold tracking-tight text-blue-950 sm:text-5xl">{kural.chapter.names.ta}</h1>
+                    <p className="mt-3 text-base text-slate-600">{kural.section.names.ta}</p>
                 </header>
 
                 <blockquote className="mt-10 rounded-3xl bg-linear-to-br from-blue-700 to-indigo-900 p-6 font-serif text-xl leading-10 text-white shadow-xl shadow-blue-900/20 sm:p-10 sm:text-2xl">

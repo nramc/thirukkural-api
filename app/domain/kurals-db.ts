@@ -30,12 +30,8 @@ export interface ChaptersDb {
 
 export interface Kural {
     number: number;
-    section: string;
-    chapter: string;
-    sectionId: number;
-    chapterId: number;
-    sectionRef: TaxonomyReference;
-    chapterRef: TaxonomyReference;
+    section: TaxonomyReference;
+    chapter: TaxonomyReference;
     kural: string[];
     meaning: { [name: string]: string };
 }

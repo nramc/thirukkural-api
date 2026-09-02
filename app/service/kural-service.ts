@@ -4,7 +4,12 @@ import { Kural } from '@/app/domain/kurals-db';
 import taxonomyService from '@/app/service/taxonomy-service';
 
 type KuralPageable = { results: Kural[]; total: number; page: number; limit: number };
-type RawKural = Omit<Kural, 'sectionRef' | 'chapterRef'>;
+type StoredKural = Omit<Kural, 'section' | 'chapter'> & {
+    section: string;
+    chapter: string;
+    sectionId: number;
+    chapterId: number;
+};
 
 class KuralService {
     private readonly kurals: Kural[];
@@ -15,26 +20,26 @@ class KuralService {
 
     // Load the JSON data once when the service is instantiated
     private loadKurals(): Kural[] {
-        const kuralsDB = JSON.parse(fs.readFileSync(path.resolve('public/data/kurals.json'), 'utf-8')) as { kurals: RawKural[] };
-        return kuralsDB.kurals.map((kural) => {
-            const section = taxonomyService.getSection(kural.sectionId);
-            const chapter = taxonomyService.getChapter(kural.chapterId);
+        const kuralsDB = JSON.parse(fs.readFileSync(path.resolve('public/data/kurals.json'), 'utf-8')) as { kurals: StoredKural[] };
+        return kuralsDB.kurals.map(({ sectionId, chapterId, section: sectionName, chapter: chapterName, ...kural }) => {
+            const section = taxonomyService.getSection(sectionId);
+            const chapter = taxonomyService.getChapter(chapterId);
             if (
                 !section ||
                 !chapter ||
                 chapter.sectionId !== section.id ||
                 kural.number < chapter.firstKural ||
                 kural.number > chapter.lastKural ||
-                kural.section !== section.names.ta ||
-                kural.chapter !== chapter.names.ta
+                sectionName !== section.names.ta ||
+                chapterName !== chapter.names.ta
             ) {
                 throw new Error(`Kural ${kural.number} does not map to valid taxonomy data`);
             }
 
             return {
                 ...kural,
-                sectionRef: { id: section.id, names: section.names },
-                chapterRef: { id: chapter.id, names: chapter.names },
+                section: { id: section.id, names: section.names },
+                chapter: { id: chapter.id, names: chapter.names },
             };
         });
     }
@@ -46,7 +51,7 @@ class KuralService {
 
     // search kural by query param q and pagination
     public searchByKeyword(keywords: string[], page: number = 1, limit: number = 10, sectionId?: number, chapterId?: number): KuralPageable {
-        let filteredKurals: Kural[] = [];
+        let filteredKurals: Kural[];
 
         if (keywords.length > 0) {
             filteredKurals = this.kurals.filter((kural) => {
@@ -60,8 +65,8 @@ class KuralService {
 
         filteredKurals = filteredKurals.filter(
             (kural) =>
-                (chapterId === undefined || kural.chapterId === chapterId) &&
-                (chapterId !== undefined || sectionId === undefined || kural.sectionId === sectionId),
+                (chapterId === undefined || kural.chapter.id === chapterId) &&
+                (chapterId !== undefined || sectionId === undefined || kural.section.id === sectionId),
         );
 
         const total = filteredKurals.length;
