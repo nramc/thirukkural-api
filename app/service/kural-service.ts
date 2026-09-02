@@ -5,8 +5,6 @@ import taxonomyService from '@/app/service/taxonomy-service';
 
 type KuralPageable = { results: Kural[]; total: number; page: number; limit: number };
 type StoredKural = Omit<Kural, 'section' | 'chapter'> & {
-    section: string;
-    chapter: string;
     sectionId: number;
     chapterId: number;
 };
@@ -21,18 +19,10 @@ class KuralService {
     // Load the JSON data once when the service is instantiated
     private loadKurals(): Kural[] {
         const kuralsDB = JSON.parse(fs.readFileSync(path.resolve('public/data/kurals.json'), 'utf-8')) as { kurals: StoredKural[] };
-        return kuralsDB.kurals.map(({ sectionId, chapterId, section: sectionName, chapter: chapterName, ...kural }) => {
+        return kuralsDB.kurals.map(({ sectionId, chapterId, ...kural }) => {
             const section = taxonomyService.getSection(sectionId);
             const chapter = taxonomyService.getChapter(chapterId);
-            if (
-                !section ||
-                !chapter ||
-                chapter.sectionId !== section.id ||
-                kural.number < chapter.firstKural ||
-                kural.number > chapter.lastKural ||
-                sectionName !== section.names.ta ||
-                chapterName !== chapter.names.ta
-            ) {
+            if (!section || !chapter || chapter.sectionId !== section.id || kural.number < chapter.firstKural || kural.number > chapter.lastKural) {
                 throw new Error(`Kural ${kural.number} does not map to valid taxonomy data`);
             }
 
