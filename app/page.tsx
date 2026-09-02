@@ -69,6 +69,11 @@ export default function Home() {
                     <br />
                     {kural.kural[1]}
                 </blockquote>
+                <p className="mt-3 border-l-2 border-blue-300/50 pl-5 text-sm italic leading-7 text-blue-100 sm:text-base">
+                    {kural.transliteration[0]}
+                    <br />
+                    {kural.transliteration[1]}
+                </p>
                 <div className="mt-7 grid gap-3 sm:grid-cols-2">
                     <p className="rounded-2xl bg-white/10 p-4 text-sm leading-6 text-blue-50">
                         <span className="mb-1 block text-xs font-bold uppercase tracking-wider text-amber-200">தமிழ் விளக்கம்</span>

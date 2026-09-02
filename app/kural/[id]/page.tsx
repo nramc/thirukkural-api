@@ -104,6 +104,14 @@ export default async function KuralPage({ params }: Readonly<KuralPageProps>) {
                     <p>{kural.kural[0]}</p>
                     <p>{kural.kural[1]}</p>
                 </blockquote>
+                <div className="mt-4 rounded-2xl border border-indigo-100 bg-indigo-50/70 px-6 py-4 shadow-sm sm:px-10">
+                    <p className="text-xs font-bold uppercase tracking-[0.18em] text-indigo-600">Transliteration</p>
+                    <p className="mt-2 font-mono text-sm leading-7 text-slate-700 sm:text-base">
+                        {kural.transliteration[0]}
+                        <br />
+                        {kural.transliteration[1]}
+                    </p>
+                </div>
 
                 <section className="mt-10" aria-labelledby="meanings-heading">
                     <h2 id="meanings-heading" className="text-2xl font-semibold text-blue-950 sm:text-3xl">

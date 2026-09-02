@@ -1,6 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import {Kural} from '@/app/domain/kurals-db';
+import { Kural } from '@/app/domain/kurals-db';
 import taxonomyService from '@/app/service/taxonomy-service';
 
 type KuralPageable = { results: Kural[]; total: number; page: number; limit: number };
@@ -19,9 +19,9 @@ class KuralService {
     // Load the JSON data once when the service is instantiated
     private loadKurals(): Kural[] {
         const kuralsDB = JSON.parse(fs.readFileSync(path.resolve('public/data/kurals.json'), 'utf-8')) as {
-            kurals: StoredKural[]
+            kurals: StoredKural[];
         };
-        return kuralsDB.kurals.map(({sectionId, chapterId, ...kural}) => {
+        return kuralsDB.kurals.map(({ sectionId, chapterId, ...kural }) => {
             const section = taxonomyService.getSection(sectionId);
             const chapter = taxonomyService.getChapter(chapterId);
             if (!section || !chapter || chapter.sectionId !== section.id || kural.number < chapter.firstKural || kural.number > chapter.lastKural) {
@@ -30,8 +30,8 @@ class KuralService {
 
             return {
                 ...kural,
-                section: {id: section.id, names: section.names},
-                chapter: {id: chapter.id, names: chapter.names},
+                section: { id: section.id, names: section.names },
+                chapter: { id: chapter.id, names: chapter.names },
             };
         });
     }
@@ -67,7 +67,7 @@ class KuralService {
         const startIndex = (page - 1) * limit;
         const endIndex = startIndex + limit;
         const results = filteredKurals.slice(startIndex, endIndex);
-        return {results, total, page, limit};
+        return { results, total, page, limit };
     }
 }
 
