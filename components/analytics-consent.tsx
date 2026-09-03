@@ -107,7 +107,7 @@ export default function AnalyticsConsent() {
                             {'.'}
                         </p>
                     </div>
-                    <div className="flex shrink-0 flex-col-reverse gap-2 sm:flex-row">
+                    <div className="flex items-end shrink-0 flex-col-reverse gap-2 sm:flex-row">
                         <Button
                             type="button"
                             variant="ghost"
@@ -117,7 +117,12 @@ export default function AnalyticsConsent() {
                         >
                             Continue without analytics
                         </Button>
-                        <Button type="button" className="border-blue-800 text-blue-800 hover:bg-blue-100 cursor-pointer" autoFocus onClick={() => saveChoice('accepted')}>
+                        <Button
+                            type="button"
+                            className="min-h-11 w-full border-blue-700 bg-blue-700 px-5 text-white font-bold shadow-sm shadow-blue-900/20 hover:border-blue-800 hover:bg-blue-800 focus-visible:ring-4 focus-visible:ring-cyan-300 focus-visible:ring-offset-2 focus-visible:ring-offset-white sm:w-auto"
+                            autoFocus
+                            onClick={() => saveChoice('accepted')}
+                        >
                             Accept analytics
                         </Button>
                     </div>
