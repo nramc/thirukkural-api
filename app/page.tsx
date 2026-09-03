@@ -83,6 +83,10 @@ export default function Home() {
                         <span className="mb-1 block text-xs font-bold uppercase tracking-wider text-amber-200">English meaning</span>
                         {kural.meaning['en']}
                     </p>
+                    <p className="rounded-2xl border border-amber-200/20 bg-amber-200/10 p-4 text-sm leading-6 text-blue-50 sm:col-span-2">
+                        <span className="mb-1 block text-xs font-bold uppercase tracking-wider text-amber-200">Modern life takeaway</span>
+                        {kural.meaning['en_modern']}
+                    </p>
                 </div>
             </div>
         );

@@ -42,8 +42,9 @@ without checking the script.
 - Prefer small, focused changes and preserve existing public APIs and response shapes.
 - Use App Router route-handler conventions and delegate business logic to the existing service layer rather than loading
   data directly in route handlers.
-- Preserve the `Kural` contract: number, section, chapter, two-line `kural` array, and the four meaning fields
-  (`ta_mu_va`, `ta_salamon`, `ta_kalaignar`, and `en`).
+- Preserve the `Kural` contract: number, section, chapter, two-line `kural` array, and the five meaning fields
+  (`ta_mu_va`, `ta_salamon`, `ta_kalaignar`, `en`, and `en_modern`). Treat `en_modern` as a clearly labeled modern
+  interpretation, not a literal translation.
 - Validate path and query parameters at API boundaries, return JSON with an appropriate HTTP status, and keep error
   responses consistent with nearby handlers.
 - Preserve the documented range and precedence rules: Kural IDs are 1–1330; sections are 1–3; chapter filtering takes

@@ -6,6 +6,11 @@ import kuralService from '@/app/service/kural-service';
 const MIN_KURAL_NUMBER = 1;
 const MAX_KURAL_NUMBER = 1330;
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://kural.codewithram.dev';
+const traditionalMeaningLabels: Record<string, string> = {
+    ta_mu_va: 'Mu. Va.',
+    ta_salamon: 'Solomon Pappayya',
+    ta_kalaignar: 'Kalaignar',
+};
 
 type KuralPageProps = {
     params: Promise<{ id: string }>;
@@ -87,16 +92,16 @@ export default async function KuralPage({ params }: Readonly<KuralPageProps>) {
     };
 
     return (
-        <main className="min-h-screen bg-[radial-gradient(circle_at_top_right,#dbeafe,transparent_36%),linear-gradient(135deg,#eff6ff_0%,#ffffff_48%,#eef2ff_100%)] px-4 py-8 text-slate-900 sm:px-8 sm:py-12 lg:px-10">
-            <article className="mx-auto max-w-5xl overflow-hidden rounded-4xl border border-white/80 bg-white/80 shadow-2xl shadow-blue-950/10 backdrop-blur-sm sm:rounded-5xl">
+        <main className="min-h-screen bg-[radial-gradient(circle_at_top_right,#dbeafe,transparent_36%),linear-gradient(135deg,#eff6ff_0%,#ffffff_48%,#eef2ff_100%)] px-4 py-6 text-slate-900 sm:px-8 sm:py-10 lg:px-10">
+            <article className="mx-auto max-w-6xl overflow-hidden rounded-3xl border border-white/80 bg-white/85 shadow-2xl shadow-blue-950/10 backdrop-blur-sm sm:rounded-5xl">
                 <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData).replaceAll('<', String.raw`\u003c`) }} />
 
-                <header className="relative overflow-hidden bg-linear-to-br from-blue-950 via-blue-900 to-indigo-950 px-6 py-10 text-white sm:px-10 sm:py-14 lg:px-14">
+                <header className="relative overflow-hidden bg-linear-to-br from-blue-950 via-blue-900 to-indigo-950 px-6 py-8 text-white sm:px-10 sm:py-11 lg:px-14">
                     <div className="absolute -right-20 -top-24 size-72 rounded-full bg-blue-400/20 blur-3xl" aria-hidden="true" />
                     <div className="absolute -bottom-32 left-1/3 size-64 rounded-full bg-indigo-400/20 blur-3xl" aria-hidden="true" />
                     <div className="relative">
                         <div className="flex flex-wrap items-center gap-2 text-xs font-bold uppercase tracking-[0.18em] text-blue-200">
-                            <span className="rounded-full border border-blue-300/30 bg-white/10 px-3 py-1.5">Kural {kural.number}</span>
+                            <span className="rounded-full border border-blue-300/30 bg-white/10 px-3 py-1.5">Thirukkural</span>
                             <span className="text-blue-300" aria-hidden="true">
                                 ·
                             </span>
@@ -104,14 +109,20 @@ export default async function KuralPage({ params }: Readonly<KuralPageProps>) {
                         </div>
                         <h1 className="mt-5 max-w-3xl text-4xl font-semibold tracking-tight sm:text-6xl">{kural.chapter.names.ta}</h1>
                         <p className="mt-3 text-xl text-blue-100 sm:text-2xl">{kural.chapter.names.en}</p>
-                        <p className="mt-5 text-base text-blue-100/80">
-                            {kural.section.names.ta} · {kural.section.names.en}
-                        </p>
+                        <div className="mt-5 flex flex-wrap items-center gap-x-3 gap-y-2 text-sm text-blue-100/80">
+                            <span>
+                                {kural.section.names.ta} · {kural.section.names.en}
+                            </span>
+                            <span className="hidden text-blue-300 sm:inline" aria-hidden="true">
+                                •
+                            </span>
+                            <span>Kural {kural.number} of 1,330</span>
+                        </div>
                         <Link
                             href={`/chapters/${kural.chapter.id}`}
                             className="mt-7 inline-flex items-center rounded-full border border-blue-300/30 bg-white/10 px-4 py-2.5 text-sm font-semibold text-blue-50 transition-colors hover:bg-white/20 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-200/50"
                         >
-                            Explore all 10 Kurals in this chapter{' '}
+                            Read the full chapter{' '}
                             <span className="ml-2" aria-hidden="true">
                                 →
                             </span>
@@ -119,38 +130,50 @@ export default async function KuralPage({ params }: Readonly<KuralPageProps>) {
                     </div>
                 </header>
 
-                <div className="px-6 py-10 sm:px-10 lg:px-14">
+                <div className="px-5 py-8 sm:px-10 sm:py-12 lg:px-14">
                     <section aria-labelledby="kural-text-heading">
                         <div className="flex flex-wrap items-end justify-between gap-4">
                             <div>
-                                <p className="text-sm font-bold uppercase tracking-[0.18em] text-blue-600">The original couplet</p>
+                                <p className="text-sm font-bold uppercase tracking-[0.18em] text-blue-600">The original couplet · குறள்</p>
                                 <h2 id="kural-text-heading" className="mt-2 text-3xl font-semibold tracking-tight text-blue-950 sm:text-4xl">
-                                    Read and reflect
+                                    Read it in Tamil
                                 </h2>
+                                <p className="mt-3 max-w-2xl leading-7 text-slate-600">
+                                    Start with the original words, then use the learner-friendly guides below to explore their meaning.
+                                </p>
                             </div>
-                            <span className="rounded-full bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-700">Kural {kural.number}</span>
+                            <span className="rounded-full bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-700">No. {kural.number}</span>
                         </div>
 
                         <div className="mt-8 overflow-hidden rounded-3xl border border-blue-100 bg-white shadow-lg shadow-blue-900/5">
-                            <div className="border-l-4 border-blue-600 bg-linear-to-br from-blue-50 to-indigo-50 px-6 py-7 sm:px-10 sm:py-10">
-                                <p className="text-xs font-bold uppercase tracking-[0.16em] text-blue-600">Tamil</p>
-                                <blockquote className="mt-3 font-serif text-2xl leading-[2.7rem] text-blue-950 sm:text-3xl sm:leading-14">
+                            <div className="border-l-4 border-blue-600 bg-linear-to-br from-blue-50 to-indigo-50 px-6 py-8 sm:px-10 sm:py-11">
+                                <div className="flex items-center justify-between gap-4">
+                                    <p className="text-xs font-bold uppercase tracking-[0.16em] text-blue-600">Tamil original</p>
+                                    <span className="text-lg text-blue-300" aria-hidden="true">
+                                        ❝
+                                    </span>
+                                </div>
+                                <blockquote className="mt-4 font-serif text-2xl leading-[2.7rem] text-blue-950 sm:text-3xl sm:leading-14">
                                     <p>{kural.kural[0]}</p>
                                     <p>{kural.kural[1]}</p>
                                 </blockquote>
                             </div>
-                            <div className="grid gap-6 border-t border-slate-100 px-6 py-6 sm:px-10 lg:grid-cols-2">
-                                <div>
-                                    <p className="text-xs font-bold uppercase tracking-[0.16em] text-slate-400">Transliteration</p>
+                            <div className="grid gap-6 border-t border-slate-100 bg-slate-50/60 px-6 py-6 sm:px-10 lg:grid-cols-2">
+                                <div className="rounded-2xl border border-slate-200/80 bg-white p-5">
+                                    <p className="text-xs font-bold uppercase tracking-[0.16em] text-slate-400">Read the sounds · Transliteration</p>
                                     <p className="mt-2 text-sm italic leading-7 text-slate-600 sm:text-base">
                                         {kural.transliteration[0]}
                                         <br />
                                         {kural.transliteration[1]}
                                     </p>
                                 </div>
-                                <div className="border-t border-slate-100 pt-5 lg:border-l lg:border-t-0 lg:pl-8 lg:pt-0">
-                                    <p className="text-xs font-bold uppercase tracking-[0.16em] text-slate-400">English meaning</p>
+                                <div className="rounded-2xl border border-slate-200/80 bg-white p-5">
+                                    <p className="text-xs font-bold uppercase tracking-[0.16em] text-slate-400">Understand the idea · English meaning</p>
                                     <p className="mt-2 text-sm leading-7 text-slate-700 sm:text-base">{kural.meaning.en}</p>
+                                </div>
+                                <div className="rounded-2xl border border-blue-200 bg-blue-50/70 p-5 lg:col-span-2">
+                                    <p className="text-xs font-bold uppercase tracking-[0.16em] text-blue-700">Connect it to life today · Modern meaning</p>
+                                    <p className="mt-2 text-sm leading-7 text-slate-700 sm:text-base">{kural.meaning.en_modern}</p>
                                 </div>
                             </div>
                         </div>
@@ -158,23 +181,23 @@ export default async function KuralPage({ params }: Readonly<KuralPageProps>) {
 
                     <section className="mt-12" aria-labelledby="meanings-heading">
                         <div>
-                            <p className="text-sm font-bold uppercase tracking-[0.18em] text-blue-600">Learn from different voices</p>
+                            <p className="text-sm font-bold uppercase tracking-[0.18em] text-blue-600">Explore the layers</p>
                             <h2 id="meanings-heading" className="mt-2 text-3xl font-semibold tracking-tight text-blue-950 sm:text-4xl">
                                 Traditional meanings
                             </h2>
                             <p className="mt-3 max-w-2xl leading-7 text-slate-600">
-                                Compare interpretations to discover the layers of meaning within this couplet.
+                                Compare traditional Tamil explanations to discover the layers of meaning within this couplet.
                             </p>
                         </div>
                         <div className="mt-6 grid gap-4 sm:grid-cols-2">
                             {Object.entries(kural.meaning)
-                                .filter(([name]) => name !== 'en')
+                                .filter(([name]) => !['en', 'en_modern'].includes(name))
                                 .map(([name, meaning]) => (
                                     <div
                                         key={name}
                                         className="rounded-2xl border border-slate-200 bg-slate-50/80 p-5 transition-colors hover:border-blue-200 hover:bg-blue-50/50"
                                     >
-                                        <h3 className="text-sm font-bold uppercase tracking-wider text-blue-700">{name}</h3>
+                                        <h3 className="text-sm font-bold uppercase tracking-wider text-blue-700">{traditionalMeaningLabels[name] ?? name}</h3>
                                         <p className="mt-2 leading-7 text-slate-700">{meaning}</p>
                                     </div>
                                 ))}

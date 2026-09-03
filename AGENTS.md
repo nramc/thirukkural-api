@@ -9,7 +9,7 @@
 
 ## Data and API flow
 
-- A `Kural` has `number`, Tamil `section` and `chapter`, a two-element `kural` array, and a `meaning` map containing `ta_mu_va`, `ta_salamon`, `ta_kalaignar`, and `en`.
+- A `Kural` has `number`, Tamil `section` and `chapter`, a two-element `kural` array, and a `meaning` object containing `ta_mu_va`, `ta_salamon`, `ta_kalaignar`, `en`, and `en_modern`. `en_modern` is a plain-language interpretation, not a literal translation.
 - `GET /api/kural/{id}` delegates to `kuralService.search()` and returns JSON or a 404. Valid Kural numbers are 1–1330.
 - `GET /api/kural?q=...&page=...&limit=...` delegates to `searchByKeyword()`. Comma-separated keywords use OR matching across both couplet lines and all meanings; the response is `{ results, total, page, limit }`.
 - `GET /api/daily` uses the date-derived ID from `DailyKuralService`; `GET /api/random` uses `RandomKuralService`. For random requests, `chapter` takes precedence over `section`; ranges are chapters 1–133 and sections 1–3 (`1–380`, `381–1080`, `1081–1330`).
