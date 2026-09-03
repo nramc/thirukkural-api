@@ -4,6 +4,7 @@ import './globals.css';
 import './assets/css/card-layout.css';
 import React from 'react';
 import SiteChrome from '@/components/site-chrome';
+import GoogleAnalyticsScript from '@/components/google-analytics';
 
 const geistSans = localFont({
     src: './fonts/GeistVF.woff',
@@ -69,6 +70,7 @@ export default function RootLayout({
         <html lang="ta">
             <body className={`${geistSans.variable} ${geistMono.variable}`}>
                 <SiteChrome>{children}</SiteChrome>
+                <GoogleAnalyticsScript />
             </body>
         </html>
     );
