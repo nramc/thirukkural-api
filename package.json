@@ -23,6 +23,7 @@
         "@ai-sdk/openai": "^4.0.51",
         "@ai-sdk/react": "^4.0.87",
         "@base-ui/react": "^1.7.0",
+        "@next/third-parties": "^16.3.3",
         "@streamdown/cjk": "^1.0.3",
         "@streamdown/code": "^1.1.1",
         "@streamdown/math": "^1.0.2",
