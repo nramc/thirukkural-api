@@ -152,6 +152,10 @@ export default async function KuralPage({ params }: Readonly<KuralPageProps>) {
                                     <p className="text-xs font-bold uppercase tracking-[0.16em] text-slate-400">English meaning</p>
                                     <p className="mt-2 text-sm leading-7 text-slate-700 sm:text-base">{kural.meaning.en}</p>
                                 </div>
+                                <div className="border-t border-slate-100 pt-5 lg:col-span-2">
+                                    <p className="text-xs font-bold uppercase tracking-[0.16em] text-slate-400">Modern meaning</p>
+                                    <p className="mt-2 text-sm leading-7 text-slate-700 sm:text-base">{kural.meaning.en_modern}</p>
+                                </div>
                             </div>
                         </div>
                     </section>
@@ -168,7 +172,7 @@ export default async function KuralPage({ params }: Readonly<KuralPageProps>) {
                         </div>
                         <div className="mt-6 grid gap-4 sm:grid-cols-2">
                             {Object.entries(kural.meaning)
-                                .filter(([name]) => name !== 'en')
+                                .filter(([name]) => !['en', 'en_modern'].includes(name))
                                 .map(([name, meaning]) => (
                                     <div
                                         key={name}

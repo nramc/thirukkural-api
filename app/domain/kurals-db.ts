@@ -28,11 +28,19 @@ export interface ChaptersDb {
     chapters: Chapter[];
 }
 
+export interface KuralMeaning {
+    ta_mu_va: string;
+    ta_salamon: string;
+    ta_kalaignar: string;
+    en: string;
+    en_modern: string;
+}
+
 export interface Kural {
     number: number;
     section: TaxonomyReference;
     chapter: TaxonomyReference;
     kural: string[];
     transliteration: [string, string];
-    meaning: { [name: string]: string };
+    meaning: KuralMeaning;
 }

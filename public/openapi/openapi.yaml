@@ -19,14 +19,14 @@ paths:
             operationId: searchKurals
             summary: Search Kurals with pagination
             description: |
-                Searches Kural couplets and their meanings using one or more comma-separated keywords.
+                Searches Kural couplets and their meanings, including modern-English interpretations, using one or more comma-separated keywords.
                 Matching is performed using substring search. Results are returned in pages, with chapter
                 and section information included in each result.
             parameters:
                 - name: q
                   in: query
                   required: false
-                  description: Comma-separated keywords to search for in Kural text and meanings.
+                  description: Comma-separated keywords to search for in Kural text, traditional meanings, and modern-English interpretations.
                   schema:
                       type: string
                   examples:
@@ -284,6 +284,7 @@ components:
                 - ta_salamon
                 - en
                 - ta_kalaignar
+                - en_modern
             properties:
                 ta_mu_va:
                     type: string
@@ -297,6 +298,9 @@ components:
                 en:
                     type: string
                     description: English meaning.
+                en_modern:
+                    type: string
+                    description: Plain-language modern-English interpretation and practical takeaway; not a literal translation.
         ErrorResponse:
             type: object
             properties:

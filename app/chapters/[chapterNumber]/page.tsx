@@ -175,6 +175,10 @@ export default async function ChapterPage({ params }: Readonly<ChapterPageProps>
                                             <p className="text-xs font-bold uppercase tracking-[0.16em] text-slate-400">English meaning</p>
                                             <p className="mt-2 text-sm leading-7 text-slate-700">{kural.meaning.en}</p>
                                         </div>
+                                        <div>
+                                            <p className="text-xs font-bold uppercase tracking-[0.16em] text-blue-600">Modern life takeaway</p>
+                                            <p className="mt-2 text-sm leading-7 text-slate-700">{kural.meaning.en_modern}</p>
+                                        </div>
                                     </div>
                                 </div>
                                 <p className="mt-6 text-sm font-semibold text-blue-700 transition-colors group-hover:text-blue-950">Open the full Kural →</p>
