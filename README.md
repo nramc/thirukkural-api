@@ -31,8 +31,8 @@ experience.
 
 - **Complete collection** — retrieve any Kural from 1–1330.
 - **Useful discovery endpoints** — daily, random, chapter, section, and keyword search.
-- **Rich responses** — Tamil couplets plus meanings by Mu. Varadarajan, Solomon Pappayya, Kalaignar, and an English
-  translation.
+- **Rich responses** — Tamil couplets plus meanings by Mu. Varadarajan, Solomon Pappayya, Kalaignar, an English
+  translation, and a clearly labeled modern-English interpretation.
 - **AI-assisted exploration** — an optional chat experience powered by Ollama or OpenRouter.
 - **OpenAPI included** — browse the interactive Swagger UI or import the specification into your favorite client.
 
@@ -78,23 +78,24 @@ this core shape:
         "ta_mu_va": "...",
         "ta_salamon": "...",
         "ta_kalaignar": "...",
-        "en": "As the letter A is the first of all letters, so the eternal God is first in the world."
+        "en": "As the letter A is the first of all letters, so the eternal God is first in the world.",
+        "en_modern": "In today’s terms, this means: As the letter A is the first of all letters, so the eternal God is first in the world. For example, it can guide how we speak, learn, make decisions, and treat the people around us."
     }
 }
 ```
 
-| Endpoint                                     | Description                                                                                                                                                                                                                                                                                          |
-| -------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `GET /api/kural/{id}`                        | Get one Kural by number (`1`–`1330`).                                                                                                                                                                                                                                                                |
-| `GET /api/kural?q={keyword}&page=1&limit=10` | Search meanings, Tamil couplet text, and transliteration. `q` accepts comma-separated keywords. Search requests return `{ results, total, page, limit }`. The `page` and `limit` query parameters default to `1` and `10`, respectively; `total` is the number of matching Kurals before pagination. |
-| `GET /api/kural?section={1\|2\|3}`           | Discover Kurals in a section. `chapter` takes precedence when both filters are supplied.                                                                                                                                                                                                             |
-| `GET /api/kural?chapter={1..133}`            | Discover Kurals in a chapter.                                                                                                                                                                                                                                                                        |
-| `GET /api/sections`                          | List sections with stable IDs, localized names, and Kural ranges.                                                                                                                                                                                                                                    |
-| `GET /api/chapters?section={1\|2\|3}`        | List chapters, optionally filtered by section, with localized names and Kural ranges.                                                                                                                                                                                                                |
-| `GET /api/daily`                             | Get the date-based Kural of the day.                                                                                                                                                                                                                                                                 |
-| `GET /api/random`                            | Get a random Kural.                                                                                                                                                                                                                                                                                  |
-| `GET /api/random?section={1\|2\|3}`          | Get a random Kural from a section.                                                                                                                                                                                                                                                                   |
-| `GET /api/random?chapter={1..133}`           | Get a random Kural from a chapter. `chapter` takes precedence over `section`.                                                                                                                                                                                                                        |
+| Endpoint                                     | Description                                                                                                                                                                                                                                                                                                                                    |
+| -------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `GET /api/kural/{id}`                        | Get one Kural by number (`1`–`1330`).                                                                                                                                                                                                                                                                                                          |
+| `GET /api/kural?q={keyword}&page=1&limit=10` | Search meanings, including modern-English interpretations, Tamil couplet text, and transliteration. `q` accepts comma-separated keywords. Search requests return `{ results, total, page, limit }`. The `page` and `limit` query parameters default to `1` and `10`, respectively; `total` is the number of matching Kurals before pagination. |
+| `GET /api/kural?section={1\|2\|3}`           | Discover Kurals in a section. `chapter` takes precedence when both filters are supplied.                                                                                                                                                                                                                                                       |
+| `GET /api/kural?chapter={1..133}`            | Discover Kurals in a chapter.                                                                                                                                                                                                                                                                                                                  |
+| `GET /api/sections`                          | List sections with stable IDs, localized names, and Kural ranges.                                                                                                                                                                                                                                                                              |
+| `GET /api/chapters?section={1\|2\|3}`        | List chapters, optionally filtered by section, with localized names and Kural ranges.                                                                                                                                                                                                                                                          |
+| `GET /api/daily`                             | Get the date-based Kural of the day.                                                                                                                                                                                                                                                                                                           |
+| `GET /api/random`                            | Get a random Kural.                                                                                                                                                                                                                                                                                                                            |
+| `GET /api/random?section={1\|2\|3}`          | Get a random Kural from a section.                                                                                                                                                                                                                                                                                                             |
+| `GET /api/random?chapter={1..133}`           | Get a random Kural from a chapter. `chapter` takes precedence over `section`.                                                                                                                                                                                                                                                                  |
 
 ### Examples
 
@@ -128,6 +129,10 @@ reader-friendly Latin transliterations are sourced from the `transliteration1` a
 The English chapter labels are based on the ordered chapter metadata in the public
 [Thirukkural dataset](https://github.com/tk120404/thirukkural/blob/master/detail.json); the Tamil labels and Kural
 ranges remain aligned with this project’s source data.
+
+The `meaning.en` field is the existing English translation. The `meaning.en_modern` field is a plain-language modern
+interpretation and practical takeaway; it is not a literal translation or a quotation from Thiruvalluvar. Modern
+interpretations are included in keyword search and should be treated as explanatory editorial content.
 
 The complete contract is available in [`public/openapi/openapi.yaml`](./public/openapi/openapi.yaml). The OpenAPI file
 currently focuses on the core Kural endpoints; search and chat are documented above and in the source route handlers.

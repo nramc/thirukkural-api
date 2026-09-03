@@ -8,6 +8,9 @@ const chapters = read('chapters.json').chapters;
 const kurals = read('kurals.json').kurals;
 const ids = (items) => new Set(items.map((item) => item.id));
 const namesAreValid = (names) => names && Object.values(names).length > 0 && Object.values(names).every((name) => typeof name === 'string' && name.trim());
+const meaningKeys = ['ta_mu_va', 'ta_salamon', 'ta_kalaignar', 'en', 'en_modern'];
+const meaningsAreValid = (meaning) =>
+    meaning && meaningKeys.every((key) => typeof meaning[key] === 'string' && meaning[key].trim()) && Object.keys(meaning).length === meaningKeys.length;
 
 if (sections.length !== 3 || chapters.length !== 133 || kurals.length !== 1330) {
     throw new Error('Expected 3 sections, 133 chapters, and 1330 Kurals');
@@ -31,10 +34,11 @@ if (
             kural.kural.length !== 2 ||
             !Array.isArray(kural.transliteration) ||
             kural.transliteration.length !== 2 ||
-            kural.transliteration.some((line) => typeof line !== 'string' || !line.trim()),
+            kural.transliteration.some((line) => typeof line !== 'string' || !line.trim()) ||
+            !meaningsAreValid(kural.meaning),
     )
 ) {
-    throw new Error('Kurals must be sequential, reference valid taxonomy IDs, and contain two transliteration lines');
+    throw new Error('Kurals must be sequential, reference valid taxonomy IDs, contain two transliteration lines, and have all required meanings');
 }
 for (const kural of kurals) {
     const chapter = chapters.find((item) => item.id === kural.chapterId);
