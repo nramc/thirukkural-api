@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import PrivacySettingsButton from '@/components/privacy-settings-button';
 
 const externalLinkProps = {
     target: '_blank',
@@ -42,6 +43,10 @@ export default function Footer() {
                     >
                         MIT License
                     </a>
+                    <Link href="/privacy" className="transition-colors hover:font-bold hover:text-blue-800">
+                        Privacy
+                    </Link>
+                    <PrivacySettingsButton />
                 </nav>
             </div>
 
