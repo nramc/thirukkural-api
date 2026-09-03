@@ -2,6 +2,7 @@ import type { MetadataRoute } from 'next';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://kural.codewithram.dev';
 const maxKuralNumber = 1330;
+const maxChapterNumber = 133;
 
 export default function sitemap(): MetadataRoute.Sitemap {
     const staticPages: MetadataRoute.Sitemap = [
@@ -28,5 +29,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
         priority: 0.7,
     }));
 
-    return [...staticPages, ...kuralPages];
+    const chapterPages: MetadataRoute.Sitemap = Array.from({ length: maxChapterNumber }, (_, index) => ({
+        url: `${siteUrl}/chapters/${index + 1}`,
+        changeFrequency: 'yearly' as const,
+        priority: 0.8,
+    }));
+
+    return [...staticPages, ...chapterPages, ...kuralPages];
 }
