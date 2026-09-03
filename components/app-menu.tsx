@@ -15,6 +15,7 @@ type NavigationItem = {
 
 const navigationItems: NavigationItem[] = [
     { label: 'Home', href: '/', icon: HomeIcon },
+    { label: 'Chapters', href: '/chapters/1', icon: BookOpen },
     { label: 'API', href: '/api/kural', icon: Code2, external: true },
     { label: 'Doc', href: '/openapi/swagger-ui.html#Kural', icon: BookOpen, external: true },
     { label: 'GitHub', href: 'https://github.com/nramc/thirukkural-api', icon: GitFork, external: true },
