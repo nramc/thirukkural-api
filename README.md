@@ -31,6 +31,7 @@ experience.
 
 - **Complete collection** — retrieve any Kural from 1–1330.
 - **Useful discovery endpoints** — daily, random, chapter, section, and keyword search.
+- **Reader-friendly browsing** — use the web app’s `/browse` page or global search icon to find Kurals by number, keyword, section, or chapter.
 - **Rich responses** — Tamil couplets plus meanings by Mu. Varadarajan, Solomon Pappayya, Kalaignar, an English
   translation, and a clearly labeled modern-English interpretation.
 - **AI-assisted exploration** — an optional chat experience powered by Ollama or OpenRouter.

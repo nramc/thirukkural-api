@@ -1,7 +1,8 @@
 'use client';
 
 import Image from 'next/image';
-import { ArrowDown, ArrowRight, BookOpen, Crown } from 'lucide-react';
+import Link from 'next/link';
+import { ArrowDown, ArrowRight, BookOpen, Crown, Search } from 'lucide-react';
 import DailyKuralWidget from '@/components/daily-kural-widget';
 
 export default function Home() {
@@ -47,6 +48,13 @@ export default function Home() {
                                 Our vision
                                 <ArrowRight className="size-4" />
                             </button>
+                            <Link
+                                href="/browse"
+                                className="inline-flex items-center justify-center gap-2 rounded-full border border-blue-200 bg-blue-50 px-5 py-3 text-sm font-semibold text-blue-900 transition hover:border-blue-400 hover:bg-blue-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700"
+                            >
+                                Find a Kural
+                                <Search className="size-4" aria-hidden="true" />
+                            </Link>
                         </div>
                     </div>
 
