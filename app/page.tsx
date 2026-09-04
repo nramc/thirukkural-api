@@ -1,97 +1,10 @@
 'use client';
 
 import Image from 'next/image';
-import Link from 'next/link';
-import { useEffect, useState } from 'react';
-import { Kural } from '@/app/domain/kurals-db';
 import { ArrowDown, ArrowRight, BookOpen, Crown } from 'lucide-react';
+import DailyKuralWidget from '@/components/daily-kural-widget';
 
 export default function Home() {
-    const [kural, setKural] = useState<Kural | null>(null);
-    const [isLoading, setIsLoading] = useState(true);
-    const [hasError, setHasError] = useState(false);
-
-    useEffect(() => {
-        const fetchKuralOfTheDay = async () => {
-            try {
-                const response = await fetch('/api/daily', { signal: AbortSignal.timeout(10_000) });
-                if (!response.ok) {
-                    setHasError(true);
-                    return;
-                }
-                const data: Kural = await response.json();
-                setKural(data);
-            } catch {
-                setHasError(true);
-            } finally {
-                setIsLoading(false);
-            }
-        };
-
-        void fetchKuralOfTheDay();
-    }, []);
-
-    const dailyKuralContent = () => {
-        if (isLoading) {
-            return (
-                <div className="animate-pulse space-y-4" aria-label="Loading today’s Kural">
-                    <div className="h-4 w-24 rounded bg-white/20" />
-                    <div className="h-16 rounded-xl bg-white/10" />
-                    <div className="h-4 w-40 rounded bg-white/20" />
-                    <div className="h-20 rounded-xl bg-white/10" />
-                </div>
-            );
-        }
-
-        if (hasError || !kural) {
-            return (
-                <p role="alert" className="rounded-2xl border border-white/20 bg-white/10 p-5 text-sm leading-6 text-blue-50">
-                    Today’s Kural is taking a short pause. Please refresh to try again.
-                </p>
-            );
-        }
-
-        return (
-            <div>
-                <div className="flex flex-wrap items-center justify-between gap-3 text-xs font-semibold uppercase tracking-[0.18em] text-blue-200">
-                    <Link href={`/kural/${kural.number}`} className="hover:text-white">
-                        குறள் · Couplet {kural.number}
-                    </Link>
-                    <span className="rounded-full bg-white/10 px-3 py-1 normal-case tracking-normal text-blue-100">
-                        {kural.chapter.names.ta} · {kural.chapter.names.en}
-                    </span>
-                </div>
-                <p className="mt-3 text-sm text-blue-200">
-                    {kural.section.names.ta} · {kural.section.names.en}
-                </p>
-                <blockquote className="mt-7 border-l-2 border-amber-300 pl-5 font-serif text-xl font-medium leading-9 text-white sm:text-2xl sm:leading-10">
-                    {kural.kural[0]}
-                    <br />
-                    {kural.kural[1]}
-                </blockquote>
-                <p className="mt-3 border-l-2 border-blue-300/50 pl-5 text-sm italic leading-7 text-blue-100 sm:text-base">
-                    {kural.transliteration[0]}
-                    <br />
-                    {kural.transliteration[1]}
-                </p>
-                <div className="mt-7 grid gap-3 sm:grid-cols-2">
-                    <p className="rounded-2xl bg-white/10 p-4 text-sm leading-6 text-blue-50">
-                        <span className="mb-1 block text-xs font-bold uppercase tracking-wider text-amber-200">தமிழ் விளக்கம்</span>
-                        {kural.meaning['ta_mu_va']}
-                    </p>
-                    <p className="rounded-2xl bg-white/10 p-4 text-sm leading-6 text-blue-50">
-                        <span className="mb-1 block text-xs font-bold uppercase tracking-wider text-amber-200">English meaning</span>
-                        {kural.meaning['en']}
-                    </p>
-                    <p className="rounded-2xl border border-amber-200/20 bg-amber-200/10 p-4 text-sm leading-6 text-blue-50 sm:col-span-2">
-                        <span className="mb-1 block text-xs font-bold uppercase tracking-wider text-amber-200">Modern life takeaway</span>
-                        {kural.meaning['en_modern']}
-                    </p>
-                </div>
-            </div>
-        );
-    };
-
     const scrollToSection = (sectionId: string) => {
         document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' });
     };
@@ -173,7 +86,7 @@ export default function Home() {
                         </div>
 
                         <div className="rounded-3xl bg-linear-to-br from-blue-700 to-indigo-900 p-6 text-white shadow-xl shadow-blue-900/20 sm:p-9">
-                            {dailyKuralContent()}
+                            <DailyKuralWidget />
                         </div>
                     </div>
                 </section>
