@@ -80,7 +80,7 @@ export default async function BrowsePage({ searchParams }: Readonly<BrowsePagePr
     const hasFilters = Boolean(state.query || state.sectionId || state.chapterId);
     const totalPages = Math.ceil(searchResult.total / KURALS_PER_PAGE);
     const resultCountLabel = searchResult.total === 1 ? 'Kural' : 'Kurals';
-    const resultDescription = hasFilters ? `${searchResult.total} ${resultCountLabel} found` : 'Browse all 1,330 Kurals';
+    const resultDescription = hasFilters ? `${searchResult.total} ${resultCountLabel} found` : 'All 1,330 Kurals';
     const firstResultNumber = (resultPage - 1) * KURALS_PER_PAGE + 1;
     const lastResultNumber = Math.min(resultPage * KURALS_PER_PAGE, searchResult.total);
     const getBrowseHref = (page: number) => {
@@ -95,27 +95,25 @@ export default async function BrowsePage({ searchParams }: Readonly<BrowsePagePr
     return (
         <main className="min-h-screen bg-[radial-gradient(circle_at_top_right,#dbeafe,transparent_36%),linear-gradient(135deg,#eff6ff_0%,#ffffff_48%,#eef2ff_100%)] px-4 py-6 text-slate-900 sm:px-8 sm:py-10 lg:px-10">
             <article className="mx-auto max-w-5xl overflow-hidden rounded-3xl border border-white/80 bg-white/85 shadow-2xl shadow-blue-950/10 backdrop-blur-sm sm:rounded-5xl">
-                <header className="relative overflow-hidden bg-linear-to-br from-blue-950 via-blue-900 to-indigo-950 px-6 py-9 text-white sm:px-10 sm:py-12 lg:px-14">
+                <header className="relative overflow-hidden bg-linear-to-br from-blue-950 via-blue-900 to-indigo-950 px-6 py-8 text-white sm:px-10 sm:py-10 lg:px-14">
                     <div className="absolute -right-20 -top-24 size-72 rounded-full bg-blue-400/20 blur-3xl" aria-hidden="true" />
                     <div className="absolute -bottom-32 left-1/3 size-64 rounded-full bg-indigo-400/20 blur-3xl" aria-hidden="true" />
                     <div className="relative">
-                        <p className="text-sm font-bold uppercase tracking-[0.18em] text-blue-200">Your reading path</p>
-                        <h1 className="mt-3 max-w-3xl text-4xl font-semibold tracking-tight sm:text-6xl">Find a Kural</h1>
-                        <p className="mt-4 max-w-2xl text-base leading-7 text-blue-100/85 sm:text-lg">
-                            Search 1,330 couplets by number or by the ideas that matter to you. Narrow the journey by section or chapter.
-                        </p>
+                        <p className="text-sm font-bold uppercase tracking-[0.18em] text-blue-200">Browse</p>
+                        <h1 className="mt-3 max-w-3xl text-4xl font-semibold tracking-tight sm:text-5xl">Find a Kural</h1>
+                        <p className="mt-3 text-sm text-blue-100/85 sm:text-base">Search by number, keyword, section, or chapter.</p>
                     </div>
                 </header>
 
-                <section className="border-b border-slate-200/80 px-5 py-7 sm:px-10 sm:py-9 lg:px-14" aria-labelledby="browse-form-heading">
+                <section className="border-b border-slate-200/80 bg-white/70 px-5 py-6 sm:px-10 sm:py-8 lg:px-14" aria-labelledby="browse-form-heading">
                     <h2 id="browse-form-heading" className="sr-only">
                         Search and filter Kurals
                     </h2>
-                    <form action="/browse" method="get" className="space-y-4">
+                    <form action="/browse" method="get" className="space-y-3">
                         <label htmlFor="kural-search" className="block text-sm font-bold text-blue-950">
-                            Search by Kural number or keyword
+                            Search Kurals
                         </label>
-                        <div className="flex flex-col gap-3 sm:flex-row">
+                        <div className="flex flex-col gap-2 sm:flex-row">
                             <div className="relative flex-1">
                                 <Search className="pointer-events-none absolute left-4 top-1/2 size-5 -translate-y-1/2 text-slate-400" aria-hidden="true" />
                                 <input
@@ -124,24 +122,24 @@ export default async function BrowsePage({ searchParams }: Readonly<BrowsePagePr
                                     type="search"
                                     defaultValue={state.query}
                                     placeholder="Try 42, அறம், kindness, or love"
-                                    className="w-full rounded-2xl border border-slate-200 bg-white py-3.5 pl-12 pr-4 text-base text-blue-950 shadow-sm outline-none transition focus:ring-4 focus:ring-blue-100"
+                                    className="w-full rounded-xl border border-slate-200 bg-white py-3 pl-12 pr-4 text-base text-blue-950 shadow-sm outline-none transition focus:ring-4 focus:ring-blue-100"
                                 />
                             </div>
                             <button
                                 type="submit"
-                                className="rounded-2xl bg-blue-700 px-6 py-3.5 text-sm font-semibold text-white shadow-lg shadow-blue-900/15 transition hover:bg-blue-800 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-200"
+                                className="rounded-xl bg-blue-700 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-900/15 transition hover:bg-blue-800 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-200"
                             >
                                 Search
                             </button>
                         </div>
 
-                        <div className="grid gap-3 sm:grid-cols-2">
+                        <div className="grid gap-2 sm:grid-cols-2">
                             <label className="text-sm font-semibold text-slate-700">
                                 <span>Section</span>
                                 <select
                                     name="section"
                                     defaultValue={state.sectionId ?? ''}
-                                    className="mt-2 block w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-normal text-slate-900 shadow-sm outline-none focus:ring-4 focus:ring-blue-100"
+                                    className="mt-2 block w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-normal text-slate-900 shadow-sm outline-none focus:ring-4 focus:ring-blue-100"
                                 >
                                     <option value="">All sections</option>
                                     {taxonomyService.getSections().map((section) => (
@@ -156,7 +154,7 @@ export default async function BrowsePage({ searchParams }: Readonly<BrowsePagePr
                                 <select
                                     name="chapter"
                                     defaultValue={state.chapterId ?? ''}
-                                    className="mt-2 block w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-normal text-slate-900 shadow-sm outline-none focus:ring-4 focus:ring-blue-100"
+                                    className="mt-2 block w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-normal text-slate-900 shadow-sm outline-none focus:ring-4 focus:ring-blue-100"
                                 >
                                     <option value="">All chapters</option>
                                     {chapters.map((chapter) => (
@@ -175,18 +173,12 @@ export default async function BrowsePage({ searchParams }: Readonly<BrowsePagePr
                     </form>
                 </section>
 
-                <section className="px-5 py-8 sm:px-10 sm:py-12 lg:px-14" aria-labelledby="browse-results-heading">
-                    <div className="flex flex-wrap items-end justify-between gap-4">
-                        <div>
-                            <p className="text-sm font-bold uppercase tracking-[0.18em] text-blue-600">Explore wisdom</p>
-                            <h2 id="browse-results-heading" className="mt-2 text-3xl font-semibold tracking-tight text-blue-950 sm:text-4xl">
-                                {resultDescription}
-                            </h2>
-                        </div>
-                        <p className="rounded-full bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-700">Tamil + modern meaning</p>
-                    </div>
+                <section className="px-5 py-8 sm:px-10 sm:py-10 lg:px-14" aria-labelledby="browse-results-heading">
+                    <h2 id="browse-results-heading" className="text-2xl font-semibold tracking-tight text-blue-950 sm:text-3xl">
+                        {resultDescription}
+                    </h2>
 
-                    <div className="mt-8">
+                    <div className="mt-6">
                         {searchResult.results.length > 0 ? (
                             <>
                                 <p className="mb-5 text-sm font-medium text-slate-500">
@@ -199,7 +191,7 @@ export default async function BrowsePage({ searchParams }: Readonly<BrowsePagePr
                                     startIndex={firstResultNumber - 1}
                                 />
                                 {!isKuralNumberQuery && totalPages > 1 && (
-                                    <nav className="mt-8 flex items-center justify-between gap-4" aria-label="Browse result pages">
+                                    <nav className="mt-6 flex items-center justify-between gap-4" aria-label="Browse result pages">
                                         {resultPage > 1 ? (
                                             <Link
                                                 href={getBrowseHref(resultPage - 1)}
@@ -231,11 +223,9 @@ export default async function BrowsePage({ searchParams }: Readonly<BrowsePagePr
                                 )}
                             </>
                         ) : (
-                            <div className="rounded-3xl border border-dashed border-slate-300 bg-slate-50/80 px-6 py-12 text-center">
+                            <div className="rounded-2xl border border-dashed border-slate-300 bg-slate-50/80 px-6 py-10 text-center">
                                 <p className="text-lg font-semibold text-blue-950">No Kurals found</p>
-                                <p className="mt-2 text-sm leading-6 text-slate-600">
-                                    Try a different keyword, a number from 1 to 1,330, or remove one of the filters.
-                                </p>
+                                <p className="mt-2 text-sm text-slate-600">Try another search or clear the filters.</p>
                             </div>
                         )}
                     </div>
