@@ -18,6 +18,7 @@ type SearchState = {
     query: string;
     sectionId?: number;
     chapterId?: number;
+    page: number;
 };
 
 export const metadata: Metadata = {
@@ -39,18 +40,24 @@ function getId(value: string, maximum: number): number | undefined {
     return id <= maximum ? id : undefined;
 }
 
+function getPage(value: string): number {
+    return getId(value, Number.MAX_SAFE_INTEGER) ?? 1;
+}
+
 function getSearchState(params: Record<string, string | string[] | undefined>): SearchState {
     const query = getParam(params.q).trim();
     const sectionId = getId(getParam(params.section), 3);
     const chapterId = getId(getParam(params.chapter), MAX_CHAPTER_NUMBER);
+    const page = getPage(getParam(params.page));
 
-    return { query, sectionId, chapterId };
+    return { query, sectionId, chapterId, page };
 }
 
 export default async function BrowsePage({ searchParams }: Readonly<BrowsePageProps>) {
     const state = getSearchState(await searchParams);
     const isKuralNumberQuery = /^[1-9]\d*$/.test(state.query);
     const requestedKuralNumber = isKuralNumberQuery ? Number(state.query) : undefined;
+    const resultPage = isKuralNumberQuery ? 1 : state.page;
     const keywords = state.query
         ? state.query
               .split(',')
@@ -67,12 +74,23 @@ export default async function BrowsePage({ searchParams }: Readonly<BrowsePagePr
                           : undefined;
                   return { results: kural ? [kural] : [], total: kural ? 1 : 0 };
               })()
-            : kuralService.searchByKeyword(keywords, 1, KURALS_PER_PAGE, state.sectionId, state.chapterId);
+            : kuralService.searchByKeyword(keywords, state.page, KURALS_PER_PAGE, state.sectionId, state.chapterId);
 
     const chapters = taxonomyService.getChapters(state.sectionId);
     const hasFilters = Boolean(state.query || state.sectionId || state.chapterId);
+    const totalPages = Math.ceil(searchResult.total / KURALS_PER_PAGE);
     const resultCountLabel = searchResult.total === 1 ? 'Kural' : 'Kurals';
-    const resultDescription = hasFilters ? `${searchResult.total} ${resultCountLabel} found` : 'Start with a number, a word, or a chapter';
+    const resultDescription = hasFilters ? `${searchResult.total} ${resultCountLabel} found` : 'Browse all 1,330 Kurals';
+    const firstResultNumber = (resultPage - 1) * KURALS_PER_PAGE + 1;
+    const lastResultNumber = Math.min(resultPage * KURALS_PER_PAGE, searchResult.total);
+    const getBrowseHref = (page: number) => {
+        const params = new URLSearchParams();
+        if (state.query) params.set('q', state.query);
+        if (state.sectionId) params.set('section', String(state.sectionId));
+        if (state.chapterId) params.set('chapter', String(state.chapterId));
+        params.set('page', String(page));
+        return `/browse?${params.toString()}`;
+    };
 
     return (
         <main className="min-h-screen bg-[radial-gradient(circle_at_top_right,#dbeafe,transparent_36%),linear-gradient(135deg,#eff6ff_0%,#ffffff_48%,#eef2ff_100%)] px-4 py-6 text-slate-900 sm:px-8 sm:py-10 lg:px-10">
@@ -170,7 +188,48 @@ export default async function BrowsePage({ searchParams }: Readonly<BrowsePagePr
 
                     <div className="mt-8">
                         {searchResult.results.length > 0 ? (
-                            <KuralResultList kurals={searchResult.results} total={searchResult.total} showPosition={!isKuralNumberQuery} />
+                            <>
+                                <p className="mb-5 text-sm font-medium text-slate-500">
+                                    Showing {firstResultNumber}–{lastResultNumber} of {searchResult.total}
+                                </p>
+                                <KuralResultList
+                                    kurals={searchResult.results}
+                                    total={searchResult.total}
+                                    showPosition={!isKuralNumberQuery}
+                                    startIndex={firstResultNumber - 1}
+                                />
+                                {!isKuralNumberQuery && totalPages > 1 && (
+                                    <nav className="mt-8 flex items-center justify-between gap-4" aria-label="Browse result pages">
+                                        {resultPage > 1 ? (
+                                            <Link
+                                                href={getBrowseHref(resultPage - 1)}
+                                                className="rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-blue-700 shadow-sm transition hover:border-blue-300 hover:bg-blue-50 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-100"
+                                            >
+                                                ← Previous
+                                            </Link>
+                                        ) : (
+                                            <span className="rounded-2xl border border-slate-100 bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-300">
+                                                ← Previous
+                                            </span>
+                                        )}
+                                        <span className="text-sm font-semibold text-slate-500">
+                                            Page {resultPage} of {totalPages}
+                                        </span>
+                                        {resultPage < totalPages ? (
+                                            <Link
+                                                href={getBrowseHref(resultPage + 1)}
+                                                className="rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-blue-700 shadow-sm transition hover:border-blue-300 hover:bg-blue-50 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-100"
+                                            >
+                                                Next →
+                                            </Link>
+                                        ) : (
+                                            <span className="rounded-2xl border border-slate-100 bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-300">
+                                                Next →
+                                            </span>
+                                        )}
+                                    </nav>
+                                )}
+                            </>
                         ) : (
                             <div className="rounded-3xl border border-dashed border-slate-300 bg-slate-50/80 px-6 py-12 text-center">
                                 <p className="text-lg font-semibold text-blue-950">No Kurals found</p>

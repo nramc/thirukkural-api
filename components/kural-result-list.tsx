@@ -5,9 +5,10 @@ type KuralResultListProps = {
     kurals: Kural[];
     total?: number;
     showPosition?: boolean;
+    startIndex?: number;
 };
 
-export default function KuralResultList({ kurals, total = kurals.length, showPosition = false }: Readonly<KuralResultListProps>) {
+export default function KuralResultList({ kurals, total = kurals.length, showPosition = false, startIndex = 0 }: Readonly<KuralResultListProps>) {
     return (
         <div className="space-y-5">
             {kurals.map((kural, index) => (
@@ -24,7 +25,7 @@ export default function KuralResultList({ kurals, total = kurals.length, showPos
                         <p className="text-sm font-bold uppercase tracking-[0.18em] text-blue-600">Kural {kural.number}</p>
                         {showPosition && (
                             <span className="text-xs font-semibold text-slate-400">
-                                {index + 1} of {total}
+                                {startIndex + index + 1} of {total}
                             </span>
                         )}
                     </div>
