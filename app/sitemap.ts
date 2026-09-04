@@ -17,6 +17,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
             priority: 0.7,
         },
         {
+            url: `${siteUrl}/browse`,
+            changeFrequency: 'weekly',
+            priority: 0.9,
+        },
+        {
             url: `${siteUrl}/openapi/swagger-ui.html`,
             changeFrequency: 'monthly',
             priority: 0.6,

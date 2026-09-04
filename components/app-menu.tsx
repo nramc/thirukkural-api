@@ -4,7 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
-import { BookOpen, CircleUserRound, Code2, GitFork, HomeIcon, type LucideIcon, Menu, Sparkles, X } from 'lucide-react';
+import { BookOpen, CircleUserRound, Code2, GitFork, HomeIcon, type LucideIcon, Menu, Search, Sparkles, X } from 'lucide-react';
 
 type NavigationItem = {
     label: string;
@@ -15,9 +15,9 @@ type NavigationItem = {
 
 const navigationItems: NavigationItem[] = [
     { label: 'Home', href: '/', icon: HomeIcon },
+    { label: 'Browse', href: '/browse', icon: Search },
     { label: 'Chapters', href: '/chapters/1', icon: BookOpen },
-    { label: 'API', href: '/api/kural', icon: Code2, external: true },
-    { label: 'Doc', href: '/openapi/swagger-ui.html#Kural', icon: BookOpen, external: true },
+    { label: 'Doc', href: '/openapi/swagger-ui.html#Kural', icon: Code2, external: true },
     { label: 'GitHub', href: 'https://github.com/nramc/thirukkural-api', icon: GitFork, external: true },
     { label: 'Contact', href: 'https://myprofile.codewithram.dev/', icon: CircleUserRound, external: true },
 ];
@@ -96,6 +96,15 @@ export default function AppMenu() {
                 </nav>
 
                 <div className="flex items-center gap-2">
+                    <Link
+                        href="/browse"
+                        onClick={closeMenu}
+                        className="flex size-10 items-center justify-center rounded-lg text-slate-600 transition-colors hover:bg-blue-50 hover:text-blue-800 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-100"
+                        aria-label="Search Kurals"
+                        title="Search Kurals"
+                    >
+                        <Search className="size-5" aria-hidden="true" />
+                    </Link>
                     <Link
                         href="/chat"
                         className="hidden items-center gap-2 rounded-lg bg-blue-800 px-4 py-2.5 text-[15px] font-semibold text-white! shadow-md shadow-blue-800/20 transition-all hover:-translate-y-0.5 hover:bg-blue-900 hover:shadow-lg hover:shadow-blue-800/25 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-200 sm:inline-flex"
