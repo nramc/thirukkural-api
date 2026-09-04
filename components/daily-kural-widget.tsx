@@ -2,8 +2,10 @@
 
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { ArrowLeft, ArrowRight, Sparkles } from 'lucide-react';
+import { ArrowLeft, ArrowRight, MessageCircle, Sparkles } from 'lucide-react';
 import { Kural } from '@/app/domain/kurals-db';
+import { buttonVariants } from '@/components/ui/button';
+import { getKuralChatHref } from '@/lib/ai/kural-prompt';
 
 type Explanation = 'modern' | 'ta';
 
@@ -61,19 +63,21 @@ export default function DailyKuralWidget() {
     return (
         <article aria-labelledby="daily-kural-title">
             <div className="flex flex-wrap items-center justify-between gap-4">
-                <Link
-                    href={`/kural/${kural.number}`}
-                    id="daily-kural-title"
-                    className="group inline-flex items-center gap-2 text-sm font-semibold text-white transition hover:text-amber-200 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-amber-200"
-                >
-                    <span className="flex size-9 items-center justify-center rounded-xl bg-white/15 text-xs font-bold text-amber-200 transition group-hover:bg-white/25">
-                        {kural.number}
-                    </span>
-                    <span>
-                        <span className="block text-[10px] font-bold uppercase tracking-[0.18em] text-blue-200">Today’s Kural</span>
-                        <span className="block">Read the full couplet</span>
-                    </span>
-                </Link>
+                <div className="flex flex-wrap items-center gap-3">
+                    <Link
+                        href={`/kural/${kural.number}`}
+                        id="daily-kural-title"
+                        className="group inline-flex items-center gap-2 text-sm font-semibold text-white transition hover:text-amber-200 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-amber-200"
+                    >
+                        <span className="flex size-9 items-center justify-center rounded-xl bg-white/15 text-xs font-bold text-amber-200 transition group-hover:bg-white/25">
+                            {kural.number}
+                        </span>
+                        <span>
+                            <span className="block text-[10px] font-bold uppercase tracking-[0.18em] text-blue-200">Today’s Kural</span>
+                            <span className="block">Read the full couplet</span>
+                        </span>
+                    </Link>
+                </div>
 
                 <fieldset className="inline-flex items-center gap-1 rounded-full border border-white/15 bg-white/10 p-1">
                     <legend className="sr-only">Choose explanation</legend>
@@ -100,12 +104,27 @@ export default function DailyKuralWidget() {
                 <span>{kural.section.names.en}</span>
             </div>
 
-            <blockquote className="mt-6 rounded-3xl border border-white/15 bg-white/10 p-5 font-serif text-xl font-medium leading-9 text-white shadow-inner shadow-white/5 sm:p-6 sm:text-2xl sm:leading-10">
+            <blockquote className="relative mt-6 rounded-3xl border border-white/15 bg-white/10 p-5 pb-16 font-serif text-xl font-medium leading-9 text-white shadow-inner shadow-white/5 sm:p-6 sm:pb-16 sm:text-2xl sm:leading-10">
                 <span lang="ta">
                     {kural.kural[0]}
                     <br />
                     {kural.kural[1]}
                 </span>
+                <div className="absolute bottom-4 right-4 sm:right-5">
+                    <Link
+                        href={getKuralChatHref(kural)}
+                        aria-label="Explain this Kural with Valluvar AI"
+                        className={buttonVariants({
+                            variant: 'default',
+                            size: 'lg',
+                            className:
+                                'rounded-full shadow-lg shadow-blue-950/20 transition-transform hover:-translate-y-0.5 hover:scale-[1.02] hover:bg-primary/90 hover:shadow-xl hover:shadow-blue-950/30 hover:ring-4 hover:ring-blue-200/30',
+                        })}
+                    >
+                        <MessageCircle className="size-4" aria-hidden="true" />
+                        <span>Explain this Kural</span>
+                    </Link>
+                </div>
             </blockquote>
 
             <div className="mt-6 rounded-2xl border border-amber-200/25 bg-amber-200/10 p-4 text-sm leading-6 text-blue-50">

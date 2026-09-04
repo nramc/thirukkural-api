@@ -5,7 +5,7 @@ import { useChat } from '@ai-sdk/react';
 import { Conversation, ConversationContent, ConversationEmptyState } from '@/components/ai-elements/conversation';
 import { Message, MessageAction, MessageActions, MessageContent, MessageResponse } from '@/components/ai-elements/message';
 import { Suggestion, Suggestions } from '@/components/ai-elements/suggestion';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 const suggestions = [
     'What Can I Learn Today?',
@@ -157,6 +157,7 @@ export default function Home() {
         transport: new DefaultChatTransport({ api: '/api/chat' }),
     });
     const [input, setInput] = useState('');
+    const didAutoSubmitPrompt = useRef(false);
     const isStreaming = status === 'submitted' || status === 'streaming';
     const lastMessage = messages.at(-1);
     const showPendingAssistant = isStreaming && lastMessage?.role !== 'assistant';
@@ -172,14 +173,30 @@ export default function Home() {
         return () => window.cancelAnimationFrame(frameId);
     }, [lastMessage?.id, lastMessage?.role]);
 
-    const submitMessage = (value: string) => {
-        const content = value.trim();
-        if (!content || isStreaming) return;
+    const submitMessage = useCallback(
+        (value: string) => {
+            const content = value.trim();
+            if (!content || isStreaming) return;
 
-        setInput('');
-        clearError();
-        void sendMessage({ text: content });
-    };
+            setInput('');
+            clearError();
+            void sendMessage({ text: content });
+        },
+        [clearError, isStreaming, sendMessage],
+    );
+
+    useEffect(() => {
+        if (didAutoSubmitPrompt.current) return;
+        didAutoSubmitPrompt.current = true;
+
+        const url = new URL(window.location.href);
+        const prompt = url.searchParams.get('prompt')?.trim();
+        if (!prompt) return;
+
+        url.searchParams.delete('prompt');
+        window.history.replaceState(null, '', `${url.pathname}${url.search}${url.hash}`);
+        window.setTimeout(() => submitMessage(prompt), 0);
+    }, [submitMessage]);
 
     const stopStreaming = () => stop();
     return (
