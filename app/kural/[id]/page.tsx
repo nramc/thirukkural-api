@@ -2,6 +2,9 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import kuralService from '@/app/service/kural-service';
+import { MessageCircle } from 'lucide-react';
+import { buttonVariants } from '@/components/ui/button';
+import { getKuralChatHref } from '@/lib/ai/kural-prompt';
 
 const MIN_KURAL_NUMBER = 1;
 const MAX_KURAL_NUMBER = 1330;
@@ -146,7 +149,7 @@ export default async function KuralPage({ params }: Readonly<KuralPageProps>) {
                         </div>
 
                         <div className="mt-8 overflow-hidden rounded-3xl border border-blue-100 bg-white shadow-lg shadow-blue-900/5">
-                            <div className="border-l-4 border-blue-600 bg-linear-to-br from-blue-50 to-indigo-50 px-6 py-8 sm:px-10 sm:py-11">
+                            <div className="relative border-l-4 border-blue-600 bg-linear-to-br from-blue-50 to-indigo-50 px-6 py-8 pb-20 sm:px-10 sm:py-11 sm:pb-20">
                                 <div className="flex items-center justify-between gap-4">
                                     <p className="text-xs font-bold uppercase tracking-[0.16em] text-blue-600">Tamil original</p>
                                     <span className="text-lg text-blue-300" aria-hidden="true">
@@ -157,6 +160,21 @@ export default async function KuralPage({ params }: Readonly<KuralPageProps>) {
                                     <p>{kural.kural[0]}</p>
                                     <p>{kural.kural[1]}</p>
                                 </blockquote>
+                                <div className="absolute bottom-5 right-5 sm:right-8">
+                                    <Link
+                                        href={getKuralChatHref(kural)}
+                                        aria-label="Explain this Kural with Valluvar AI"
+                                        className={buttonVariants({
+                                            variant: 'default',
+                                            size: 'lg',
+                                            className:
+                                                'rounded-full shadow-lg shadow-blue-900/20 transition-transform hover:-translate-y-0.5 hover:scale-[1.02] hover:bg-primary/90 hover:shadow-xl hover:shadow-blue-900/30 hover:ring-4 hover:ring-blue-200/40',
+                                        })}
+                                    >
+                                        <MessageCircle className="size-4" aria-hidden="true" />
+                                        <span>Explain this Kural</span>
+                                    </Link>
+                                </div>
                             </div>
                             <div className="grid gap-6 border-t border-slate-100 bg-slate-50/60 px-6 py-6 sm:px-10 lg:grid-cols-2">
                                 <div className="rounded-2xl border border-slate-200/80 bg-white p-5">
