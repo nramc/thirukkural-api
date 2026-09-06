@@ -18,7 +18,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
         },
         {
             url: `${siteUrl}/browse`,
-            changeFrequency: 'weekly',
+            changeFrequency: 'monthly',
             priority: 0.9,
         },
         {
@@ -30,13 +30,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
     const kuralPages: MetadataRoute.Sitemap = Array.from({ length: maxKuralNumber }, (_, index) => ({
         url: `${siteUrl}/kural/${index + 1}`,
-        changeFrequency: 'yearly' as const,
+        changeFrequency: 'monthly' as const,
         priority: 0.7,
     }));
 
     const chapterPages: MetadataRoute.Sitemap = Array.from({ length: maxChapterNumber }, (_, index) => ({
         url: `${siteUrl}/chapters/${index + 1}`,
-        changeFrequency: 'yearly' as const,
+        changeFrequency: 'monthly' as const,
         priority: 0.8,
     }));
 
