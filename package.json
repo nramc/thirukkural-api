@@ -22,7 +22,7 @@
     "dependencies": {
         "@ai-sdk/openai": "4.0.60",
         "@ai-sdk/react": "4.0.96",
-        "@base-ui/react": "1.7.0",
+        "@base-ui/react": "1.8.0",
         "@next/third-parties": "16.3.4",
         "@streamdown/cjk": "1.0.3",
         "@streamdown/code": "1.1.1",
