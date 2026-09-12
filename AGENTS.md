@@ -4,7 +4,7 @@
 
 - This is a Next.js 16 App Router project using strict TypeScript, React 19, Tailwind CSS v4, and Vercel-friendly route handlers.
 - `app/api/` is the HTTP boundary; `app/service/` owns Kural lookup, search, daily selection, and random selection; `app/domain/kurals-db.ts` defines the data contract.
-- `public/data/kurals.json` is the source of all 1,330 Kurals. `KuralService` reads it from `path.resolve('public/data/kurals.json')` once when its singleton is initialized, so preserve the repository-root working-directory assumption.
+- Canonical Tamil Kurals are stored in `public/data/canonical/kurals.ta.json`; transliteration and interpretations are stored in their respective locale-oriented data directories and composed by the service loader.
 - `public/openapi/openapi.yaml` and `public/openapi/swagger-ui.html` are the API documentation assets. Keep the OpenAPI file and `README.md` aligned with externally visible API changes.
 
 ## Data and API flow
@@ -13,7 +13,7 @@
 - `GET /api/kural/{id}` delegates to `kuralService.search()` and returns JSON or a 404. Valid Kural numbers are 1–1330.
 - `GET /api/kural?q=...&page=...&limit=...` delegates to `searchByKeyword()`. Comma-separated keywords use OR matching across both couplet lines and all meanings; the response is `{ results, total, page, limit }`.
 - `GET /api/daily` uses the date-derived ID from `DailyKuralService`; `GET /api/random` uses `RandomKuralService`. For random requests, `chapter` takes precedence over `section`; ranges are chapters 1–133 and sections 1–3 (`1–380`, `381–1080`, `1081–1330`).
-- Keep route handlers thin: parse/validate boundary inputs, call the relevant singleton service, and return the nearby route’s `Response.json()`/`NextResponse.json()` shape. Do not load `kurals.json` directly in a route.
+- Keep route handlers thin: parse/validate boundary inputs, call the relevant singleton service, and return the nearby route’s `Response.json()`/`NextResponse.json()` shape. Do not load data files directly in a route.
 
 ## AI integration
 

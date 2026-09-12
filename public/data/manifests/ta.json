@@ -1,0 +1,28 @@
+{
+    "schemaVersion": "1.0.0",
+    "locale": "ta",
+    "languageName": "தமிழ்",
+    "canonical": "canonical/kurals.ta.json",
+    "transliteration": "transliterations/ta-Latn.json",
+    "requiredMeaningKeys": ["ta_mu_va", "ta_salamon", "ta_kalaignar"],
+    "interpretations": [
+        {
+            "id": "mu-va",
+            "type": "interpretation",
+            "path": "interpretations/ta/mu-va.json",
+            "meaningKey": "ta_mu_va"
+        },
+        {
+            "id": "salamon",
+            "type": "interpretation",
+            "path": "interpretations/ta/salamon.json",
+            "meaningKey": "ta_salamon"
+        },
+        {
+            "id": "kalaignar",
+            "type": "interpretation",
+            "path": "interpretations/ta/kalaignar.json",
+            "meaningKey": "ta_kalaignar"
+        }
+    ]
+}
