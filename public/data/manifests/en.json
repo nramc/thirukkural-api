@@ -1,0 +1,21 @@
+{
+    "schemaVersion": "1.0.0",
+    "locale": "en",
+    "languageName": "English",
+    "canonical": "canonical/kurals.ta.json",
+    "transliteration": "transliterations/ta-Latn.json",
+    "interpretations": [
+        {
+            "id": "translation",
+            "type": "translation",
+            "path": "interpretations/en/translation.json",
+            "meaningKey": "en"
+        },
+        {
+            "id": "modern",
+            "type": "modern-interpretation",
+            "path": "interpretations/en/modern.json",
+            "meaningKey": "en_modern"
+        }
+    ]
+}
