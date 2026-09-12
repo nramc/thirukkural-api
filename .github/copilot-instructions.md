@@ -5,7 +5,7 @@
 - This is a Next.js App Router application using TypeScript, React, and serverless-friendly route handlers.
 - The project exposes a REST API for 1,330 Thirukkural couplets and includes a web UI plus an optional AI chat
   experience.
-- Kural data is stored in `public/data/kurals.json`; related chapter and section data is in the same directory.
+- Canonical Kural data is stored in `public/data/canonical/kurals.ta.json`; transliterations, interpretations, manifests, and shared taxonomy data are stored in the related directories under `public/data/`.
 - Use the `@/*` path alias for repository-root imports when it matches the surrounding code.
 - Keep the existing four-space indentation, single-quote style, ESLint rules, and Prettier formatting.
 

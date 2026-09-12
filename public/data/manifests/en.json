@@ -4,6 +4,7 @@
     "languageName": "English",
     "canonical": "canonical/kurals.ta.json",
     "transliteration": "transliterations/ta-Latn.json",
+    "requiredMeaningKeys": ["en", "en_modern"],
     "interpretations": [
         {
             "id": "translation",

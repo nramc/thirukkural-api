@@ -4,6 +4,7 @@
     "languageName": "தமிழ்",
     "canonical": "canonical/kurals.ta.json",
     "transliteration": "transliterations/ta-Latn.json",
+    "requiredMeaningKeys": ["ta_mu_va", "ta_salamon", "ta_kalaignar"],
     "interpretations": [
         {
             "id": "mu-va",
