@@ -127,6 +127,9 @@ Each Kural also includes a two-item `transliteration` array corresponding to the
 reader-friendly Latin transliterations are sourced from the `transliteration1` and `transliteration2` fields in the
 [public Thirukkural dataset](https://github.com/tk120404/thirukkural/blob/master/thirukkural.json).
 
+For the complete maintainer workflow, including the required taxonomy updates, interpretation-file format, manifest
+fields, and validation commands, see [Adding a language](./docs/adding-a-language.md).
+
 The English chapter labels are based on the ordered chapter metadata in the public
 [Thirukkural dataset](https://github.com/tk120404/thirukkural/blob/master/detail.json); the Tamil labels and Kural
 ranges remain aligned with this project’s source data.
