@@ -21,7 +21,7 @@
     },
     "dependencies": {
         "@ai-sdk/openai": "4.0.65",
-        "@ai-sdk/react": "4.0.97",
+        "@ai-sdk/react": "4.0.100",
         "@base-ui/react": "1.8.0",
         "@next/third-parties": "16.3.4",
         "@streamdown/cjk": "1.0.3",
