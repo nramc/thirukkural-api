@@ -4,7 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
-import { BookOpen, CircleUserRound, Code2, GitFork, HomeIcon, type LucideIcon, Menu, Search, Sparkles, X } from 'lucide-react';
+import { BookOpen, CircleUserRound, Code2, GitFork, HomeIcon, type LucideIcon, Menu, Search, Sparkles, Trophy, X } from 'lucide-react';
 
 type NavigationItem = {
     label: string;
@@ -17,6 +17,7 @@ const navigationItems: NavigationItem[] = [
     { label: 'Home', href: '/', icon: HomeIcon },
     { label: 'Browse', href: '/browse', icon: Search },
     { label: 'Chapters', href: '/chapters/1', icon: BookOpen },
+    { label: 'Quiz', href: '/quiz', icon: Trophy },
     { label: 'Doc', href: '/openapi/swagger-ui.html#Kural', icon: Code2, external: true },
     { label: 'GitHub', href: 'https://github.com/nramc/thirukkural-api', icon: GitFork, external: true },
     { label: 'Contact', href: 'https://myprofile.codewithram.dev/', icon: CircleUserRound, external: true },
