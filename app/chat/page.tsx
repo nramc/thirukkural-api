@@ -139,7 +139,7 @@ function PendingAssistantBubble() {
     );
 }
 
-function MessageBubble({ message, isStreaming }: Readonly<{ message: UIMessage; isStreaming: boolean }>) {
+function MessageBubble({ message, isStreaming, onRetry }: Readonly<{ message: UIMessage; isStreaming: boolean; onRetry: () => void }>) {
     const [copied, setCopied] = useState(false);
     const isAssistant = message.role === 'assistant';
     const content = getMessageText(message);
@@ -148,6 +148,17 @@ function MessageBubble({ message, isStreaming }: Readonly<{ message: UIMessage; 
 
     if (!content && isStreaming && isAssistant) {
         renderedContent = <PendingMessageContent activity={isUsingTool ? 'tool' : 'thinking'} />;
+    }
+
+    if (!content && !isStreaming && isAssistant) {
+        renderedContent = (
+            <div className="flex flex-wrap items-center gap-x-3 gap-y-2 text-sm text-slate-500">
+                <span>No response text was returned.</span>
+                <button type="button" onClick={onRetry} className="font-semibold text-blue-700 underline underline-offset-4 hover:text-blue-950">
+                    Retry response
+                </button>
+            </div>
+        );
     }
 
     const copyMessage = async () => {
@@ -341,7 +352,7 @@ export default function Home() {
                         ) : (
                             <ConversationContent className="mx-auto w-full max-w-3xl px-2 py-4 sm:px-6 sm:py-8">
                                 {messages.map((message) => (
-                                    <MessageBubble key={message.id} message={message} isStreaming={isStreaming} />
+                                    <MessageBubble key={message.id} message={message} isStreaming={isStreaming} onRetry={retryLastResponse} />
                                 ))}
                                 {showPendingAssistant && <PendingAssistantBubble />}
                             </ConversationContent>
