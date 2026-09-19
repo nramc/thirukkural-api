@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { ArrowLeft, ArrowRight, MessageCircle, Sparkles } from 'lucide-react';
 import { Kural } from '@/app/domain/kurals-db';
 import { buttonVariants } from '@/components/ui/button';
+import TamilKural from '@/components/tamil-kural';
 import { getKuralChatHref } from '@/lib/ai/kural-prompt';
 
 type Explanation = 'modern' | 'ta';
@@ -104,12 +105,8 @@ export default function DailyKuralWidget() {
                 <span>{kural.section.names.en}</span>
             </div>
 
-            <blockquote className="relative mt-6 rounded-3xl border border-white/15 bg-white/10 p-5 pb-16 font-serif text-xl font-medium leading-9 text-white shadow-inner shadow-white/5 sm:p-6 sm:pb-16 sm:text-2xl sm:leading-10">
-                <span lang="ta">
-                    {kural.kural[0]}
-                    <br />
-                    {kural.kural[1]}
-                </span>
+            <blockquote className="relative mt-6 rounded-3xl border border-white/15 bg-white/10 p-5 pb-16 font-serif font-medium leading-9 text-white shadow-inner shadow-white/5 sm:p-6 sm:pb-16 sm:leading-10">
+                <TamilKural lines={kural.kural} className="text-[clamp(1.25rem,4.5vw,1.5rem)]" />
                 <div className="absolute bottom-4 right-4 sm:right-5">
                     <Link
                         href={getKuralChatHref(kural)}
