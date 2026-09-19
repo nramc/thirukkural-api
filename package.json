@@ -29,7 +29,7 @@
         "@streamdown/math": "1.0.2",
         "@streamdown/mermaid": "1.0.2",
         "@tailwindcss/postcss": "4.3.3",
-        "@vercel/functions": "3.9.7",
+        "@vercel/functions": "3.9.8",
         "ai": "7.0.99",
         "class-variance-authority": "0.7.1",
         "clsx": "2.1.1",
