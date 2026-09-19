@@ -35,16 +35,23 @@
 
 - `/chat` is a client page using `useChat()` and `DefaultChatTransport` to post to `POST /api/chat`; reusable chat UI is
   under root-level `components/ai-elements/`.
-- `/api/chat` explicitly uses the Node.js runtime. It normalizes messages, requires a user-first conversation, keeps the
-  five newest messages, enables the Kural tools in `lib/ai/chat-tools.ts`, and supports UI-message, plain-text, and
+- `/api/chat` explicitly uses the Node.js runtime. It normalizes messages, requires a user-first conversation, keeps recent
+  turns within a message-count and character budget, enables the Kural tools in `lib/ai/chat-tools.ts`, and supports UI-message, plain-text, and
   non-streaming JSON responses.
-- `lib/ai/model-resolver.ts` supports `ollama` (`OLLAMA_BASE_URL/v1`, placeholder key `ollama`) and OpenRouter
-  (`https://openrouter.ai/api/v1`, server-only `LLM_API_KEY`). `LLM_MODEL` is required; `LLM_ALLOWED_MODELS` is an
-  optional comma-separated allowlist; `OPENROUTER_SITE_URL` and `OPENROUTER_APP_NAME` optionally become OpenRouter
-  headers.
+- `lib/ai/model-resolver.ts` supports `ollama` (via `@ai-sdk/openai`, `OLLAMA_BASE_URL/v1`, placeholder key `ollama`)
+  and `openrouter` (via `@openrouter/ai-sdk-provider`, server-only `LLM_API_KEY`). `LLM_MODEL` is required;
+  `LLM_ALLOWED_MODELS` is an optional comma-separated allowlist; `OPENROUTER_SITE_URL` and `OPENROUTER_APP_NAME`
+  become OpenRouter headers; `OPENROUTER_REASONING` (default off) and `OPENROUTER_PROVIDER_SORT` (default
+  `throughput`) tune OpenRouter latency and routing.
 - Preserve chat limits and safeguards: at most 100 incoming messages, 12,000 characters per message, 120,000 total
-  characters, five context messages, 1,024 output tokens, and three tool/model steps. Keep request IDs, abort handling,
-  generic client errors, and metadata-only tool logging.
+  characters, up to 24 recent messages bounded by a 16,000-character budget (`MAX_CONTEXT_MESSAGES` /
+  `MAX_CONTEXT_CHARACTERS` in `lib/ai/chat-policy.ts`), 1,024 output tokens, and four tool/model steps. Keep request
+  IDs, a combined request/45s-timeout abort signal, generic client errors, and metadata-only tool logging.
+- `lib/ai/chat-tools.ts` also exposes batch tools `getRandomKurals` (with `excludeIds`) and `getKuralsByIds` so
+  quiz-style sessions can avoid one tool call per Kural; the system prompt instructs the model to prefer them and to
+  track a running score in-band.
+- `/quiz` is a separate, deterministic client page (no LLM calls) that fetches distinct Kurals via `/api/random` and
+  self-grades a multiple-choice round; use it as the fast alternative to AI-driven quizzing in `/chat`.
 
 ## Local workflow and conventions
 

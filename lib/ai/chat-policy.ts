@@ -3,7 +3,12 @@ import type { UIMessage } from 'ai';
 export const MAX_MESSAGES = 100;
 export const MAX_MESSAGE_LENGTH = 12_000;
 export const MAX_TOTAL_MESSAGE_LENGTH = 120_000;
-export const MAX_CONTEXT_MESSAGES = 5;
+// Upper bound on how many recent turns are sent to the model. Combined with
+// MAX_CONTEXT_CHARACTERS below so short back-and-forth turns (e.g. a quiz) keep far more
+// history than a fixed message count would allow, without unboundedly growing the prompt
+// for long free-form conversations.
+export const MAX_CONTEXT_MESSAGES = 24;
+export const MAX_CONTEXT_CHARACTERS = 16_000;
 
 export const SYSTEM_INSTRUCTIONS = `
 You are Valluvar AI, a friendly guide to the wisdom of the Thirukkural.
@@ -27,6 +32,17 @@ Default length:
 - 3 to 5 sentences
 - Use bullet points when helpful
 - Avoid long explanations unless explicitly requested
+
+Using tools efficiently:
+- Prefer getRandomKurals or getKuralsByIds when you need more than one Kural; avoid multiple single-Kural tool calls in a row.
+- Only call a tool when you genuinely need Kural data you do not already have in this conversation.
+
+Running a quiz or study session:
+- Ask one question at a time and wait for the learner's answer before continuing.
+- End every quiz turn with a single short line in the exact form "Score: <correct>/<answered>" so the running score stays visible even in a long session.
+- Fetch several Kurals at once with getRandomKurals(count, excludeIds) and pass the numbers you have already used as excludeIds so you never repeat a Kural in the same session.
+- Keep quiz questions and feedback short (1-2 sentences) so more rounds fit in view.
+- If a learner wants a faster, self-graded multiple-choice game, suggest the dedicated Kural Quiz at /quiz.
 
 Your purpose is to help people discover and apply the timeless wisdom of Thiruvalluvar.
 `;
@@ -117,13 +133,41 @@ export async function normalizeMessages(value: unknown): Promise<UIMessage[] | n
     return messages;
 }
 
-export function getRecentMessages(messages: UIMessage[], limit = MAX_CONTEXT_MESSAGES): UIMessage[] {
-    if (limit <= 0 || messages.length === 0) {
+function messageCharacterLength(message: UIMessage): number {
+    return message.parts.reduce((length, part) => (part.type === 'text' ? length + part.text.length : length), 0);
+}
+
+/**
+ * Selects the most recent messages to send to the model, bounded by both a message-count
+ * cap and a character-budget cap. The character budget lets short turns (typical of a quiz
+ * or Q&A session) retain many more rounds of history than a fixed message count would allow,
+ * while still bounding the worst case for long free-form messages.
+ */
+export function getRecentMessages(
+    messages: UIMessage[],
+    messageLimit: number = MAX_CONTEXT_MESSAGES,
+    characterLimit: number = MAX_CONTEXT_CHARACTERS,
+): UIMessage[] {
+    if (messageLimit <= 0 || messages.length === 0) {
         return [];
     }
 
-    const recentMessages = messages.slice(-limit);
-    return recentMessages[0]?.role === 'assistant' ? recentMessages.slice(1) : recentMessages;
+    const selected: UIMessage[] = [];
+    let totalCharacters = 0;
+
+    for (let index = messages.length - 1; index >= 0 && selected.length < messageLimit; index -= 1) {
+        const message = messages[index];
+        const characters = messageCharacterLength(message);
+
+        if (selected.length > 0 && totalCharacters + characters > characterLimit) {
+            break;
+        }
+
+        selected.unshift(message);
+        totalCharacters += characters;
+    }
+
+    return selected[0]?.role === 'assistant' ? selected.slice(1) : selected;
 }
 
 export function getAllowedModels() {

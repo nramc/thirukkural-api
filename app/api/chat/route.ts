@@ -15,7 +15,12 @@ import { ConfigurationError, getLanguageModel, getModel, getProvider } from '@/l
 export const runtime = 'nodejs';
 
 const MAX_OUTPUT_TOKENS = 1_024;
-const MAX_STEP_COUNT = 3;
+// Quiz/study flows may need a random-batch lookup followed by a final answer; keep a small
+// amount of headroom above the common 2-step case (one tool call, then the reply).
+const MAX_STEP_COUNT = 4;
+// Fail fast instead of leaving the UI stuck if the upstream model hangs or a slow OpenRouter
+// route never responds.
+const MAX_REQUEST_DURATION_MS = 45_000;
 const registeredToolNames = Object.keys(kuralTools);
 
 function logToolEvent(event: Record<string, unknown>) {
@@ -40,6 +45,8 @@ export async function POST(request: Request) {
         return errorResponse('Please send a conversation containing readable user or assistant text.', 400, requestId);
     }
 
+    const abortSignal = AbortSignal.any([request.signal, AbortSignal.timeout(MAX_REQUEST_DURATION_MS)]);
+
     try {
         const provider = getProvider();
         const model = getModel();
@@ -59,7 +66,7 @@ export async function POST(request: Request) {
                 tools: kuralTools,
                 stopWhen: stepCountIs(MAX_STEP_COUNT),
                 maxOutputTokens: MAX_OUTPUT_TOKENS,
-                abortSignal: request.signal,
+                abortSignal,
                 onStepEnd: ({ stepNumber, toolCalls, toolResults }) => {
                     logToolEvent({
                         requestId,
@@ -102,7 +109,7 @@ export async function POST(request: Request) {
             tools: kuralTools,
             stopWhen: stepCountIs(MAX_STEP_COUNT),
             maxOutputTokens: MAX_OUTPUT_TOKENS,
-            abortSignal: request.signal,
+            abortSignal,
             onStepEnd: ({ stepNumber, toolCalls, toolResults }) => {
                 logToolEvent({
                     requestId,

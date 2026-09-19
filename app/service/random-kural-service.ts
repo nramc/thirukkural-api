@@ -17,6 +17,26 @@ class RandomKuralService {
         const id = RandomKuralUtils.randomFromChapter(chapterId);
         return kuralService.search(id)!;
     }
+
+    /**
+     * Returns up to `count` distinct random Kurals, skipping any number present in
+     * `excludeIds`. Useful for building a quiz round in a single call instead of repeated
+     * single-Kural tool round-trips.
+     */
+    public getRandomKurals(count: number, excludeIds: number[] = []): Kural[] {
+        const exclude = new Set(excludeIds);
+        const selectedIds = new Set<number>();
+        const maxAttempts = count * 20 + 50;
+
+        for (let attempt = 0; selectedIds.size < count && attempt < maxAttempts; attempt += 1) {
+            const id = RandomKuralUtils.random();
+            if (!exclude.has(id)) {
+                selectedIds.add(id);
+            }
+        }
+
+        return [...selectedIds].map((id) => kuralService.search(id)!);
+    }
 }
 
 const randomKuralService = new RandomKuralService();

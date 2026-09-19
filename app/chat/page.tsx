@@ -2,6 +2,7 @@
 
 import { DefaultChatTransport, type UIMessage } from 'ai';
 import { useChat } from '@ai-sdk/react';
+import Link from 'next/link';
 import { Conversation, ConversationContent, ConversationEmptyState } from '@/components/ai-elements/conversation';
 import { Message, MessageAction, MessageActions, MessageContent, MessageResponse } from '@/components/ai-elements/message';
 import { Suggestion, Suggestions } from '@/components/ai-elements/suggestion';
@@ -12,7 +13,7 @@ const suggestions = [
     'Find a Kural about perseverance',
     'Help Me Stay Motivated',
     'Surprise Me with a Kural',
-    'Give me a random Kural',
+    'Quiz me on 3 random Kurals',
     'Explain This Kural',
 ];
 
@@ -222,7 +223,7 @@ export default function Home() {
                                 <h1 className="max-w-xl text-2xl font-semibold tracking-tight text-blue-950 sm:text-5xl sm:leading-[1.12]">
                                     Explore the Thirukkural with Valluvar AI
                                 </h1>
-                                <p className="mt-3 max-w-md text-sm leading-6 text-slate-600 sm:mt-5 sm:text-base">
+                                <p className="mt-3 max-w-md text-sm leading-6 text-slate-600 sm:text-base">
                                     Ask about a Kural, explore an idea, or bring timeless wisdom into your everyday life.
                                 </p>
                                 <Suggestions className="mx-auto mt-5 flex w-full max-w-2xl flex-wrap justify-center gap-2 whitespace-normal sm:mt-8 sm:gap-3">

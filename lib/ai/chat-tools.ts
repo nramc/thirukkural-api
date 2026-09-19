@@ -85,4 +85,30 @@ export const kuralTools = {
         }),
         execute: ({ keywords, page, limit }) => kuralService.searchByKeyword(keywords, page, limit),
     }),
+    getRandomKurals: tool({
+        description:
+            'Retrieve several distinct random Thirukkurals in a single call, e.g. to build a quiz round. Pass excludeIds with the numbers already used so far in this conversation to avoid repeats.',
+        inputSchema: jsonSchema<{ count: number; excludeIds?: number[] }>({
+            type: 'object',
+            properties: {
+                count: { type: 'integer', minimum: 1, maximum: 10 },
+                excludeIds: { type: 'array', items: { type: 'integer', minimum: 1, maximum: 1330 } },
+            },
+            required: ['count'],
+            additionalProperties: false,
+        }),
+        execute: ({ count, excludeIds }) => randomKuralService.getRandomKurals(count, excludeIds ?? []),
+    }),
+    getKuralsByIds: tool({
+        description: 'Retrieve several Kurals by their exact numbers in a single call instead of one tool call per Kural.',
+        inputSchema: jsonSchema<{ ids: number[] }>({
+            type: 'object',
+            properties: {
+                ids: { type: 'array', items: { type: 'integer', minimum: 1, maximum: 1330 }, minItems: 1, maxItems: 20 },
+            },
+            required: ['ids'],
+            additionalProperties: false,
+        }),
+        execute: ({ ids }) => ids.map((id) => requireKural(kuralService.search(id), `Kural ${id}`)),
+    }),
 };

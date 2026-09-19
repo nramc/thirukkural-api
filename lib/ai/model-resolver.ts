@@ -1,8 +1,10 @@
 import { createOpenAI } from '@ai-sdk/openai';
+import { createOpenRouter } from '@openrouter/ai-sdk-provider';
 import type { LanguageModel } from 'ai';
 import { isModelAllowed } from './chat-policy';
 
 export type LlmProvider = 'ollama' | 'openrouter';
+type OpenRouterProviderSort = 'price' | 'throughput' | 'latency';
 
 export class ConfigurationError extends Error {
     constructor(message: string) {
@@ -30,21 +32,36 @@ export function getModel() {
     return model;
 }
 
-function createOpenAICompatibleChatModel(model: string): LanguageModel {
+function getOpenRouterProviderSort(): OpenRouterProviderSort {
+    const sort = process.env.OPENROUTER_PROVIDER_SORT?.trim().toLowerCase();
+    return sort === 'price' || sort === 'latency' ? sort : 'throughput';
+}
+
+function isOpenRouterReasoningEnabled(): boolean {
+    return process.env.OPENROUTER_REASONING?.trim().toLowerCase() === 'true';
+}
+
+function createOpenRouterChatModel(model: string): LanguageModel {
     const apiKey = process.env.LLM_API_KEY?.trim();
     if (!apiKey) {
         throw new ConfigurationError('LLM_API_KEY is missing for the remote OpenAI-compatible provider.');
     }
 
-    const openAICompatible = createOpenAI({
+    const openrouter = createOpenRouter({
         apiKey,
-        baseURL: 'https://openrouter.ai/api/v1',
         headers: {
             ...(process.env.OPENROUTER_SITE_URL ? { 'HTTP-Referer': process.env.OPENROUTER_SITE_URL } : {}),
             ...(process.env.OPENROUTER_APP_NAME ? { 'X-Title': process.env.OPENROUTER_APP_NAME } : {}),
         },
     });
-    return openAICompatible.chat(model);
+
+    // Reasoning tokens and load-balanced routing are the most common causes of slow,
+    // inconsistent responses for interactive/quiz-style chats through OpenRouter. Default to
+    // a low-effort/fast routing configuration unless the operator opts back into full reasoning.
+    return openrouter.chat(model, {
+        ...(isOpenRouterReasoningEnabled() ? {} : { reasoning: { effort: 'low' as const } }),
+        provider: { sort: getOpenRouterProviderSort(), allow_fallbacks: true },
+    });
 }
 
 function createOllamaChatModel(model: string): LanguageModel {
@@ -61,5 +78,5 @@ function createOllamaChatModel(model: string): LanguageModel {
 }
 
 export function getLanguageModel(provider: LlmProvider, model: string): LanguageModel {
-    return provider === 'openrouter' ? createOpenAICompatibleChatModel(model) : createOllamaChatModel(model);
+    return provider === 'openrouter' ? createOpenRouterChatModel(model) : createOllamaChatModel(model);
 }
