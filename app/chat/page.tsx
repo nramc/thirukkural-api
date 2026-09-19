@@ -7,13 +7,37 @@ import { Message, MessageAction, MessageActions, MessageContent, MessageResponse
 import { Suggestion, Suggestions } from '@/components/ai-elements/suggestion';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-const suggestions = [
-    'What Can I Learn Today?',
-    'Find a Kural about perseverance',
-    'Help Me Stay Motivated',
-    'Surprise Me with a Kural',
-    'Quiz me on 3 random Kurals',
-    'Explain This Kural',
+type ChatSuggestion = {
+    label: string;
+    prompt: string;
+    autoSubmit?: boolean;
+};
+
+const threeKuralQuizPrompt = `Start a concise 3-round Thirukkural meaning quiz. Before Round 1, call getRandomKurals once with count=3.
+
+Grounding rule: each returned array item is authoritative. For each round, use the same item's number and copy its kural[0] and kural[1] verbatim. Never use Tamil from memory, rewrite or translate the couplet, invent text, or show any other Tamil. If a matching tool item is unavailable, say the verified source is unavailable instead of guessing.
+
+Round format:
+Round N – Kural <number>
+<exact kural[0]>
+<exact kural[1]>
+What does this couplet mean?
+A) ...
+B) ...
+C) ...
+D) ...
+
+Use exactly four plausible choices with one correct answer. Do not reveal or hint at the answer until I choose. Accept A-D or an unambiguous choice; unclear answers do not change the score. After a valid answer, briefly explain it, update the score, and show the next round. Stop after Round 3. End every response with exactly: Score: <correct>/<answered>
+
+Begin Round 1 now with Score: 0/0`;
+
+const suggestions: ChatSuggestion[] = [
+    { label: 'What Can I Learn Today?', prompt: 'What Can I Learn Today?' },
+    { label: 'Find a Kural about perseverance', prompt: 'Find a Kural about perseverance' },
+    { label: 'Help Me Stay Motivated', prompt: 'Help Me Stay Motivated' },
+    { label: 'Surprise Me with a Kural', prompt: 'Surprise Me with a Kural' },
+    { label: 'Start a 3-Kural Quiz', prompt: threeKuralQuizPrompt, autoSubmit: true },
+    { label: 'Explain This Kural', prompt: 'Explain This Kural' },
 ];
 
 const CLIENT_REQUEST_TIMEOUT_MS = 50_000;
@@ -67,7 +91,21 @@ function hasActiveToolPart(message: UIMessage) {
     });
 }
 
+const thinkingStatuses = ['Reflecting', 'Considering the context', 'Preparing a clear answer'];
+
 function PendingMessageContent({ activity }: Readonly<{ activity: 'thinking' | 'tool' }>) {
+    const [statusIndex, setStatusIndex] = useState(0);
+
+    useEffect(() => {
+        if (activity === 'tool') return;
+
+        const intervalId = window.setInterval(() => {
+            setStatusIndex((index) => (index + 1) % thinkingStatuses.length);
+        }, 4_000);
+
+        return () => window.clearInterval(intervalId);
+    }, [activity]);
+
     if (activity === 'tool') {
         return (
             <span className="text-sm text-slate-500" role="status" aria-live="polite">
@@ -78,7 +116,7 @@ function PendingMessageContent({ activity }: Readonly<{ activity: 'thinking' | '
 
     return (
         <span className="inline-flex items-center gap-2 py-2 text-sm text-slate-500" role="status" aria-live="polite">
-            <span>Reflecting</span>
+            <span>{thinkingStatuses[statusIndex]}…</span>
             <i className="size-1.5 animate-pulse rounded-full bg-slate-400" aria-hidden="true" />
             <i className="size-1.5 animate-pulse rounded-full bg-slate-400 [animation-delay:150ms]" aria-hidden="true" />
             <i className="size-1.5 animate-pulse rounded-full bg-slate-400 [animation-delay:300ms]" aria-hidden="true" />
@@ -285,11 +323,18 @@ export default function Home() {
                                 <Suggestions className="mx-auto mt-5 flex w-full max-w-2xl flex-wrap justify-center gap-2 whitespace-normal sm:mt-8 sm:gap-3">
                                     {suggestions.map((suggestion) => (
                                         <Suggestion
-                                            key={suggestion}
-                                            suggestion={suggestion}
-                                            onClick={setInput}
+                                            key={suggestion.label}
+                                            suggestion={suggestion.prompt}
+                                            onClick={(prompt) => {
+                                                setInput(prompt);
+                                                if (suggestion.autoSubmit) {
+                                                    submitMessage(prompt);
+                                                }
+                                            }}
                                             className="rounded-full border-blue-200/80 bg-white/80 px-3 py-2.5 text-left text-xs font-medium text-slate-600 shadow-sm shadow-blue-900/5 backdrop-blur-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-blue-400 hover:bg-blue-50 hover:text-blue-950 hover:shadow-md hover:shadow-blue-900/10 focus-visible:ring-4 focus-visible:ring-blue-200 active:translate-y-0 sm:px-4 sm:py-3"
-                                        />
+                                        >
+                                            {suggestion.label}
+                                        </Suggestion>
                                     ))}
                                 </Suggestions>
                             </ConversationEmptyState>
