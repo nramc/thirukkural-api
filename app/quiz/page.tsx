@@ -430,7 +430,7 @@ export default function KuralQuizPage() {
                                                 </Link>
                                                 <Link
                                                     href={getKuralChatHref(round.target)}
-                                                    className={buttonVariants({ variant: 'outline', size: 'sm', className: 'rounded-full hover:bg-slate-100', })}
+                                                    className={buttonVariants({ variant: 'outline', size: 'sm', className: 'rounded-full hover:bg-slate-100' })}
                                                 >
                                                     <Sparkles className="size-3.5" aria-hidden="true" />
                                                     Explain with AI
@@ -441,7 +441,8 @@ export default function KuralQuizPage() {
                                                     className={buttonVariants({
                                                         variant: 'default',
                                                         size: 'sm',
-                                                        className: 'rounded-full bg-blue-900 text-white font-bold! shadow-md shadow-blue-900/15 hover:bg-blue-950',
+                                                        className:
+                                                            'rounded-full bg-blue-900 text-white font-bold! shadow-md shadow-blue-900/15 hover:bg-blue-950',
                                                     })}
                                                 >
                                                     <RefreshCw className="size-3.5" aria-hidden="true" />

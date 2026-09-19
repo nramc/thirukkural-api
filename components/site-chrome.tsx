@@ -1,21 +1,21 @@
 'use client';
 
-import {usePathname} from 'next/navigation';
-import type {ReactNode} from 'react';
+import { usePathname } from 'next/navigation';
+import type { ReactNode } from 'react';
 import AppMenu from '@/components/app-menu';
 import Footer from '@/components/footer';
 import AnalyticsConsent from '@/components/analytics-consent';
 
-export default function SiteChrome({children}: Readonly<{ children: ReactNode }>) {
+export default function SiteChrome({ children }: Readonly<{ children: ReactNode }>) {
     const pathname = usePathname();
     const isChatRoute = pathname === '/chat';
 
     return (
         <>
-            <AppMenu/>
+            <AppMenu />
             {children}
-            {!isChatRoute && <Footer/>}
-            <AnalyticsConsent/>
+            {!isChatRoute && <Footer />}
+            <AnalyticsConsent />
         </>
     );
 }

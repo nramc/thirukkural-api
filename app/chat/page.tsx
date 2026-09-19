@@ -37,7 +37,7 @@ const suggestions: ChatSuggestion[] = [
     { label: 'Help Me Stay Motivated', prompt: 'Help Me Stay Motivated', autoSubmit: true },
     { label: 'Surprise Me with a Kural', prompt: 'Surprise Me with a Kural', autoSubmit: true },
     { label: 'Start a 3-Kural Quiz', prompt: threeKuralQuizPrompt, autoSubmit: true },
-    { label: 'Explain This Kural', prompt: 'Explain This Kural'},
+    { label: 'Explain This Kural', prompt: 'Explain This Kural' },
 ];
 
 const CLIENT_REQUEST_TIMEOUT_MS = 50_000;
