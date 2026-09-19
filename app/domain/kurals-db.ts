@@ -40,7 +40,7 @@ export interface Kural {
     number: number;
     section: TaxonomyReference;
     chapter: TaxonomyReference;
-    kural: string[];
+    kural: [string, string];
     transliteration: [string, string];
     meaning: KuralMeaning;
 }

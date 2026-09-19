@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import type { Kural } from '@/app/domain/kurals-db';
+import TamilKural from '@/components/tamil-kural';
 
 type KuralResultListProps = {
     kurals: Kural[];
@@ -33,9 +34,8 @@ export default function KuralResultList({ kurals, total = kurals.length, showPos
                     <div>
                         <div className="border-l-4 border-blue-600 bg-linear-to-br from-blue-50 to-indigo-50 px-5 py-6 sm:px-7">
                             <p className="text-xs font-bold uppercase tracking-[0.16em] text-blue-600">Tamil original · தமிழ்</p>
-                            <blockquote className="mt-3 font-serif text-xl leading-10 text-blue-950 sm:text-2xl sm:leading-[2.7rem]" lang="ta">
-                                <p>{kural.kural[0]}</p>
-                                <p>{kural.kural[1]}</p>
+                            <blockquote className="mt-3 font-serif leading-10 text-blue-950 sm:leading-[2.7rem]">
+                                <TamilKural lines={kural.kural} className="text-[clamp(1.25rem,4.5vw,1.5rem)]" />
                             </blockquote>
                         </div>
                         <div className="border-t border-slate-100 px-5 py-6 sm:px-7" lang="en">

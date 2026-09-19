@@ -34,7 +34,8 @@ experience.
 - **Reader-friendly browsing** — use the web app’s `/browse` page or global search icon to find Kurals by number, keyword, section, or chapter.
 - **Rich responses** — Tamil couplets plus meanings by Mu. Varadarajan, Solomon Pappayya, Kalaignar, an English
   translation, and a clearly labeled modern-English interpretation.
-- **AI-assisted exploration** — an optional chat experience powered by Ollama or OpenRouter.
+- **Kural Quiz** — a fast, self-graded multiple-choice game at `/quiz` that matches a couplet to its modern meaning, with no AI wait.
+- **AI-assisted exploration** — an optional chat experience powered by Ollama or OpenRouter, including quiz-style Q&A.
 - **OpenAPI included** — browse the interactive Swagger UI or import the specification into your favorite client.
 
 ## Quick start
@@ -151,15 +152,20 @@ The `/chat` page and `POST /api/chat` route support two providers:
 Create `.env.local` (never commit credentials) and configure the provider you want. See [`.env.example`](./.env.example)
 for the repository defaults.
 
-| Variable              | Required       | Purpose                                               |
-| --------------------- | -------------- | ----------------------------------------------------- |
-| `LLM_PROVIDER`        | Yes            | `ollama` or `openrouter`.                             |
-| `LLM_MODEL`           | Yes            | Model identifier to use.                              |
-| `LLM_ALLOWED_MODELS`  | No             | Comma-separated allowlist for server-approved models. |
-| `OLLAMA_BASE_URL`     | For Ollama     | Ollama server URL.                                    |
-| `LLM_API_KEY`         | For OpenRouter | Server-only OpenRouter API key.                       |
-| `OPENROUTER_SITE_URL` | No             | Optional OpenRouter HTTP referer.                     |
-| `OPENROUTER_APP_NAME` | No             | Optional OpenRouter application title.                |
+| Variable                        | Required       | Purpose                                                                                                |
+| ------------------------------- | -------------- | ------------------------------------------------------------------------------------------------------ |
+| `LLM_PROVIDER`                  | Yes            | `ollama` or `openrouter`.                                                                              |
+| `LLM_MODEL`                     | Yes            | Model identifier to use.                                                                               |
+| `LLM_ALLOWED_MODELS`            | No             | Comma-separated allowlist for server-approved models.                                                  |
+| `OLLAMA_BASE_URL`               | For Ollama     | Ollama server URL.                                                                                     |
+| `LLM_API_KEY`                   | For OpenRouter | Server-only OpenRouter API key.                                                                        |
+| `OPENROUTER_SITE_URL`           | No             | Optional OpenRouter HTTP referer.                                                                      |
+| `OPENROUTER_APP_NAME`           | No             | Optional OpenRouter application title.                                                                 |
+| `OPENROUTER_REASONING`          | No             | Set to `true` to re-enable full reasoning on OpenRouter models that support it (slower).               |
+| `OPENROUTER_PROVIDER_SORT`      | No             | One of `throughput` (default), `latency`, or `price` — OpenRouter provider routing.                    |
+| `OPENROUTER_REQUIRE_PARAMETERS` | No             | Defaults to `true`; restricts routing to providers supporting the request parameters, including tools. |
+| `OPENROUTER_QUANTIZATIONS`      | No             | Optional comma-separated quantization allowlist, such as `fp8,bf16`; unset allows all.                 |
+| `OPENROUTER_IGNORE_PROVIDERS`   | No             | Optional comma-separated provider slugs to skip when a backend is unreliable.                          |
 
 Example local Ollama configuration:
 
@@ -173,12 +179,30 @@ LLM_ALLOWED_MODELS=mistral
 The chat API validates messages, limits context size, and exposes Kural lookup tools so the assistant can answer with
 source-backed content. Keep `LLM_API_KEY` server-side and rotate any key that may have been exposed.
 
+To remain on OpenRouter's free tier, use `LLM_MODEL=openrouter/free` or an explicit model ID ending in `:free`, and
+keep `LLM_ALLOWED_MODELS` aligned with that value. `OPENROUTER_REQUIRE_PARAMETERS=true` is recommended for this
+application because the chat exposes Kural tools; set it to `false` only as an emergency availability fallback. Leave
+`OPENROUTER_QUANTIZATIONS` and `OPENROUTER_IGNORE_PROVIDERS` empty initially, then populate them only after checking
+the provider and model metadata for the free route you use. These filters can improve consistency but can also reduce
+free-provider availability.
+
+OpenRouter usage accounting is enabled by the server model resolver. Completed chat requests emit metadata-only
+`chat_generation_usage` logs containing request ID, configured provider/model, streaming mode, duration, finish reason,
+aggregated input/output/total tokens, and—when OpenRouter provides them—the selected provider slug and usage/cost
+fields. `chat_tool_activity` step logs include the corresponding per-step token and provider metadata. Prompts,
+assistant output, tool arguments/results, reasoning details, and API keys are not logged, and provider metadata is not
+returned to clients. Usage or cost fields may be absent when the upstream free route does not report them.
+
+Prefer a faster, self-graded experience without any AI round-trip? Try the `/quiz` multiple-choice game, which checks
+answers instantly using the existing `/api/random` endpoint.
+
 ## Project layout
 
 ```text
 app/
 ├── api/                 # REST and chat route handlers
 ├── chat/                # AI chat page
+├── quiz/                # Self-graded multiple-choice Kural quiz
 ├── domain/              # Kural data types and data access
 ├── service/             # Kural, daily, random, and search services
 └── components/          # Shared UI components

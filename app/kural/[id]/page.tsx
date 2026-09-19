@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 import kuralService from '@/app/service/kural-service';
 import { MessageCircle } from 'lucide-react';
 import { buttonVariants } from '@/components/ui/button';
+import TamilKural from '@/components/tamil-kural';
 import { getKuralChatHref } from '@/lib/ai/kural-prompt';
 
 const MIN_KURAL_NUMBER = 1;
@@ -156,9 +157,8 @@ export default async function KuralPage({ params }: Readonly<KuralPageProps>) {
                                         ❝
                                     </span>
                                 </div>
-                                <blockquote className="mt-4 font-serif text-2xl leading-[2.7rem] text-blue-950 sm:text-3xl sm:leading-14">
-                                    <p>{kural.kural[0]}</p>
-                                    <p>{kural.kural[1]}</p>
+                                <blockquote className="mt-4 font-serif leading-[2.7rem] text-blue-950 sm:leading-14">
+                                    <TamilKural lines={kural.kural} className="text-[clamp(1.25rem,5vw,1.875rem)]" />
                                 </blockquote>
                                 <div className="absolute bottom-5 right-5 sm:right-8">
                                     <Link

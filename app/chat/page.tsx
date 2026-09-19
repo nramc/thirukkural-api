@@ -7,14 +7,40 @@ import { Message, MessageAction, MessageActions, MessageContent, MessageResponse
 import { Suggestion, Suggestions } from '@/components/ai-elements/suggestion';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-const suggestions = [
-    'What Can I Learn Today?',
-    'Find a Kural about perseverance',
-    'Help Me Stay Motivated',
-    'Surprise Me with a Kural',
-    'Give me a random Kural',
-    'Explain This Kural',
+type ChatSuggestion = {
+    label: string;
+    prompt: string;
+    autoSubmit?: boolean;
+};
+
+const threeKuralQuizPrompt = `Start a concise 3-round Thirukkural meaning quiz. Before Round 1, call getRandomKurals once with count=3.
+
+Grounding rule: each returned array item is authoritative. For each round, use the same item's number and copy its kural[0] and kural[1] verbatim. Never use Tamil from memory, rewrite or translate the couplet, invent text, or show any other Tamil. If a matching tool item is unavailable, say the verified source is unavailable instead of guessing.
+
+Round format:
+Round N – Kural <number>
+<exact kural[0]>
+<exact kural[1]>
+What does this couplet mean?
+A) ...
+B) ...
+C) ...
+D) ...
+
+Use exactly four plausible choices with one correct answer. Do not reveal or hint at the answer until I choose. Accept A-D or an unambiguous choice; unclear answers do not change the score. After a valid answer, briefly explain it, update the score, and show the next round. Stop after Round 3. End every response with exactly: Score: <correct>/<answered>
+
+Begin Round 1 now with Score: 0/0`;
+
+const suggestions: ChatSuggestion[] = [
+    { label: 'What Can I Learn Today?', prompt: 'What Can I Learn Today?', autoSubmit: true },
+    { label: 'Find a Kural about perseverance', prompt: 'Find a Kural about perseverance', autoSubmit: true },
+    { label: 'Help Me Stay Motivated', prompt: 'Help Me Stay Motivated', autoSubmit: true },
+    { label: 'Surprise Me with a Kural', prompt: 'Surprise Me with a Kural', autoSubmit: true },
+    { label: 'Start a 3-Kural Quiz', prompt: threeKuralQuizPrompt, autoSubmit: true },
+    { label: 'Explain This Kural', prompt: 'Explain This Kural' },
 ];
+
+const CLIENT_REQUEST_TIMEOUT_MS = 50_000;
 
 function SparkIcon({ className = 'size-5' }: Readonly<{ className?: string }>) {
     return (
@@ -65,7 +91,21 @@ function hasActiveToolPart(message: UIMessage) {
     });
 }
 
+const thinkingStatuses = ['Reflecting', 'Considering the context', 'Preparing a clear answer'];
+
 function PendingMessageContent({ activity }: Readonly<{ activity: 'thinking' | 'tool' }>) {
+    const [statusIndex, setStatusIndex] = useState(0);
+
+    useEffect(() => {
+        if (activity === 'tool') return;
+
+        const intervalId = window.setInterval(() => {
+            setStatusIndex((index) => (index + 1) % thinkingStatuses.length);
+        }, 4_000);
+
+        return () => window.clearInterval(intervalId);
+    }, [activity]);
+
     if (activity === 'tool') {
         return (
             <span className="text-sm text-slate-500" role="status" aria-live="polite">
@@ -76,7 +116,7 @@ function PendingMessageContent({ activity }: Readonly<{ activity: 'thinking' | '
 
     return (
         <span className="inline-flex items-center gap-2 py-2 text-sm text-slate-500" role="status" aria-live="polite">
-            <span>Reflecting</span>
+            <span>{thinkingStatuses[statusIndex]}…</span>
             <i className="size-1.5 animate-pulse rounded-full bg-slate-400" aria-hidden="true" />
             <i className="size-1.5 animate-pulse rounded-full bg-slate-400 [animation-delay:150ms]" aria-hidden="true" />
             <i className="size-1.5 animate-pulse rounded-full bg-slate-400 [animation-delay:300ms]" aria-hidden="true" />
@@ -99,7 +139,7 @@ function PendingAssistantBubble() {
     );
 }
 
-function MessageBubble({ message, isStreaming }: Readonly<{ message: UIMessage; isStreaming: boolean }>) {
+function MessageBubble({ message, isStreaming, onRetry }: Readonly<{ message: UIMessage; isStreaming: boolean; onRetry: () => void }>) {
     const [copied, setCopied] = useState(false);
     const isAssistant = message.role === 'assistant';
     const content = getMessageText(message);
@@ -108,6 +148,17 @@ function MessageBubble({ message, isStreaming }: Readonly<{ message: UIMessage; 
 
     if (!content && isStreaming && isAssistant) {
         renderedContent = <PendingMessageContent activity={isUsingTool ? 'tool' : 'thinking'} />;
+    }
+
+    if (!content && !isStreaming && isAssistant) {
+        renderedContent = (
+            <div className="flex flex-wrap items-center gap-x-3 gap-y-2 text-sm text-slate-500">
+                <span>No response text was returned.</span>
+                <button type="button" onClick={onRetry} className="font-semibold text-blue-700 underline underline-offset-4 hover:text-blue-950">
+                    Retry response
+                </button>
+            </div>
+        );
     }
 
     const copyMessage = async () => {
@@ -153,14 +204,36 @@ function MessageBubble({ message, isStreaming }: Readonly<{ message: UIMessage; 
 }
 
 export default function Home() {
-    const { messages, sendMessage, stop, error, clearError, status } = useChat({
+    const [uiFailure, setUiFailure] = useState(false);
+    const [intentionalStop, setIntentionalStop] = useState(false);
+    const { messages, sendMessage, regenerate, stop, error, clearError, status } = useChat({
         transport: new DefaultChatTransport({ api: '/api/chat' }),
+        onError: () => setUiFailure(true),
+        onFinish: ({ isAbort, isDisconnect, isError }) => {
+            const wasIntentionalStop = intentionalStop;
+            setIntentionalStop(false);
+            if (!wasIntentionalStop && (isAbort || isDisconnect || isError)) {
+                setUiFailure(true);
+            }
+        },
     });
     const [input, setInput] = useState('');
     const didAutoSubmitPrompt = useRef(false);
     const isStreaming = status === 'submitted' || status === 'streaming';
     const lastMessage = messages.at(-1);
     const showPendingAssistant = isStreaming && lastMessage?.role !== 'assistant';
+
+    useEffect(() => {
+        if (!isStreaming) return;
+
+        const timeoutId = window.setTimeout(() => {
+            setIntentionalStop(true);
+            setUiFailure(true);
+            void stop();
+        }, CLIENT_REQUEST_TIMEOUT_MS);
+
+        return () => window.clearTimeout(timeoutId);
+    }, [isStreaming, stop]);
 
     useEffect(() => {
         const frameId = window.requestAnimationFrame(() => {
@@ -179,6 +252,8 @@ export default function Home() {
             if (!content || isStreaming) return;
 
             setInput('');
+            setUiFailure(false);
+            setIntentionalStop(false);
             clearError();
             void sendMessage({ text: content });
         },
@@ -198,7 +273,38 @@ export default function Home() {
         window.setTimeout(() => submitMessage(prompt), 0);
     }, [submitMessage]);
 
-    const stopStreaming = () => stop();
+    const stopStreaming = () => {
+        setIntentionalStop(true);
+        void stop();
+    };
+
+    const retryLastResponse = () => {
+        if (isStreaming) return;
+
+        const lastUserMessage = [...messages].reverse().find((message) => message.role === 'user');
+        const lastAssistantIndex = [...messages].map((message) => message.role).lastIndexOf('assistant');
+        const lastUserIndex = lastUserMessage ? messages.indexOf(lastUserMessage) : -1;
+
+        setUiFailure(false);
+        setIntentionalStop(false);
+        clearError();
+
+        if (lastAssistantIndex > lastUserIndex) {
+            const lastAssistantMessage = messages[lastAssistantIndex];
+            void regenerate({ messageId: lastAssistantMessage.id }).catch(() => setUiFailure(true));
+            return;
+        }
+
+        if (lastUserMessage) {
+            void sendMessage({ text: getMessageText(lastUserMessage), messageId: lastUserMessage.id }).catch(() => setUiFailure(true));
+        }
+    };
+
+    const dismissFailure = () => {
+        setUiFailure(false);
+        clearError();
+    };
+
     return (
         <main className="bg-linear-to-br from-blue-50 via-white to-indigo-50 pb-36 text-slate-900 selection:bg-blue-200 sm:pb-32">
             <div className="pointer-events-none fixed inset-0 overflow-hidden" aria-hidden="true">
@@ -222,24 +328,31 @@ export default function Home() {
                                 <h1 className="max-w-xl text-2xl font-semibold tracking-tight text-blue-950 sm:text-5xl sm:leading-[1.12]">
                                     Explore the Thirukkural with Valluvar AI
                                 </h1>
-                                <p className="mt-3 max-w-md text-sm leading-6 text-slate-600 sm:mt-5 sm:text-base">
+                                <p className="mt-3 max-w-md text-sm leading-6 text-slate-600 sm:text-base">
                                     Ask about a Kural, explore an idea, or bring timeless wisdom into your everyday life.
                                 </p>
                                 <Suggestions className="mx-auto mt-5 flex w-full max-w-2xl flex-wrap justify-center gap-2 whitespace-normal sm:mt-8 sm:gap-3">
                                     {suggestions.map((suggestion) => (
                                         <Suggestion
-                                            key={suggestion}
-                                            suggestion={suggestion}
-                                            onClick={setInput}
+                                            key={suggestion.label}
+                                            suggestion={suggestion.prompt}
+                                            onClick={(prompt) => {
+                                                setInput(prompt);
+                                                if (suggestion.autoSubmit) {
+                                                    submitMessage(prompt);
+                                                }
+                                            }}
                                             className="rounded-full border-blue-200/80 bg-white/80 px-3 py-2.5 text-left text-xs font-medium text-slate-600 shadow-sm shadow-blue-900/5 backdrop-blur-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-blue-400 hover:bg-blue-50 hover:text-blue-950 hover:shadow-md hover:shadow-blue-900/10 focus-visible:ring-4 focus-visible:ring-blue-200 active:translate-y-0 sm:px-4 sm:py-3"
-                                        />
+                                        >
+                                            {suggestion.label}
+                                        </Suggestion>
                                     ))}
                                 </Suggestions>
                             </ConversationEmptyState>
                         ) : (
                             <ConversationContent className="mx-auto w-full max-w-3xl px-2 py-4 sm:px-6 sm:py-8">
                                 {messages.map((message) => (
-                                    <MessageBubble key={message.id} message={message} isStreaming={isStreaming} />
+                                    <MessageBubble key={message.id} message={message} isStreaming={isStreaming} onRetry={retryLastResponse} />
                                 ))}
                                 {showPendingAssistant && <PendingAssistantBubble />}
                             </ConversationContent>
@@ -248,13 +361,23 @@ export default function Home() {
 
                     <div className="fixed inset-x-0 bottom-0 z-10 bg-linear-to-t from-blue-50 via-blue-50/95 to-transparent px-3 pb-2 pt-3 sm:px-8 sm:pb-4 sm:pt-6">
                         <div className="mx-auto w-full max-w-4xl">
-                            {error && (
+                            {(error || uiFailure) && (
                                 <div
                                     role="alert"
                                     className="mb-3 flex items-start justify-between gap-3 rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700"
                                 >
-                                    <span>Something went wrong: {error.message}</span>
-                                    <button type="button" onClick={clearError} className="text-rose-500/70 hover:text-rose-800" aria-label="Dismiss error">
+                                    <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
+                                        <span>The response could not be completed. Please try again.</span>
+                                        <button
+                                            type="button"
+                                            onClick={retryLastResponse}
+                                            disabled={isStreaming}
+                                            className="font-semibold text-rose-800 underline underline-offset-4 disabled:cursor-not-allowed disabled:opacity-50"
+                                        >
+                                            Retry
+                                        </button>
+                                    </div>
+                                    <button type="button" onClick={dismissFailure} className="text-rose-500/70 hover:text-rose-800" aria-label="Dismiss error">
                                         ×
                                     </button>
                                 </div>
