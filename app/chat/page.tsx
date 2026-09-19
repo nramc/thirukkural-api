@@ -19,15 +19,15 @@ Grounding rule: each returned array item is authoritative. For each round, use t
 
 Round format:
 Round N – Kural <number>
-<exact kural[0]>
-<exact kural[1]>
-What does this couplet mean?
+<kural line1>
+<kural line2>
+<your question about the meaning of the couplet>
 A) ...
 B) ...
 C) ...
 D) ...
 
-Use exactly four plausible choices with one correct answer. Do not reveal or hint at the answer until I choose. Accept A-D or an unambiguous choice; unclear answers do not change the score. After a valid answer, briefly explain it, update the score, and show the next round. Stop after Round 3. End every response with exactly: Score: <correct>/<answered>
+Use exactly four choices with one correct answer at random position. Do not reveal or hint at the answer until I choose. Accept A-D or an unambiguous choice; unclear answers do not change the score. After a valid answer, briefly explain it, update the score, and show the next round. Stop after Round 3. End every response with exactly: Score: <correct>/<answered>
 
 Begin Round 1 now with Score: 0/0`;
 
