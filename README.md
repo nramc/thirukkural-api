@@ -186,6 +186,13 @@ application because the chat exposes Kural tools; set it to `false` only as an e
 the provider and model metadata for the free route you use. These filters can improve consistency but can also reduce
 free-provider availability.
 
+OpenRouter usage accounting is enabled by the server model resolver. Completed chat requests emit metadata-only
+`chat_generation_usage` logs containing request ID, configured provider/model, streaming mode, duration, finish reason,
+aggregated input/output/total tokens, and—when OpenRouter provides them—the selected provider slug and usage/cost
+fields. `chat_tool_activity` step logs include the corresponding per-step token and provider metadata. Prompts,
+assistant output, tool arguments/results, reasoning details, and API keys are not logged, and provider metadata is not
+returned to clients. Usage or cost fields may be absent when the upstream free route does not report them.
+
 Prefer a faster, self-graded experience without any AI round-trip? Try the `/quiz` multiple-choice game, which checks
 answers instantly using the existing `/api/random` endpoint.
 

@@ -99,6 +99,7 @@ function createOpenRouterChatModel(model: string): LanguageModel {
             ...(quantizations ? { quantizations } : {}),
             ...(ignoredProviders ? { ignore: ignoredProviders } : {}),
         },
+        usage: { include: true },
     });
 }
 

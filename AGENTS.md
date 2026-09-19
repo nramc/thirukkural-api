@@ -50,7 +50,12 @@
 - Preserve chat limits and safeguards: at most 100 incoming messages, 12,000 characters per message, 120,000 total
   characters, up to 24 recent messages bounded by a 16,000-character budget (`MAX_CONTEXT_MESSAGES` /
   `MAX_CONTEXT_CHARACTERS` in `lib/ai/chat-policy.ts`), 1,024 output tokens, and four tool/model steps. Keep request
-  IDs, a combined request/45s-timeout abort signal, generic client errors, and metadata-only tool logging.
+  IDs, a combined request/45s-timeout abort signal, generic client errors, and metadata-only tool logging. OpenRouter
+  usage accounting is enabled in `lib/ai/model-resolver.ts`; `POST /api/chat` logs aggregated completion usage from
+  `onEnd` and per-step usage/provider metadata from `onStepEnd` for both streaming and non-streaming requests.
+  Sanitize provider metadata to an explicit allowlist of provider, token, cost, finish, step, and duration fields; never
+  log prompts, model output, reasoning details, tool arguments/results, or secrets, and never return provider metadata
+  to clients.
 - `lib/ai/chat-tools.ts` also exposes batch tools `getRandomKurals` (with `excludeIds`) and `getKuralsByIds` so
   quiz-style sessions can avoid one tool call per Kural; the system prompt instructs the model to prefer them and to
   track a running score in-band.
