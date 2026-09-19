@@ -152,17 +152,20 @@ The `/chat` page and `POST /api/chat` route support two providers:
 Create `.env.local` (never commit credentials) and configure the provider you want. See [`.env.example`](./.env.example)
 for the repository defaults.
 
-| Variable                   | Required       | Purpose                                                                                  |
-| -------------------------- | -------------- | ---------------------------------------------------------------------------------------- |
-| `LLM_PROVIDER`             | Yes            | `ollama` or `openrouter`.                                                                |
-| `LLM_MODEL`                | Yes            | Model identifier to use.                                                                 |
-| `LLM_ALLOWED_MODELS`       | No             | Comma-separated allowlist for server-approved models.                                    |
-| `OLLAMA_BASE_URL`          | For Ollama     | Ollama server URL.                                                                       |
-| `LLM_API_KEY`              | For OpenRouter | Server-only OpenRouter API key.                                                          |
-| `OPENROUTER_SITE_URL`      | No             | Optional OpenRouter HTTP referer.                                                        |
-| `OPENROUTER_APP_NAME`      | No             | Optional OpenRouter application title.                                                   |
-| `OPENROUTER_REASONING`     | No             | Set to `true` to re-enable full reasoning on OpenRouter models that support it (slower). |
-| `OPENROUTER_PROVIDER_SORT` | No             | One of `throughput` (default), `latency`, or `price` — OpenRouter provider routing.      |
+| Variable                        | Required       | Purpose                                                                                                |
+| ------------------------------- | -------------- | ------------------------------------------------------------------------------------------------------ |
+| `LLM_PROVIDER`                  | Yes            | `ollama` or `openrouter`.                                                                              |
+| `LLM_MODEL`                     | Yes            | Model identifier to use.                                                                               |
+| `LLM_ALLOWED_MODELS`            | No             | Comma-separated allowlist for server-approved models.                                                  |
+| `OLLAMA_BASE_URL`               | For Ollama     | Ollama server URL.                                                                                     |
+| `LLM_API_KEY`                   | For OpenRouter | Server-only OpenRouter API key.                                                                        |
+| `OPENROUTER_SITE_URL`           | No             | Optional OpenRouter HTTP referer.                                                                      |
+| `OPENROUTER_APP_NAME`           | No             | Optional OpenRouter application title.                                                                 |
+| `OPENROUTER_REASONING`          | No             | Set to `true` to re-enable full reasoning on OpenRouter models that support it (slower).               |
+| `OPENROUTER_PROVIDER_SORT`      | No             | One of `throughput` (default), `latency`, or `price` — OpenRouter provider routing.                    |
+| `OPENROUTER_REQUIRE_PARAMETERS` | No             | Defaults to `true`; restricts routing to providers supporting the request parameters, including tools. |
+| `OPENROUTER_QUANTIZATIONS`      | No             | Optional comma-separated quantization allowlist, such as `fp8,bf16`; unset allows all.                 |
+| `OPENROUTER_IGNORE_PROVIDERS`   | No             | Optional comma-separated provider slugs to skip when a backend is unreliable.                          |
 
 Example local Ollama configuration:
 
@@ -176,9 +179,12 @@ LLM_ALLOWED_MODELS=mistral
 The chat API validates messages, limits context size, and exposes Kural lookup tools so the assistant can answer with
 source-backed content. Keep `LLM_API_KEY` server-side and rotate any key that may have been exposed.
 
-For OpenRouter, prefer fast, non-reasoning chat models (e.g. `openai/gpt-4o-mini`, `google/gemini-2.0-flash-001`, or
-`anthropic/claude-3.5-haiku`) for a snappy quiz/chat experience; reasoning-only models (names ending in `:thinking`,
-or `o1`/`o3`/`r1`-style models) are noticeably slower for interactive back-and-forth use.
+To remain on OpenRouter's free tier, use `LLM_MODEL=openrouter/free` or an explicit model ID ending in `:free`, and
+keep `LLM_ALLOWED_MODELS` aligned with that value. `OPENROUTER_REQUIRE_PARAMETERS=true` is recommended for this
+application because the chat exposes Kural tools; set it to `false` only as an emergency availability fallback. Leave
+`OPENROUTER_QUANTIZATIONS` and `OPENROUTER_IGNORE_PROVIDERS` empty initially, then populate them only after checking
+the provider and model metadata for the free route you use. These filters can improve consistency but can also reduce
+free-provider availability.
 
 Prefer a faster, self-graded experience without any AI round-trip? Try the `/quiz` multiple-choice game, which checks
 answers instantly using the existing `/api/random` endpoint.

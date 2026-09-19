@@ -41,8 +41,12 @@
 - `lib/ai/model-resolver.ts` supports `ollama` (via `@ai-sdk/openai`, `OLLAMA_BASE_URL/v1`, placeholder key `ollama`)
   and `openrouter` (via `@openrouter/ai-sdk-provider`, server-only `LLM_API_KEY`). `LLM_MODEL` is required;
   `LLM_ALLOWED_MODELS` is an optional comma-separated allowlist; `OPENROUTER_SITE_URL` and `OPENROUTER_APP_NAME`
-  become OpenRouter headers; `OPENROUTER_REASONING` (default off) and `OPENROUTER_PROVIDER_SORT` (default
-  `throughput`) tune OpenRouter latency and routing.
+  become OpenRouter headers. `OPENROUTER_REASONING` (default off) and `OPENROUTER_PROVIDER_SORT` (default
+  `throughput`) tune OpenRouter latency and routing. `OPENROUTER_REQUIRE_PARAMETERS` defaults to `true` so tool
+  requests use compatible providers; `OPENROUTER_QUANTIZATIONS` and `OPENROUTER_IGNORE_PROVIDERS` are optional
+  comma-separated filters. Keep `LLM_MODEL` on `openrouter/free` or an explicit `:free` model ID when paid models are
+  not allowed. Provider filters can reduce free-route availability, so change them only after checking OpenRouter
+  metadata and keep `OPENROUTER_REQUIRE_PARAMETERS=false` as the emergency rollback if no eligible route remains.
 - Preserve chat limits and safeguards: at most 100 incoming messages, 12,000 characters per message, 120,000 total
   characters, up to 24 recent messages bounded by a 16,000-character budget (`MAX_CONTEXT_MESSAGES` /
   `MAX_CONTEXT_CHARACTERS` in `lib/ai/chat-policy.ts`), 1,024 output tokens, and four tool/model steps. Keep request

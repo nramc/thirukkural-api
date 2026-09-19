@@ -37,6 +37,33 @@ function getOpenRouterProviderSort(): OpenRouterProviderSort {
     return sort === 'price' || sort === 'latency' ? sort : 'throughput';
 }
 
+function getBooleanEnvironmentVariable(name: string, defaultValue: boolean): boolean {
+    const value = process.env[name]?.trim().toLowerCase();
+    if (!value) {
+        return defaultValue;
+    }
+    if (value === 'true') {
+        return true;
+    }
+    if (value === 'false') {
+        return false;
+    }
+    throw new ConfigurationError(`${name} must be set to "true" or "false".`);
+}
+
+function getCsvEnvironmentVariable(name: string): string[] | undefined {
+    const value = process.env[name]?.trim();
+    if (!value) {
+        return undefined;
+    }
+
+    const entries = value
+        .split(',')
+        .map((entry) => entry.trim())
+        .filter(Boolean);
+    return entries.length > 0 ? entries : undefined;
+}
+
 function isOpenRouterReasoningEnabled(): boolean {
     return process.env.OPENROUTER_REASONING?.trim().toLowerCase() === 'true';
 }
@@ -55,12 +82,23 @@ function createOpenRouterChatModel(model: string): LanguageModel {
         },
     });
 
+    const quantizations = getCsvEnvironmentVariable('OPENROUTER_QUANTIZATIONS');
+    const ignoredProviders = getCsvEnvironmentVariable('OPENROUTER_IGNORE_PROVIDERS');
+
     // Reasoning tokens and load-balanced routing are the most common causes of slow,
     // inconsistent responses for interactive/quiz-style chats through OpenRouter. Default to
     // a low-effort/fast routing configuration unless the operator opts back into full reasoning.
+    // Requiring requested parameters keeps tool-calling requests on compatible providers. The
+    // environment switch is an emergency rollback if the free-provider pool becomes too small.
     return openrouter.chat(model, {
         ...(isOpenRouterReasoningEnabled() ? {} : { reasoning: { effort: 'low' as const } }),
-        provider: { sort: getOpenRouterProviderSort(), allow_fallbacks: true },
+        provider: {
+            sort: getOpenRouterProviderSort(),
+            allow_fallbacks: true,
+            require_parameters: getBooleanEnvironmentVariable('OPENROUTER_REQUIRE_PARAMETERS', true),
+            ...(quantizations ? { quantizations } : {}),
+            ...(ignoredProviders ? { ignore: ignoredProviders } : {}),
+        },
     });
 }
 
