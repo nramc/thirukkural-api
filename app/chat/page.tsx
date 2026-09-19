@@ -2,7 +2,6 @@
 
 import { DefaultChatTransport, type UIMessage } from 'ai';
 import { useChat } from '@ai-sdk/react';
-import Link from 'next/link';
 import { Conversation, ConversationContent, ConversationEmptyState } from '@/components/ai-elements/conversation';
 import { Message, MessageAction, MessageActions, MessageContent, MessageResponse } from '@/components/ai-elements/message';
 import { Suggestion, Suggestions } from '@/components/ai-elements/suggestion';
@@ -16,6 +15,8 @@ const suggestions = [
     'Quiz me on 3 random Kurals',
     'Explain This Kural',
 ];
+
+const CLIENT_REQUEST_TIMEOUT_MS = 50_000;
 
 function SparkIcon({ className = 'size-5' }: Readonly<{ className?: string }>) {
     return (
@@ -154,14 +155,36 @@ function MessageBubble({ message, isStreaming }: Readonly<{ message: UIMessage; 
 }
 
 export default function Home() {
-    const { messages, sendMessage, stop, error, clearError, status } = useChat({
+    const [uiFailure, setUiFailure] = useState(false);
+    const [intentionalStop, setIntentionalStop] = useState(false);
+    const { messages, sendMessage, regenerate, stop, error, clearError, status } = useChat({
         transport: new DefaultChatTransport({ api: '/api/chat' }),
+        onError: () => setUiFailure(true),
+        onFinish: ({ isAbort, isDisconnect, isError }) => {
+            const wasIntentionalStop = intentionalStop;
+            setIntentionalStop(false);
+            if (!wasIntentionalStop && (isAbort || isDisconnect || isError)) {
+                setUiFailure(true);
+            }
+        },
     });
     const [input, setInput] = useState('');
     const didAutoSubmitPrompt = useRef(false);
     const isStreaming = status === 'submitted' || status === 'streaming';
     const lastMessage = messages.at(-1);
     const showPendingAssistant = isStreaming && lastMessage?.role !== 'assistant';
+
+    useEffect(() => {
+        if (!isStreaming) return;
+
+        const timeoutId = window.setTimeout(() => {
+            setIntentionalStop(true);
+            setUiFailure(true);
+            void stop();
+        }, CLIENT_REQUEST_TIMEOUT_MS);
+
+        return () => window.clearTimeout(timeoutId);
+    }, [isStreaming, stop]);
 
     useEffect(() => {
         const frameId = window.requestAnimationFrame(() => {
@@ -180,6 +203,8 @@ export default function Home() {
             if (!content || isStreaming) return;
 
             setInput('');
+            setUiFailure(false);
+            setIntentionalStop(false);
             clearError();
             void sendMessage({ text: content });
         },
@@ -199,7 +224,38 @@ export default function Home() {
         window.setTimeout(() => submitMessage(prompt), 0);
     }, [submitMessage]);
 
-    const stopStreaming = () => stop();
+    const stopStreaming = () => {
+        setIntentionalStop(true);
+        void stop();
+    };
+
+    const retryLastResponse = () => {
+        if (isStreaming) return;
+
+        const lastUserMessage = [...messages].reverse().find((message) => message.role === 'user');
+        const lastAssistantIndex = [...messages].map((message) => message.role).lastIndexOf('assistant');
+        const lastUserIndex = lastUserMessage ? messages.indexOf(lastUserMessage) : -1;
+
+        setUiFailure(false);
+        setIntentionalStop(false);
+        clearError();
+
+        if (lastAssistantIndex > lastUserIndex) {
+            const lastAssistantMessage = messages[lastAssistantIndex];
+            void regenerate({ messageId: lastAssistantMessage.id }).catch(() => setUiFailure(true));
+            return;
+        }
+
+        if (lastUserMessage) {
+            void sendMessage({ text: getMessageText(lastUserMessage), messageId: lastUserMessage.id }).catch(() => setUiFailure(true));
+        }
+    };
+
+    const dismissFailure = () => {
+        setUiFailure(false);
+        clearError();
+    };
+
     return (
         <main className="bg-linear-to-br from-blue-50 via-white to-indigo-50 pb-36 text-slate-900 selection:bg-blue-200 sm:pb-32">
             <div className="pointer-events-none fixed inset-0 overflow-hidden" aria-hidden="true">
@@ -249,13 +305,23 @@ export default function Home() {
 
                     <div className="fixed inset-x-0 bottom-0 z-10 bg-linear-to-t from-blue-50 via-blue-50/95 to-transparent px-3 pb-2 pt-3 sm:px-8 sm:pb-4 sm:pt-6">
                         <div className="mx-auto w-full max-w-4xl">
-                            {error && (
+                            {(error || uiFailure) && (
                                 <div
                                     role="alert"
                                     className="mb-3 flex items-start justify-between gap-3 rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700"
                                 >
-                                    <span>Something went wrong: {error.message}</span>
-                                    <button type="button" onClick={clearError} className="text-rose-500/70 hover:text-rose-800" aria-label="Dismiss error">
+                                    <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
+                                        <span>The response could not be completed. Please try again.</span>
+                                        <button
+                                            type="button"
+                                            onClick={retryLastResponse}
+                                            disabled={isStreaming}
+                                            className="font-semibold text-rose-800 underline underline-offset-4 disabled:cursor-not-allowed disabled:opacity-50"
+                                        >
+                                            Retry
+                                        </button>
+                                    </div>
+                                    <button type="button" onClick={dismissFailure} className="text-rose-500/70 hover:text-rose-800" aria-label="Dismiss error">
                                         ×
                                     </button>
                                 </div>

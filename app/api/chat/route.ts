@@ -147,7 +147,10 @@ export async function POST(request: Request) {
 
         return createUIMessageStreamResponse({
             headers: { 'X-Request-ID': requestId },
-            stream: toUIMessageStream({ stream: result.stream }),
+            stream: toUIMessageStream({
+                stream: result.stream,
+                onError: () => 'The language model is currently unavailable. Please try again.',
+            }),
         });
     } catch (error) {
         const message = error instanceof Error ? error.message : 'Unknown language model error.';

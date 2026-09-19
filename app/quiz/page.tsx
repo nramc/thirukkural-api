@@ -176,7 +176,7 @@ export default function KuralQuizPage() {
                     <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-blue-700/80 sm:text-xs">A fast, self-graded game</p>
                     <h1 className="mt-2 text-2xl font-semibold tracking-tight text-blue-950 sm:text-4xl">Kural Quiz</h1>
                     <p className="mt-3 max-w-xl text-sm leading-6 text-slate-600 sm:text-base">
-                        Read the Tamil couplet, then pick the modern meaning that matches it. No AI wait — every answer is checked instantly.
+                        Read the Tamil couplet, then pick the modern meaning that matches it.
                     </p>
                 </div>
 
