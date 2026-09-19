@@ -47,7 +47,7 @@ function requireKural(kural: Kural | undefined, description: string) {
 
 export const kuralTools = {
     getKural: tool({
-        description: 'Retrieve an exact Thirukkural by its number from 1 through 1330.',
+        description: 'Retrieve an exact Thirukkural by number.',
         inputSchema: kuralIdSchema,
         execute: ({ id }) => requireKural(kuralService.search(id), `Kural ${id}`),
     }),
@@ -57,7 +57,7 @@ export const kuralTools = {
         execute: () => dailyKuralService.kuralOfTheDay(),
     }),
     getRandomKural: tool({
-        description: 'Retrieve a random Thirukkural from the complete collection.',
+        description: 'Retrieve one random Thirukkural.',
         inputSchema: noArgumentsSchema,
         execute: () => randomKuralService.getRandomKural(),
     }),
@@ -67,12 +67,12 @@ export const kuralTools = {
         execute: ({ sectionId }) => randomKuralService.getRandomKuralBySection(sectionId),
     }),
     getRandomKuralByChapter: tool({
-        description: 'Retrieve a random Thirukkural from a chapter numbered 1 through 133.',
+        description: 'Retrieve a random Thirukkural from a chapter.',
         inputSchema: chapterIdSchema,
         execute: ({ chapterId }) => randomKuralService.getRandomKuralByChapter(chapterId),
     }),
     getKuralByKeyword: tool({
-        description: 'Retrieve Kurals that match the given keywords with pagination.',
+        description: 'Retrieve Kurals matching keywords with pagination.',
         inputSchema: jsonSchema<{ keywords: string[]; page?: number; limit?: number }>({
             type: 'object',
             properties: {
@@ -86,8 +86,7 @@ export const kuralTools = {
         execute: ({ keywords, page, limit }) => kuralService.searchByKeyword(keywords, page, limit),
     }),
     getRandomKurals: tool({
-        description:
-            'Retrieve several distinct random Thirukkurals in a single call, e.g. to build a quiz round. Pass excludeIds with the numbers already used so far in this conversation to avoid repeats.',
+        description: 'Retrieve distinct random Thirukkurals; pass used numbers in excludeIds to avoid repeats.',
         inputSchema: jsonSchema<{ count: number; excludeIds?: number[] }>({
             type: 'object',
             properties: {
@@ -100,7 +99,7 @@ export const kuralTools = {
         execute: ({ count, excludeIds }) => randomKuralService.getRandomKurals(count, excludeIds ?? []),
     }),
     getKuralsByIds: tool({
-        description: 'Retrieve several Kurals by their exact numbers in a single call instead of one tool call per Kural.',
+        description: 'Retrieve several Kurals by exact numbers in one call.',
         inputSchema: jsonSchema<{ ids: number[] }>({
             type: 'object',
             properties: {
