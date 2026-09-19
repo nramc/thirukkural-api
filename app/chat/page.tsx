@@ -32,12 +32,12 @@ Use exactly four plausible choices with one correct answer. Do not reveal or hin
 Begin Round 1 now with Score: 0/0`;
 
 const suggestions: ChatSuggestion[] = [
-    { label: 'What Can I Learn Today?', prompt: 'What Can I Learn Today?' },
-    { label: 'Find a Kural about perseverance', prompt: 'Find a Kural about perseverance' },
-    { label: 'Help Me Stay Motivated', prompt: 'Help Me Stay Motivated' },
-    { label: 'Surprise Me with a Kural', prompt: 'Surprise Me with a Kural' },
+    { label: 'What Can I Learn Today?', prompt: 'What Can I Learn Today?', autoSubmit: true },
+    { label: 'Find a Kural about perseverance', prompt: 'Find a Kural about perseverance', autoSubmit: true },
+    { label: 'Help Me Stay Motivated', prompt: 'Help Me Stay Motivated', autoSubmit: true },
+    { label: 'Surprise Me with a Kural', prompt: 'Surprise Me with a Kural', autoSubmit: true },
     { label: 'Start a 3-Kural Quiz', prompt: threeKuralQuizPrompt, autoSubmit: true },
-    { label: 'Explain This Kural', prompt: 'Explain This Kural' },
+    { label: 'Explain This Kural', prompt: 'Explain This Kural'},
 ];
 
 const CLIENT_REQUEST_TIMEOUT_MS = 50_000;
