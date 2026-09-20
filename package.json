@@ -51,7 +51,7 @@
         "eslint": "10.10.0",
         "eslint-config-next": "16.3.5",
         "eslint-config-prettier": "10.1.8",
-        "prettier": "3.9.6",
+        "prettier": "3.9.7",
         "typescript": "7.0.2"
     },
     "engines": {
