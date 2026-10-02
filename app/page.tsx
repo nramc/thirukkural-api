@@ -28,8 +28,7 @@ export default function Home() {
                             Timeless wisdom for <span className="text-blue-600">everyday life.</span>
                         </h1>
                         <p className="mt-6 max-w-xl text-base leading-7 text-slate-600 sm:text-lg">
-                            Made with love for Thirukkural and Tamil, this is a simple modern doorway to 1,330 couplets on virtue, purpose, and
-                            compassion—without losing the wisdom that came before us.
+                            Read a couplet, compare meanings, or put Kural data to work through a free public API—all at your own pace and in your own way.
                         </p>
                         <div className="mt-8 flex flex-col gap-3 sm:flex-row">
                             <button
@@ -45,7 +44,7 @@ export default function Home() {
                                 onClick={() => scrollToSection('about')}
                                 className="inline-flex items-center justify-center gap-2 rounded-full border border-blue-200 bg-white/70 px-5 py-3 text-sm font-semibold text-blue-900 transition hover:border-blue-400 hover:bg-white"
                             >
-                                Our vision
+                                How it works
                                 <ArrowRight className="size-4" />
                             </button>
                             <Link
@@ -101,15 +100,18 @@ export default function Home() {
 
                 <section id="about" className="order-3 py-16 sm:py-20">
                     <div className="max-w-3xl">
-                        <p className="text-xs font-bold uppercase tracking-[0.2em] text-blue-600">Our vision</p>
+                        <p className="text-xs font-bold uppercase tracking-[0.2em] text-blue-600">Explore, learn, build</p>
                         <h2 className="mt-3 max-w-2xl text-3xl font-semibold tracking-tight text-blue-950 sm:text-4xl">
-                            Connecting Thirukkural’s timeless wisdom with modern life—for everyone, everywhere.
+                            A reader-friendly home for the Kurals, and an open API to build with.
                         </h2>
-                        <div className="mt-6 flex max-w-2xl items-start gap-3 text-sm leading-6 text-slate-600 sm:text-base">
+                        <div className="mt-6 max-w-2xl text-sm leading-6 text-slate-600 sm:text-base">
                             <p>
-                                To make the timeless wisdom of Thirukkural freely accessible to everyone through modern technology—helping people learn,
-                                preserving Tamil culture, and inspiring generations to come.
+                                Browse by chapter or search for a thought that speaks to you. Read attributed meanings, try the quiz, or use the free public
+                                REST API to create new ways for people to discover and learn from the Thirukkural.
                             </p>
+                            <Link href="/about" className="mt-5 inline-flex items-center gap-2 font-semibold text-blue-800 hover:text-blue-950">
+                                Read about the project <ArrowRight className="size-4" aria-hidden="true" />
+                            </Link>
                         </div>
                     </div>
                 </section>
