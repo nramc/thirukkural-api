@@ -2,9 +2,9 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { useState } from 'react';
-import { BookOpen, CircleUserRound, Code2, GitFork, HomeIcon, type LucideIcon, Menu, Search, Sparkles, Trophy, X } from 'lucide-react';
+import {usePathname} from 'next/navigation';
+import {useState} from 'react';
+import {BookOpen, Code2, Info, type LucideIcon, Menu, Search, Sparkles, Trophy, X} from 'lucide-react';
 
 type NavigationItem = {
     label: string;
@@ -14,13 +14,11 @@ type NavigationItem = {
 };
 
 const navigationItems: NavigationItem[] = [
-    { label: 'Home', href: '/', icon: HomeIcon },
-    { label: 'Browse', href: '/browse', icon: Search },
-    { label: 'Chapters', href: '/chapters/1', icon: BookOpen },
-    { label: 'Quiz', href: '/quiz', icon: Trophy },
-    { label: 'Doc', href: '/openapi/swagger-ui.html#Kural', icon: Code2, external: true },
-    { label: 'GitHub', href: 'https://github.com/nramc/thirukkural-api', icon: GitFork, external: true },
-    { label: 'Contact', href: 'https://myprofile.codewithram.dev/', icon: CircleUserRound, external: true },
+    {label: 'Browse', href: '/browse', icon: Search},
+    {label: 'Chapters', href: '/chapters/1', icon: BookOpen},
+    {label: 'Quiz', href: '/quiz', icon: Trophy},
+    {label: 'Doc', href: '/openapi/swagger-ui.html#Kural', icon: Code2, external: true},
+    {label: 'About', href: '/about', icon: Info},
 ];
 
 const externalLinkProps = {
@@ -37,9 +35,12 @@ export default function AppMenu() {
 
     return (
         <header className="sticky top-0 z-50 px-4 pt-4 sm:px-6 lg:px-8">
-            <div className="mx-auto flex w-full max-w-7xl items-center justify-between rounded-2xl border border-blue-100/80 bg-white/90 px-4 py-3 shadow-lg shadow-blue-950/5 backdrop-blur-xl sm:px-6">
-                <Link href="/" onClick={closeMenu} className="group flex shrink-0 items-center gap-3" aria-label="Thirukkural API home">
-                    <span className="flex size-10 items-center justify-center overflow-hidden rounded-xl bg-blue-50 ring-1 ring-blue-100 transition-transform duration-200 group-hover:scale-105 sm:size-11">
+            <div
+                className="mx-auto flex w-full max-w-7xl items-center justify-between rounded-2xl border border-blue-100/80 bg-white/90 px-4 py-3 shadow-lg shadow-blue-950/5 backdrop-blur-xl sm:px-6">
+                <Link href="/" onClick={closeMenu} className="group flex shrink-0 items-center gap-3"
+                      aria-label="Thirukkural API home">
+                    <span
+                        className="flex size-10 items-center justify-center overflow-hidden rounded-xl bg-blue-50 ring-1 ring-blue-100 transition-transform duration-200 group-hover:scale-105 sm:size-11">
                         <Image
                             src="/favicon-96x96.png"
                             alt="Thirukkural API Logo"
@@ -62,7 +63,7 @@ export default function AppMenu() {
                     } lg:static lg:flex lg:flex-row lg:items-center lg:rounded-none lg:border-0 lg:bg-transparent lg:p-0 lg:shadow-none`}
                     aria-label="Primary navigation"
                 >
-                    {navigationItems.map(({ label, href, icon: Icon, external }) => {
+                    {navigationItems.map(({label, href, icon: Icon, external}) => {
                         const active = isActive(href, external);
 
                         return (
@@ -91,7 +92,7 @@ export default function AppMenu() {
                         onClick={closeMenu}
                         className="mt-1 flex items-center justify-center gap-2 rounded-xl bg-blue-800 px-4 py-3.5 text-base font-semibold text-white! transition-colors hover:bg-blue-900 lg:hidden"
                     >
-                        <Sparkles className="size-4" aria-hidden="true" />
+                        <Sparkles className="size-4" aria-hidden="true"/>
                         Ask Valluvar AI
                     </Link>
                 </nav>
@@ -104,13 +105,13 @@ export default function AppMenu() {
                         aria-label="Search Kurals"
                         title="Search Kurals"
                     >
-                        <Search className="size-5" aria-hidden="true" />
+                        <Search className="size-5" aria-hidden="true"/>
                     </Link>
                     <Link
                         href="/chat"
                         className="hidden items-center gap-2 rounded-lg bg-blue-800 px-4 py-2.5 text-[15px] font-semibold text-white! shadow-md shadow-blue-800/20 transition-all hover:-translate-y-0.5 hover:bg-blue-900 hover:shadow-lg hover:shadow-blue-800/25 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-200 sm:inline-flex"
                     >
-                        <Sparkles className="size-4" aria-hidden="true" />
+                        <Sparkles className="size-4" aria-hidden="true"/>
                         Ask Valluvar AI
                     </Link>
                     <button
@@ -121,7 +122,8 @@ export default function AppMenu() {
                         aria-expanded={isMenuOpen}
                         aria-controls="mobile-navigation"
                     >
-                        {isMenuOpen ? <X className="size-5" aria-hidden="true" /> : <Menu className="size-5" aria-hidden="true" />}
+                        {isMenuOpen ? <X className="size-5" aria-hidden="true"/> :
+                            <Menu className="size-5" aria-hidden="true"/>}
                     </button>
                 </div>
             </div>

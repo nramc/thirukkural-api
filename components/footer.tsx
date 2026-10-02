@@ -33,8 +33,11 @@ export default function Footer() {
                     >
                         LinkedIn
                     </a>
-                    <a href="https://myprofile.codewithram.dev/" {...externalLinkProps} className="transition-colors hover:text-blue-800 hover:font-bold">
+                    <a href="https://codewithram.dev/" {...externalLinkProps} className="transition-colors hover:text-blue-800 hover:font-bold">
                         Contact
+                    </a>
+                    <a href="https://github.com/nramc/thirukkural-api" {...externalLinkProps} className="transition-colors hover:text-blue-800 hover:font-bold">
+                        GitHub
                     </a>
                     <a
                         href="https://github.com/nramc/thirukkural-api/blob/main/LICENSE"
@@ -51,7 +54,7 @@ export default function Footer() {
             </div>
 
             <div className="mx-auto mt-8 flex w-full max-w-7xl flex-col gap-2 border-t border-blue-100 pt-5 text-xs text-slate-400 sm:flex-row sm:items-center sm:justify-center">
-                <a href={'https://myprofile.codewithram.dev/'} {...externalLinkProps} className="transition-colors hover:text-blue-800 hover:font-bold">
+                <a href={'https://codewithram.dev/'} {...externalLinkProps} className="transition-colors hover:text-blue-800 hover:font-bold">
                     © {currentYear} Ramachandran Nellaiyappan
                 </a>
             </div>
