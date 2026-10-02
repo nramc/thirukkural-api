@@ -31,10 +31,12 @@ experience.
 
 - **Complete collection** — retrieve any Kural from 1–1330.
 - **Useful discovery endpoints** — daily, random, chapter, section, and keyword search.
-- **Reader-friendly browsing** — use the web app’s `/browse` page or global search icon to find Kurals by number, keyword, section, or chapter.
+- **Reader-friendly browsing** — use the web app’s `/browse` page or global search icon to find Kurals by number,
+  keyword, section, or chapter.
 - **Rich responses** — Tamil couplets plus meanings by Mu. Varadarajan, Solomon Pappayya, Kalaignar, an English
   translation, and a clearly labeled modern-English interpretation.
-- **Kural Quiz** — a fast, self-graded multiple-choice game at `/quiz` that matches a couplet to its modern meaning, with no AI wait.
+- **Kural Quiz** — a fast, self-graded multiple-choice game at `/quiz` that matches a couplet to its modern meaning,
+  with no AI wait.
 - **AI-assisted exploration** — an optional chat experience powered by Ollama or OpenRouter, including quiz-style Q&A.
 - **OpenAPI included** — browse the interactive Swagger UI or import the specification into your favorite client.
 
@@ -71,23 +73,41 @@ this core shape:
 
 ```json
 {
-    "number": 1,
-    "section": { "id": 1, "names": { "ta": "அறத்துப்பால்", "en": "Virtue" } },
-    "chapter": { "id": 1, "names": { "ta": "கடவுள் வாழ்த்து", "en": "The Praise of God" } },
-    "kural": ["அகர முதல எழுத்தெல்லாம் ஆதி", "பகவன் முதற்றே உலகு."],
-    "transliteration": ["Akara Mudhala Ezhuththellaam Aadhi", "Pakavan Mudhatre Ulaku"],
-    "meaning": {
-        "ta_mu_va": "...",
-        "ta_salamon": "...",
-        "ta_kalaignar": "...",
-        "en": "As the letter A is the first of all letters, so the eternal God is first in the world.",
-        "en_modern": "In today’s terms, this means: As the letter A is the first of all letters, so the eternal God is first in the world. For example, it can guide how we speak, learn, make decisions, and treat the people around us."
+  "number": 1,
+  "section": {
+    "id": 1,
+    "names": {
+      "ta": "அறத்துப்பால்",
+      "en": "Virtue"
     }
+  },
+  "chapter": {
+    "id": 1,
+    "names": {
+      "ta": "கடவுள் வாழ்த்து",
+      "en": "The Praise of God"
+    }
+  },
+  "kural": [
+    "அகர முதல எழுத்தெல்லாம் ஆதி",
+    "பகவன் முதற்றே உலகு."
+  ],
+  "transliteration": [
+    "Akara Mudhala Ezhuththellaam Aadhi",
+    "Pakavan Mudhatre Ulaku"
+  ],
+  "meaning": {
+    "ta_mu_va": "...",
+    "ta_salamon": "...",
+    "ta_kalaignar": "...",
+    "en": "As the letter A is the first of all letters, so the eternal God is first in the world.",
+    "en_modern": "In today’s terms, this means: As the letter A is the first of all letters, so the eternal God is first in the world. For example, it can guide how we speak, learn, make decisions, and treat the people around us."
+  }
 }
 ```
 
 | Endpoint                                     | Description                                                                                                                                                                                                                                                                                                                                    |
-| -------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+|----------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `GET /api/kural/{id}`                        | Get one Kural by number (`1`–`1330`).                                                                                                                                                                                                                                                                                                          |
 | `GET /api/kural?q={keyword}&page=1&limit=10` | Search meanings, including modern-English interpretations, Tamil couplet text, and transliteration. `q` accepts comma-separated keywords. Search requests return `{ results, total, page, limit }`. The `page` and `limit` query parameters default to `1` and `10`, respectively; `total` is the number of matching Kurals before pagination. |
 | `GET /api/kural?section={1\|2\|3}`           | Discover Kurals in a section. `chapter` takes precedence when both filters are supplied.                                                                                                                                                                                                                                                       |
@@ -153,7 +173,7 @@ Create `.env.local` (never commit credentials) and configure the provider you wa
 for the repository defaults.
 
 | Variable                        | Required       | Purpose                                                                                                |
-| ------------------------------- | -------------- | ------------------------------------------------------------------------------------------------------ |
+|---------------------------------|----------------|--------------------------------------------------------------------------------------------------------|
 | `LLM_PROVIDER`                  | Yes            | `ollama` or `openrouter`.                                                                              |
 | `LLM_MODEL`                     | Yes            | Model identifier to use.                                                                               |
 | `LLM_ALLOWED_MODELS`            | No             | Comma-separated allowlist for server-approved models.                                                  |
@@ -242,6 +262,9 @@ configuration can use it.
 
 Contributions, corrections, and ideas are welcome. A typical workflow is:
 
+For application bugs, Kural data or translation corrections, and feature ideas, please use
+the [GitHub issue chooser](https://github.com/nramc/thirukkural-api/issues/new/choose) and select the matching template.
+
 1. Fork the repository and create a focused branch: `git checkout -b feature/my-improvement`.
 2. Make the change and update documentation when behavior changes.
 3. Run `npm run verify` (or the relevant checks while developing).
@@ -260,7 +283,8 @@ copyright or license terms. Review the applicable attribution and license notice
 Built with [Next.js](https://nextjs.org/), [React](https://react.dev/), [TypeScript](https://www.typescriptlang.org/),
 and [Vercel](https://vercel.com/).
 
-Questions or suggestions? Connect with [Ramachandran Nellaiyappan](https://myprofile.codewithram.dev/) or open an issue.
+Questions or suggestions? Connect with [Ramachandran Nellaiyappan](https://codewithram.dev/)
+or [choose an issue template](https://github.com/nramc/thirukkural-api/issues/new/choose).
 
 <p align="center">
   <img src="./public/favicon.svg" width="32" alt="Thirukkural icon" />

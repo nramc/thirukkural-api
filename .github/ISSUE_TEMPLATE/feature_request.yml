@@ -1,0 +1,46 @@
+name: Feature request
+description: Suggest an improvement to the application, API, content, or documentation.
+title: '[Feature]: '
+body:
+    - type: dropdown
+      id: area
+      attributes:
+          label: Which part of the project would this improve?
+          options:
+              - Website or browsing experience
+              - REST API
+              - Kural data, translations, or interpretations
+              - AI Features
+              - Documentation
+              - Other
+      validations:
+          required: true
+    - type: textarea
+      id: problem
+      attributes:
+          label: What problem or need would this address?
+          description: Explain the use case and who would benefit.
+          placeholder: I would find it helpful to ... because ...
+      validations:
+          required: true
+    - type: textarea
+      id: solution
+      attributes:
+          label: Describe the improvement you would like
+          description: Share your suggested behavior or outcome.
+      validations:
+          required: true
+    - type: textarea
+      id: alternatives
+      attributes:
+          label: Alternatives or related projects
+          description: Have you considered another approach or workaround?
+      validations:
+          required: false
+    - type: textarea
+      id: context
+      attributes:
+          label: Additional context
+          description: Add examples, mockups, or references that help explain the request.
+      validations:
+          required: false

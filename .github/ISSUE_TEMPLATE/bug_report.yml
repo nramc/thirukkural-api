@@ -1,0 +1,70 @@
+name: Bug, data, or translation issue
+description: Report an application bug or an issue with Kural text, data, or translations.
+title: '[Bug/Data/Translation]: '
+body:
+    - type: dropdown
+      id: issue_type
+      attributes:
+          label: What kind of issue are you reporting?
+          options:
+              - Application bug
+              - Kural data or canonical text
+              - Translation or interpretation
+              - API or documentation
+              - Other
+      validations:
+          required: true
+    - type: input
+      id: kural_number
+      attributes:
+          label: Kural number (if applicable)
+          description: Enter a number from 1 to 1330, if this report concerns a specific Kural.
+          placeholder: 'e.g. 42'
+      validations:
+          required: false
+    - type: dropdown
+      id: affected_content
+      attributes:
+          label: Which content is affected? (if applicable)
+          options:
+              - Original Tamil Kural text
+              - Tamil interpretation
+              - Translation or interpretation
+              - Transliteration
+              - Metadata or chapter/section
+              - Not applicable
+              - Other
+      validations:
+          required: false
+    - type: textarea
+      id: description
+      attributes:
+          label: Describe the issue
+          description: For data or translation reports, include the current text and the correction you recommend.
+          placeholder: What is wrong?
+      validations:
+          required: true
+    - type: textarea
+      id: expected
+      attributes:
+          label: Expected behavior or correction
+          description: For content reports, include a reliable source or reference when possible.
+      validations:
+          required: false
+    - type: textarea
+      id: reproduction
+      attributes:
+          label: Steps to reproduce (for application bugs)
+          placeholder: |-
+              1. Go to ...
+              2. Select ...
+              3. Observe ...
+      validations:
+          required: false
+    - type: textarea
+      id: environment
+      attributes:
+          label: Environment or additional context
+          description: Include the page or API endpoint, browser, device, or other details that could help investigate.
+      validations:
+          required: false
