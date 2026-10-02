@@ -14,7 +14,6 @@ type NavigationItem = {
 };
 
 const navigationItems: NavigationItem[] = [
-    { label: 'Home', href: '/', icon: HomeIcon },
     { label: 'Browse', href: '/browse', icon: Search },
     { label: 'Chapters', href: '/chapters/1', icon: BookOpen },
     { label: 'Quiz', href: '/quiz', icon: Trophy },
