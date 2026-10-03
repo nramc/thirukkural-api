@@ -27,7 +27,7 @@
         "@openrouter/ai-sdk-provider": "3.1.0",
         "@streamdown/cjk": "1.0.3",
         "@streamdown/code": "1.1.1",
-        "@streamdown/math": "1.0.2",
+        "@streamdown/math": "1.0.3",
         "@streamdown/mermaid": "1.0.2",
         "@tailwindcss/postcss": "4.3.3",
         "@vercel/functions": "3.9.9",
