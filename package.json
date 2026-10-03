@@ -31,7 +31,7 @@
         "@streamdown/mermaid": "1.0.2",
         "@tailwindcss/postcss": "4.3.3",
         "@vercel/functions": "3.9.9",
-        "ai": "7.0.122",
+        "ai": "7.0.123",
         "class-variance-authority": "0.7.1",
         "clsx": "2.1.1",
         "lucide-react": "1.49.0",
