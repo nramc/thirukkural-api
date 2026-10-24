@@ -20,7 +20,7 @@
         "verify": "npm run format:check && npm run lint && npm run typecheck && npm run security:check && npm run test"
     },
     "dependencies": {
-        "@ai-sdk/openai": "4.0.98",
+        "@ai-sdk/openai": "4.0.99",
         "@ai-sdk/react": "4.0.151",
         "@base-ui/react": "1.9.0",
         "@next/third-parties": "16.4.2",
