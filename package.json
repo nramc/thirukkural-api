@@ -21,7 +21,7 @@
     },
     "dependencies": {
         "@ai-sdk/openai": "4.0.102",
-        "@ai-sdk/react": "4.0.156",
+        "@ai-sdk/react": "4.0.157",
         "@base-ui/react": "1.9.0",
         "@next/third-parties": "16.4.3",
         "@openrouter/ai-sdk-provider": "3.1.0",
