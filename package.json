@@ -28,7 +28,7 @@
         "@streamdown/cjk": "1.0.5",
         "@streamdown/code": "2.0.0",
         "@streamdown/math": "1.0.3",
-        "@streamdown/mermaid": "1.0.3",
+        "@streamdown/mermaid": "1.0.4",
         "@tailwindcss/postcss": "4.3.3",
         "@vercel/functions": "3.11.3",
         "ai": "7.0.173",
